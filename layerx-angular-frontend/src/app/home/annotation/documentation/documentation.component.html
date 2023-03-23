@@ -1,0 +1,95 @@
+<div class="content-col-inner">
+  <div class="title-row">
+    <div class="text-col">
+      <div class="txt-title">Documents</div>
+      <div>
+        <input
+          type="file"
+          class="file-input"
+          (change)="uploadDocument($event)"
+          #fileUpload
+        />
+        <button class="btn-upload" (click)="fileUpload.click()">
+          Upload New
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="this.loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div class="progress-wrapper" *ngIf="uploading">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="progress-col">
+      <div class="task-text">Uploading document...</div>
+    </div>
+  </div>
+
+  <div
+    class="loading-row text-center"
+    *ngIf="!this.loading && this.documentsObj.documentList.length == 0"
+  >
+    No Documents
+  </div>
+
+  <div class="table-row">
+    <table class="table">
+      <tbody (click)="$event.stopPropagation()">
+        <tr *ngFor="let doc of this.documentsObj.documentList">
+          <td>
+            <div class="row-icon">
+              <div class="icon-col">
+                <div class="icon-wrapper">
+                  <i class="icon icon-document"></i>
+                </div>
+              </div>
+              <div class="text-col">
+                <div class="txt-black">
+                  {{
+                    doc.createdAt ? (doc.createdAt | date: "mediumDate") : "N/A"
+                  }}
+                </div>
+                <div class="txt-gray">Created at date</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <div class="name-txt">
+                {{ doc.fileName ? this.getFileName(doc.fileName) : "N/A" }}
+              </div>
+              <div class="txt-gray">File Name</div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <div class="name-txt">
+                {{ doc.uploadByName ? doc.uploadByName : "N/A" }}
+              </div>
+              <div class="txt-gray">Uploaded by</div>
+            </div>
+          </td>
+          <td>
+            <div
+              class="row-icon download"
+              (click)="this.downloadDocument(doc.documentId, doc.fileName)"
+              *ngIf="doc.fileName"
+            >
+              <div class="txt-gray download">Download</div>
+              <i class="icon icon-file-download"></i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

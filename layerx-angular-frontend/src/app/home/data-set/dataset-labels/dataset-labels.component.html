@@ -1,0 +1,82 @@
+<div class="content-col-inner">
+  <div class="top-area">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Training Labels</div>
+        <div>
+          <button class="btn-upload" (click)="openAddLabel()">Update Labels</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-row" *ngIf="this.loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="content-row" *ngIf="!this.loading">
+    <div class="left-col">
+      <div class="boxes-row">
+        <div class="box">
+          <div class="icon-wrapper">
+            <i class="icon icon-image-project"></i>
+          </div>
+          <div class="details">
+            <div class="value">
+              {{ this.dLabelsObj.totalFrames | number: "1.0" }}
+            </div>
+            <div class="description">Total Frames</div>
+          </div>
+        </div>
+
+        <div class="box second-box">
+          <div class="icon-wrapper">
+            <i class="icon icon-object"></i>
+          </div>
+          <div class="details">
+            <div class="value">
+              {{ this.dLabelsObj.totalBoxes | number: "1.0" }}
+            </div>
+            <div class="description">Total Objects</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="first-row">
+        <i class="icon icon-label"></i>
+        <div class="text">Labels: {{ labelCount }}</div>
+      </div>
+      <div class="table-row">
+        <table class="table">
+          <tbody (click)="$event.stopPropagation()">
+            <tr *ngFor="let item of this.dLabelsObj.labelList; index as i" [ngClass]="{ first: i == 0 }">
+              <td *ngIf="item.isEnabled">
+                <div class="row-icon">
+                  <div class="icon-col">
+                    <div class="icon-wrapper">
+                      <i class="icon icon-label"></i>
+                    </div>
+                  </div>
+                  <div class="text-col">
+                    <div class="txt-black">{{ formatText(item.label) }}</div>
+                  </div>
+                </div>
+              </td>
+
+              <td *ngIf="item.isEnabled">
+                <div class="row-icon delete">
+                  <div class="txt-black bold">{{ item.count }}</div>
+                  <i class="icon icon-delete-fill" (click)="onConfirm(i)"></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

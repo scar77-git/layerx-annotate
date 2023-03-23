@@ -1,0 +1,56 @@
+@import "../../../../assets/scss/colors.scss";
+.confirm-box{
+    width:220px; 
+    background-color: $full_black; 
+    border-radius: 15px;
+    position: absolute;
+    z-index: 2;
+    bottom: 20px;
+    left: 25px;
+    padding: 30px 20px;
+    box-shadow: 0px 12px 16px $box_shadow;
+    .alert{
+        margin: 0;
+        padding: 0;
+        height: 45px;
+        .icon{
+            font-size: 42px;
+            color: $reject_red;
+            text-align: center;
+        }
+    }
+    .white-text{
+        margin-top: 20px;
+        color: $white;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+    .btn-row{
+        margin-top: 35px;
+        button{
+            padding: 6px 28px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: $white;
+
+            &.btn-no{
+                border: $sidebar_right_text 2px solid;
+            }
+            &.btn-yes{
+                background-color: $theme_purple;
+                float: right;
+            }
+            &.btn-ok{
+                background-color: $theme_purple;
+                margin-left: 64px;
+            }
+            &:hover{
+                background-color: $theme_purple_hover;
+                border-color: $theme_purple_hover;
+            }
+        }
+        
+    }
+}

@@ -1,0 +1,91 @@
+<app-header></app-header>
+<app-side-bar (setProject)="getSelectedProject($event)"></app-side-bar>
+
+<div class="content-col">
+  <div class="panel-content">
+    <div class="title-row" *ngIf="selectedDataset">
+      <div class="icon-row">
+        <img class="type-i" src="../../../../assets/img/icons/icon-vid.png" />
+      </div>
+      <div class="text-col">
+        <div class="txt-title">{{ this.selectedDataset.name }}</div>
+        <div class="txt-type">
+          <span>{{ this.selectedDataset.versionDetails }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress-wrapper" *ngIf="isDataSetProcessing">
+      <div class="lds-ring" *ngIf="!isDataProcessingError">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="progress-col">
+        <div class="task-text" *ngIf="processType === DATASET_CREATION">Dataset creation in progress. Please wait…</div>
+        <div class="task-text" *ngIf="processType === LABEL_PROCESSING">Label update in progress. Please wait…</div>
+        <div class="task-text" *ngIf="processType === AUGMENTATION_PROCESSING">Augmentation in progress. Please wait…</div>
+        <div class="task-text" *ngIf="processType === DATASET_EDIT">Dataset updating in progress. Please wait…</div>
+        <div class="task-text error" *ngIf="isDataProcessingError">{{dataProcessingErrorMessage}}</div>
+        <div class="progress">
+          <div
+            [ngClass]="['progress-bar']"
+            role="progressbar"
+            [ngStyle]="{ 'width.%': projectProgress }"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="navigation-card">
+      <div class="nav-row">
+        <div (click)="this.navigateTo('overview')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('overview')
+          }">
+          <div class="page-name">Overview</div>
+        </div>
+
+        <div (click)="this.navigateTo('labels')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('labels')
+          }">
+          <div class="page-name">Labels</div>
+        </div>
+
+        <div (click)="this.navigateTo('split')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('split')
+          }">
+          <div class="page-name">Split</div>
+        </div>
+
+        <div (click)="this.navigateTo('data-grid')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('data-grid')
+          }">
+          <div class="page-name">Data Grid</div>
+        </div>
+
+        <div (click)="this.navigateTo('augmentation')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('augmentation')
+          }">
+          <div class="page-name">Augmentation</div>
+        </div>
+
+        <div (click)="this.navigateTo('export')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('export')
+          }">
+          <div class="page-name">Export</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

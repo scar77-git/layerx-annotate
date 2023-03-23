@@ -1,0 +1,101 @@
+@import "../../../../assets/scss/colors.scss";
+
+.modal-container {
+  .title-row {
+    padding-bottom: 8px;
+    .title-black {
+      color: $text_black;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+
+  .i-close {
+    font-size: 25px;
+    color: $new_project_star;
+    float: right;
+  }
+  .title-border {
+    border-bottom: 1px solid $filter_row_gray;
+  }
+
+  .content-area {
+    .type-block {
+      margin-top: 20px;
+
+      .title {
+        font-size: 14px;
+        color: $new_project_star;
+        font-weight: 600;
+      }
+
+      .format {
+        display: flex;
+        margin-top: 10px;
+        .checkbox-row {
+          margin-top: 2px;
+          .checkbox-round {
+            height: 18px;
+            width: 18px;
+            border: 1px solid $tooltip_text;
+            background-color: $white;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+            border-radius: 6px;
+          }
+          .checkmark {
+            position: relative;
+            top: 0;
+            left: 0;
+            &:after {
+              content: "";
+              position: absolute;
+              display: none;
+              left: -12px;
+              top: -1px;
+              width: 6px;
+              height: 11px;
+              border: solid $white;
+              border-width: 0 2px 2px 0;
+              -webkit-transform: rotate(45deg);
+              -ms-transform: rotate(45deg);
+              transform: rotate(45deg);
+            }
+          }
+          .checkbox-round:checked {
+            background-color: $theme_purple;
+            border: none;
+            ~ .checkmark {
+              &:after {
+                display: block;
+              }
+            }
+          }
+        }
+        .type {
+          margin-left: 18px;
+        }
+      }
+    }
+  }
+
+  .bottom-area {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+
+    .btn-save {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}

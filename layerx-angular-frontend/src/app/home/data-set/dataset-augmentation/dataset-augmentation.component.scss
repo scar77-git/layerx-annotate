@@ -1,0 +1,143 @@
+@import "../../../../assets/scss/colors.scss";
+@import "../../../../assets/scss/extend.scss";
+
+.title-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid $filter_row_gray;
+  padding-bottom: 15px;
+  .text-col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .txt-title {
+      color: $text_black;
+      font-weight: 500;
+      font-size: 1.7rem;
+      line-height: 38px;
+    }
+    .btn-upload {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 6px 18px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+
+.aug-area {
+  display: flex;
+  width: 100%;
+  padding-top: 30px;
+  .title {
+    font-size: 14px;
+    font-weight: 500;
+    color: $sidebar_black;
+
+    &.center-txt{
+      width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    }
+  }
+  .box-area {
+    padding-top: 15px;
+  }
+  .box {
+    width: 94%;
+    height: 105px;
+    background: $dashboard-background-box;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin-top: 20px;
+    .left {
+      display: flex;
+      align-items: center;
+      .aug-img {
+        width: 70px;
+        img {
+          width: 100%;
+        }
+      }
+      .texts {
+        display: block;
+        margin-left: 15px;
+        .aug-name {
+          font-size: 16px;
+          font-weight: 500;
+          color: $sidebar_black;
+        }
+        .aug-types {
+          font-size: 13px;
+          color: $new_project_placeholder;
+          margin-top: 5px;
+          max-width: 340px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    .right {
+      display: none;
+    }
+  }
+  .box:hover {
+    .right {
+      display: grid;
+      margin-top: 15px;
+      i {
+        font-size: 28px;
+        color: $time_gray;
+        cursor: pointer;
+      }
+    }
+  }
+  .left-col {
+    width: 50%;
+  }
+  .right-col {
+    width: 50%;
+  }
+}
+
+.progress-wrapper {
+  position: absolute;
+  top: 40px;
+  width: 260px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  .lds-ring {
+    @extend %lds-ring;
+  }
+  .progress-col {
+    width: calc(100% - 32px);
+    .task-text {
+      font-size: 11px;
+      color: $txt_type_gray;
+
+      &.error{
+        color: $reject_red;
+      }
+    }
+  }
+  .progress {
+    width: 100%;
+    height: 5px;
+    background-color: $left-border;
+    border-radius: 20px;
+    .progress-bar {
+      background-color: $theme_green;
+      border-radius: 20px;
+    }
+  }
+}

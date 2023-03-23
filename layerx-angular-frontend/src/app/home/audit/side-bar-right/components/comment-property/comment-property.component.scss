@@ -1,0 +1,126 @@
+@import "../../../../../../assets/scss/colors.scss";
+
+
+.frame-info {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 15px 5px;
+  padding-right: 20px;
+  color: $txt_type_gray;
+  .frame-number {
+    float: left;
+    span {
+      color: $theme_blue;
+    }
+  }
+  .video-time {
+    float: right;
+  }
+}
+
+.comments {
+  padding: 20px 5px;
+  padding-right: 10px;
+  height: calc(100vh - 260px);
+  overflow: hidden;
+  width: 100%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: $text_black $sidebar_bg;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: $sidebar_bg;
+    border-radius: 16px;
+    height: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $text_black;
+    border-radius: 16px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $sidebar_bg;
+    border-radius: 16px;
+  }
+
+  .comment {
+    width: 100%;
+    // min-height: 110px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    background-color: $frame_black;
+    padding-bottom: 15px;
+    position: relative;
+    margin-right: 20px;
+
+    
+    &.resolved {
+      background-color: $comment_resolved_bg;
+      .comment-number {
+        // display: none;
+        background-color: $theme_green;
+      }
+    }
+
+    .header {
+      padding: 10px 0 0 10px;
+      width: 180px;
+      // height: 55px;
+      display: flex;
+
+      .left {
+        width: 40px;
+        .user-image {
+          height: 25px;
+          width: 25px;
+          border-radius: 50%;
+          background-color: $theme_purple;
+          overflow: hidden;
+
+          img {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+        }
+      }
+      .right {
+        font-weight: 500;
+        width: 120px;
+        .user-name {
+          font-size: 13px;
+          color: $white;
+          width: 130px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .comment-date {
+          font-size: 9px;
+          color: $txt_type_gray;
+        }
+      }
+    }
+    .comment-number {
+      position: absolute;
+      right: -6px;
+      top: -8px;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background-color: $unread_comments;
+      font-size: 8px;
+      line-height: 18px;
+      text-align: center;
+    }
+    .content {
+      font-size: 12px;
+      color: $txt_type_gray;
+      padding: 0px 12px;
+      margin-top: 8px;
+    }
+  }
+}

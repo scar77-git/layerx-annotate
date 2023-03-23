@@ -1,0 +1,50 @@
+@import "../../../../assets/scss/colors.scss";
+
+.modal-container {
+  margin-bottom: 10px;
+  .title-row {
+    padding-bottom: 8px;
+    .title-black {
+      color: $text_black;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+  .i-close {
+    font-size: 25px;
+    color: $new_project_star;
+    float: right;
+  }
+  .title-border {
+    border-bottom: 1px solid $filter_row_gray;
+  }
+  .header {
+    font-size: 65px;
+    color: $reject_red;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 25px;
+  }
+  .description {
+    font-size: 16px;
+    color: $new_project_placeholder;
+    font-weight: 500;
+    text-align: center;
+  }
+  .btn-col-sub {
+    text-align: center;
+    margin-top: 20px;
+
+    .ok-btn {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 10px 50px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}

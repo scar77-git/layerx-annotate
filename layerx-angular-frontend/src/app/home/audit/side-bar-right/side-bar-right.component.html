@@ -1,0 +1,15 @@
+<div class="tab-pane">
+    <div class="tab-btn" *ngFor="let tab of tabList" [ngClass]="{'active':tab.key == selectedTab}"
+        (click)="selectTab(tab.key)">
+        <!-- Set icon url to FrameSideBarTabs class in frame.ts -->
+        <div class="{{tab.icon}}"></div>
+        {{tab.name}}
+        <div class="comment-count" *ngIf="tab.key == constantFrameSideBarTabs.comments.key && commentList.length > 0">{{commentList.length}}</div>
+    </div>
+
+</div>
+<div class="tab-container">
+    <app-frame-property *ngIf="selectedTab == constantFrameSideBarTabs.annotations.key"></app-frame-property>
+    <app-filter-property *ngIf="selectedTab == constantFrameSideBarTabs.addFilter.key"></app-filter-property>
+    <app-comment-property *ngIf="selectedTab == constantFrameSideBarTabs.comments.key"></app-comment-property>
+</div>

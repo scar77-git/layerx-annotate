@@ -1,0 +1,71 @@
+version: "3.8"
+services:
+  mongodb:
+      image: mongo:latest
+      restart: always
+      ports:
+        - 1521:27017
+      volumes:
+        - ./mongoData:/data/db
+        - ./DB_initial_data/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=annotate_admin
+        - MONGO_INITDB_ROOT_PASSWORD=yourPassword123987Admin
+        - MONGO_INITDB_DATABASE=AIData
+        
+  python_app:
+    build: ./layerx-python-backend
+    restart: always
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./layerx-python-backend/logs:/app/logs
+      - ./contents:/app/contents
+    depends_on:
+      - mongodb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+        resources:
+            limits:
+              cpus: 2
+              memory: 5G
+    env_file:
+      - ./.env
+
+  node_backend:
+    build: ./layerx-nodejs-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./contents:/usr/src/app/contents 
+      - ./contents/test:/usr/src/annotation-manager/taskData
+    env_file:
+      - ./.env
+      - ./default.env
+
+  frontend:
+    build: ./layerx-angular-frontend
+    restart: always
+    depends_on:
+      - nginx
+    ports:
+      - "8085:8085"
+    environment:
+      - TZ:utc
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginxData/nginx:/etc/nginx
+      - ./layerx-sync-tool:/home/layerx-sync-tool
+    ports:
+      - 80:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

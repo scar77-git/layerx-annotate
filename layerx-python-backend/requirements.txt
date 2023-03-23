@@ -1,0 +1,12 @@
+numpy
+flask
+flask-cors
+tensorflow
+# bson
+pymongo
+boto3
+imgaug
+# skimage
+scikit-image
+# opencv-python
+Pillow

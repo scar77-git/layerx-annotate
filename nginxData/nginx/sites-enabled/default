@@ -1,0 +1,58 @@
+server {
+
+        root /var/www/deepzea/html;
+        index index.html index.htm index.nginx-debian.html;
+
+       # server_name app.deepzea.com;
+
+        location / {
+                proxy_set_header        Host $host;
+            proxy_set_header        X-Real-IP $remote_addr;
+            proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header        X-Forwarded-Proto $scheme;
+            proxy_pass          http://host.docker.internal:8085;
+            proxy_read_timeout  90;
+            proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+	location /api {
+                proxy_set_header        Host $host;
+            proxy_set_header        X-Real-IP $remote_addr;
+            proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header        X-Forwarded-Proto $scheme;
+            proxy_pass          http://host.docker.internal:8080;
+            proxy_read_timeout  90;
+            proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+	location /users {
+                proxy_set_header        Host $host;
+            proxy_set_header        X-Real-IP $remote_addr;
+            proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header        X-Forwarded-Proto $scheme;
+            proxy_pass          http://host.docker.internal:8080;
+            proxy_read_timeout  90;
+            proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+    location /sync-tool {
+                root /home/layerx-sync-tool;
+                autoindex on;
+                proxy_set_header 'Access-Control-Allow-Origin' '*';
+        }
+
+	
+	location /ai321Zdz4t5 {
+		root /home/annotation.manager.dev/annotation-web;
+		index index.html;
+	}
+
+#    listen [::]:443 ssl; # managed by Certbot
+#    listen 443 ssl; # managed by Certbot
+#    ssl_certificate /etc/letsencrypt/live/app.deepzea.com/fullchain.pem; # managed by Certbot
+#    ssl_certificate_key /etc/letsencrypt/live/app.deepzea.com/privkey.pem; # managed by Certbot
+#    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+#    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}

@@ -1,0 +1,139 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="title-black">Create New Label</div>
+    <i class="icon icon-close i-close" (click)="close()"></i>
+  </div>
+  <div class="tabs">
+    <button class="tab-selector" [ngClass]="{selected: selectedScreen == SCREEN_CLASS_ONLY}"
+      (click)="switchScreen(SCREEN_CLASS_ONLY)" [disabled]="editLabel">
+      <div class="icon-wrapper">
+        <div class="icon icon-label"></div>
+      </div>
+      <div class="text-area">
+        <div class="title">Class only</div>
+        <div class="description">Only main class</div>
+      </div>
+    </button>
+    <button class="tab-selector" [ngClass]="{selected: selectedScreen == SCREEN_CLASS_ATTRIBUTES}"
+      (click)="switchScreen(SCREEN_CLASS_ATTRIBUTES)" [disabled]="editLabel">
+      <div class="icon-wrapper">
+        <div class="icon icon-sub-label"></div>
+      </div>
+      <div class="text-area">
+        <div class="title">Class with Attributes</div>
+        <div class="description">Main class with multiple attributes</div>
+      </div>
+    </button>
+  </div>
+  <div class="content-class" *ngIf="selectedScreen == SCREEN_CLASS_ONLY">
+    <div class="left">
+      <div class="class">
+        <div class="icon-wrapper">
+          <div class="icon icon-label"></div>
+        </div>
+        <input type="text" class="class-name" placeholder="Class Name (Ex: Chair)" [(ngModel)]="labelObj.classAttributesList[0].label">
+      </div>
+      <div class="description">
+        <textarea class="class-description"
+          placeholder="Class Description (Ex: A chair is a piece of furniture. It is used for sitting on and it can also be used for standing on, if you can’t reach something. They usually have four legs to support the weight. )"
+          [(ngModel)]="labelObj.classAttributesList[0].description"></textarea>
+      </div>
+    </div>
+    <div class="right">
+      <div class="upload-images">
+        <div class="image">
+          <img *ngIf="!labelObj.classAttributesList[0].imgURL" class="uploadImage" src="../../../../assets/img/label/sample.png" (click)="uploadImage(1)">
+          <img *ngIf="labelObj.classAttributesList[0].imgURL" class="uploadImage" [src]="labelObj.classAttributesList[0].imgURL" alt="your image" (click)="uploadImage(1)"
+                        [ngStyle]="{}">
+          <input class="form-control" type="file" id="imageUpload" (change)="onChange($event,-1,-1)" hidden>
+        </div>
+        <div class="text-area">
+          <div class="link" (click)="uploadImage(1)">click here to browse</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="class-attributes" *ngIf="selectedScreen == SCREEN_CLASS_ATTRIBUTES">
+    <span *ngFor="let class of labelObj.classAttributesList">
+      <div class="class">
+        <div class="icon-wrapper">
+          <div class="icon icon-label"></div>
+        </div>
+        <input type="text" class="class-name" placeholder="Class Name (Ex: Chair)" [(ngModel)]="class.label">
+      </div>
+      <div class="attributes">
+        <div class="attribute" *ngFor="let attribute of class.attributes index as i" [ngClass]="{collapsed: expandAttributes[i-1]}">
+          <div class="dot"></div>
+          <div class="class">
+            <div class="icon-wrapper">
+              <div class="icon icon-sub-label"></div>
+            </div>
+            <input type="text" class="class-name" placeholder="Attribute Name (Ex- Material)"
+             [(ngModel)]="attribute.label" (keypress)="removeAttributeError(i)">
+          </div>
+          <div class="tooltip-custom" *ngIf="attribute.errorMsg">
+            <p>Attribute cannot be empty</p>
+            <i></i>
+          </div>
+          <div class="expand" *ngIf="expandAttributes[i]" [ngClass]="{first: i == 0}" (click)="expandAttribute(i)">
+            <div class="text">More</div>
+            <i class="icon icon-arrow-don"></i>
+          </div>
+          <div class="collapse" *ngIf="!expandAttributes[i]" [ngClass]="{first: i == 0}" (click)="collapseAttribute(i)">
+            <div class="text">Less</div>
+            <i class="icon icon-arrow-up"></i>
+          </div>
+          <div class="delete" (click)="deleteAttribute(i)" *ngIf="i != 0">
+            <div class="icon icon-delete"></div>
+          </div>
+          <div class="values" *ngIf="!expandAttributes[i]">
+            <div class="value" *ngFor="let value of attribute.values index as j">
+              <span class="dot"></span>
+              <div class="left">
+                <div class="class">
+                  <input type="text" class="class-name" placeholder="Value (Ex- Plastic)"
+                    [(ngModel)]="value.valueName" (keypress)="removeValueError(i,j)">
+                </div>
+                <div class="tooltip-custom" *ngIf="value.errorMsg">
+                  <p>Value cannot be empty</p>
+                  <i></i>
+                </div>
+                <div class="description">
+                  <textarea class="class-description"
+                    placeholder="Description (Ex: Plastics are a wide range of synthetic or semi-synthetic materials that use polymers as a main ingredient.)"
+                    [(ngModel)]="value.description"></textarea>
+                </div>
+              </div>
+              <div class="right">
+                <div class="upload-images">
+                  <input class="form-control" type="file" attr.id="imageUpload{{i}}{{j}}" (change)="onChange($event,i,j)" hidden>
+                  <div class="center-image">
+                    <img *ngIf="value.imgURL" class="uploadImage" [src]="value.imgURL" alt="your image" (click)="uploadImage(2,i,j)"
+                      [ngStyle]="{'height.px': value.imgHeight, 'width.px': value.imgWidth}">
+                  </div>
+                  <div *ngIf="!value.imgURL" class="text-area">
+                    <div class="link" (click)="uploadImage(2,i,j)">click here to browse</div>
+                  </div>
+                </div>
+              </div>
+              <div class="delete" (click)="deleteValue(i,j)" *ngIf="j != 0">
+                <div class="icon icon-delete"></div>
+              </div>
+            </div>
+            <div class="add-value" (click)="addValue(i)">
+              <div class="icon icon-add"></div>
+              <span class="text">Add value</span>
+            </div>
+          </div>
+        </div>
+        <div class="add-attribute" (click)="addAttribute()" [ngClass]="{lastCollapsed: expandAttributes[expandAttributes.length - 1]}">
+          <div class="icon icon-add"></div>
+          <span class="text">Add attribute</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <button class="btn save main-btn btn-gradient" (click)="save()">Save</button>
+</div>

@@ -1,0 +1,306 @@
+<app-header></app-header>
+<app-side-bar></app-side-bar>
+
+<div class="content-col m-h">
+  <div class="border-top"></div>
+  <div class="new-project-panel stage-create">
+    <i class="icon icon-close ci" (click)="close()"></i>
+    <i class="icon icon-back bi" *ngIf="onEdit" (click)="navigateBack()"></i>
+    <h2 class="title" *ngIf="!onEdit">Create new Dataset</h2>
+    <h2 class="title" *ngIf="onEdit">Edit Dataset</h2>
+    <div class="content">
+      <div class="split">
+        Split
+        <div class="inputs">
+          <label class="container">
+            <input
+              type="radio"
+              [checked]="this.activeSplitType == this.panelTypes.RANDOM"
+              (click)="changeType(this.panelTypes.RANDOM)"
+            />
+            <span class="checkmark"></span>
+            Random
+          </label>
+          <label class="container">
+            <input
+              type="radio"
+              [checked]="this.activeSplitType == this.panelTypes.MANUAL"
+              (click)="changeType(this.panelTypes.MANUAL)"
+            />
+            <span class="checkmark"></span>
+            Manual
+          </label>
+        </div>
+        <button
+          class="main-btn"
+          (click)="rebalance()"
+          *ngIf="this.activeSplitType == this.panelTypes.RANDOM"
+        >
+          Rebalance
+        </button>
+      </div>
+      <div class="video-selection">
+        <div class="left">
+          <div class="set video-files">
+            <div class="title">Select Video Files</div>
+            <div class="desc">Select your videos and drop in to baskets</div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="input"
+                  class="form-control"
+                  placeholder="Search by video name..."
+                  aria-label="Search"
+                  [(ngModel)]="videoSearchText"
+                  (keyup)="onSearch()"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count">{{dataset.allFiles.length}}</div>
+              </div>
+            </div>
+            <div
+              class="file-list"
+              cdkDropList
+              #video="cdkDropList"
+              [cdkDropListData]="dataset.allFiles"
+              [cdkDropListConnectedTo]="[train,validation,test]"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                class="files"
+                *ngFor="let item of videoSearchedList; index as i"
+                [ngClass]="{scroll : true}"
+                cdkDrag
+                [cdkDragDisabled]="this.activeSplitType == this.panelTypes.RANDOM"
+              >
+                <div class="width-100 hide">Drop here</div>
+                <div class="width-100">
+                  <div class="left">
+                    <input class="select" type="checkbox" [(ngModel)]="item.selected"
+                      *ngIf="this.activeSplitType == this.panelTypes.RANDOM"
+                      (change)="select()"
+                    />
+                    <span class="checkmark" (click)="item.selected = !item.selected;select()"></span>
+
+                  </div>
+                  <div class="right">
+                    <div class="file-info">
+                      <div class="name">{{ item.videoName }}</div>
+                      <div class="task-count">{{item.taskCount}} tasks</div>
+                    </div>
+                    <i
+                      class="icon icon-dots"
+                      *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="set train-set">
+            <div class="header">
+              <div class="left">
+                <div class="title">Training Set</div>
+                <div class="desc">{{dataset.trainingSet.objectsCount}} objects</div>
+              </div>
+              <div class="right">
+                <img src="../../../../../assets/img/dataset/train.png"/>
+                <div class="percentage">{{dataset.trainingSet.percentage}}%</div>
+              </div>
+            </div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="input"
+                  class="form-control"
+                  placeholder="Search..."
+                  aria-label="Search"
+                  [(ngModel)]="trainingSearchText"
+                  (keyup)="onSearchTrainingList()"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count" *ngIf="this.activeSplitType == this.panelTypes.MANUAL">{{trainListSize}}</div>
+                <div class="count" *ngIf="this.activeSplitType == this.panelTypes.RANDOM">{{dataset.trainingSet.videoList.length}}</div>
+              </div>
+            </div>
+            <div
+              class="file-list"
+              cdkDropList
+              #train="cdkDropList"
+              [cdkDropListData]="dataset.trainingSet.videoList"
+              [cdkDropListConnectedTo]="[video]"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="margin-bottom"
+                *ngFor="let item of trainSearchedList; index as i"
+              >
+                <div class="files scroll" *ngIf="item.selectTaskCount > 0">
+                  <div class="width-100">
+                    <div class="file-info">
+                      <div class="name">{{ item.videoName }}</div>
+                      <div class="task-count" 
+                        (click)="this.activeSplitType == this.panelTypes.MANUAL ? 
+                        openAddLabel(item.videoName, item._id, item.taskList, TASK_TYPE_TRAIN) : false"
+                      >
+                        <span
+                          class="icon-wrapper"
+                          *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                        >
+                          <i class="icon icon-document"></i>
+                        </span>
+                        {{item.selectTaskCount}}/{{item.taskCount}} tasks
+                      </div>
+                    </div>
+                    <i
+                      class="close icon-close"
+                      *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                      (click)="clearTaskList('train',i)"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="set validation-set">
+            <div class="header">
+              <div class="left">
+                <div class="title">Validation Set</div>
+                <div class="desc">{{dataset.validationSet.objectsCount}} objects</div>
+              </div>
+              <div class="right">
+                <img src="../../../../../assets/img/dataset/validation.png"/>
+                <div class="percentage">{{dataset.validationSet.percentage}}%</div>
+              </div>
+            </div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="input"
+                  class="form-control"
+                  placeholder="Search..."
+                  aria-label="Search"
+                  [(ngModel)]="validationSearchText"
+                  (keyup)="onSearchValidationList()"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count" *ngIf="this.activeSplitType == this.panelTypes.MANUAL">{{validationListSize}}</div>
+                <div class="count" *ngIf="this.activeSplitType == this.panelTypes.RANDOM">{{dataset.validationSet.videoList.length}}</div>
+              </div>
+            </div>
+            <div
+              class="file-list"
+              cdkDropList
+              #validation="cdkDropList"
+              [cdkDropListData]="dataset.validationSet.videoList"
+              [cdkDropListConnectedTo]="[video]"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="margin-bottom"
+                *ngFor="let item of validationSearchedList index as i"
+              >
+                <div class="files scroll" *ngIf="item.selectTaskCount > 0">
+                  <div class="width-100">
+                    <div class="file-info">
+                      <div class="name">{{ item.videoName }}</div>
+                      <div class="task-count" (click)="this.activeSplitType == this.panelTypes.MANUAL ? 
+                        openAddLabel(item.videoName, item._id, item.taskList, TASK_TYPE_VALIDATION) : false"
+                      >
+                        <span
+                          class="icon-wrapper"
+                          *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                        >
+                          <i class="icon icon-document"></i>
+                        </span>
+                        {{item.selectTaskCount}}/{{item.taskCount}} tasks
+                      </div>
+                    </div>
+                    <i
+                      class="close icon-close"
+                      *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                      (click)="clearTaskList('validation',i)"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="set test-set">
+            <div class="header">
+              <div class="left">
+                <div class="title">Testing Set</div>
+                <div class="desc">{{dataset.testingSet.objectsCount}} objects</div>
+              </div>
+              <div class="right">
+                <img src="../../../../../assets/img/dataset/testing.png"/>
+                <div class="percentage">{{dataset.testingSet.percentage}}%</div>
+              </div>
+            </div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="input"
+                  class="form-control"
+                  placeholder="Search..."
+                  aria-label="Search"
+                  [(ngModel)]="testingSearchText"
+                  (keyup)="onSearchTestingList()"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count" *ngIf="this.activeSplitType == this.panelTypes.MANUAL">{{testListSize}}</div>
+                <div class="count" *ngIf="this.activeSplitType == this.panelTypes.RANDOM">{{dataset.testingSet.videoList.length}}</div>
+              </div>
+            </div>
+            <div
+              class="file-list"
+              cdkDropList
+              #test="cdkDropList"
+              [cdkDropListData]="dataset.testingSet.videoList"
+              [cdkDropListConnectedTo]="[video]"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="margin-bottom"
+                *ngFor="let item of testSearchedList index as i" 
+              >
+              <div class="files scroll" *ngIf="item.selectTaskCount > 0">
+                <div class="width-100">
+                  <div class="file-info">
+                    <div class="name">{{ item.videoName }}</div>
+                    <div class="task-count" (click)="this.activeSplitType == this.panelTypes.MANUAL ? 
+                      openAddLabel(item.videoName, item._id, item.taskList, TASK_TYPE_TEST) : false"
+                    >
+                      <span
+                        class="icon-wrapper"
+                        *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                      >
+                        <i class="icon icon-document"></i>
+                      </span>
+                      {{item.selectTaskCount}}/{{item.taskCount}} tasks
+                    </div>
+                  </div>
+                  <i
+                    class="close icon-close"
+                    *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                    (click)="clearTaskList('test',i)"
+                  ></i>
+                </div>
+              </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="create-btn" *ngIf="onEdit" (click)="dataset.trainingSet.objectsCount != 0 ? editDataSet() : false"
+          [ngClass]="{'btn-disabled' : dataset.trainingSet.objectsCount == 0}"
+        >Update</button>
+        <button class="create-btn" *ngIf="!onEdit" (click)="dataset.trainingSet.objectsCount != 0 ? createDataSet() : false"
+          [ngClass]="{'btn-disabled' : dataset.trainingSet.objectsCount == 0}"
+        >Create</button>
+      </div>
+    </div>
+  </div>
+</div>

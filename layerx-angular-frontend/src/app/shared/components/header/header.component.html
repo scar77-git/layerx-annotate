@@ -1,0 +1,33 @@
+<div class="user-details">
+  <div class="current-user-item">
+    <div class="left-col">
+      <img class="user-name" [src]="this.profileUrl" />
+
+    </div>
+    <div class="right-col">
+      <div class="dropdown">
+        <button class="btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          <div class="btn-text">{{ selectedUser.name }}</div>
+          <i class="icon icon-arrow-don"></i>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li>
+            <div class="user-detail-row">
+              <div class="img-col">
+                <img class="" [src]="this.profileUrl" />
+              </div>
+              <div class="text-col">
+                <div class="name">{{ selectedUser.name }}</div>
+                <div class="email">{{ selectedUser.name }}</div>
+              </div>
+            </div>
+          </li>
+          <li (click)="openMyProfileModel()" class="list-item">My Profile</li>
+          <li (click)="logoutUser()" class="list-item">Sign out</li>
+        </ul>
+      </div>
+
+      <i class="icon icon-help-fill"></i>
+    </div>
+  </div>
+</div>

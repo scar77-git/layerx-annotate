@@ -1,0 +1,158 @@
+@import "../../../../assets/scss/colors.scss";
+@import "../../../../assets/scss/extend.scss";
+
+.title-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid $filter_row_gray;
+  padding-bottom: 15px;
+
+  .text-col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .txt-title {
+      color: $text_black;
+      font-weight: 500;
+      font-size: 1.7rem;
+      line-height: 38px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .btn-upload {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 6px 18px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+
+.table-row {
+  height: calc(100vh - 435px);
+  overflow: auto;
+  &::-webkit-scrollbar {
+      width: 7px;
+      border-radius: 16px;
+      height: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+      background-color: $left-border;
+      border-radius: 16px;
+  }
+  &::-webkit-scrollbar-track {
+      background-color: $scroll_bar_gray_light;
+      border-radius: 16px;
+  }
+  table {
+    position: relative;
+    tbody {
+      tr {
+        border-bottom: 1px solid $filter_row_gray;
+
+        td {
+          padding: 20px 10px;
+          width: 200px;
+
+          .name-txt {
+            font-weight: 500;
+            padding-top: 5px;
+            font-size: 16px;
+          }
+          .txt-black {
+            color: $text_black;
+            font-size: 16px;
+            font-weight: 500;
+          }
+          .txt-gray {
+            color: $txt_type_gray;
+            font-size: 13px;
+            font-weight: 400;
+
+            &.download {
+              margin-right: 5px;
+              cursor: pointer;
+            }
+          }
+
+          .row-icon {
+            display: flex;
+            align-items: center;
+            max-width: fit-content;
+
+            &.download {
+              padding-top: 15px;
+              justify-content: flex-end;
+              max-width: 100%;
+              margin-right: 30px;
+              align-items: normal;
+
+              i {
+                color: $txt_type_gray;
+                cursor: pointer;
+              }
+            }
+
+            .icon-col {
+              .icon-wrapper {
+                background-color: $new_project_upload_border;
+                height: 50px;
+                width: 50px;
+                border-radius: 11px;
+                text-align: center;
+                i {
+                  position: relative;
+                  font-size: 30px;
+                  top: 6px;
+                  color: $theme_purple;
+                }
+              }
+            }
+            .text-col {
+              padding-left: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.progress-wrapper {
+  position: absolute;
+  top: 40px;
+  width: 150px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+
+  .lds-ring {
+    @extend %lds-ring;
+  }
+  .progress-col {
+    width: calc(100% - 32px);
+    .task-text {
+      font-size: 11px;
+      color: $txt_type_gray;
+    }
+  }
+  .progress {
+    width: 100%;
+    height: 5px;
+    background-color: $left-border;
+    border-radius: 20px;
+
+    .progress-bar {
+      background-color: $theme_green;
+      border-radius: 20px;
+    }
+  }
+}

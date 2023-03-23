@@ -1,0 +1,144 @@
+<div class="content-col-inner" *ngIf="!isShowDataSetEmptyView">
+  <div class="top-area">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Overview</div>
+      </div>
+    </div>
+
+    <div class="loading-row" *ngIf="this.loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="boxes-row" *ngIf="!this.loading">
+      <div class="box">
+        <div class="icon-wrapper">
+          <i class="icon icon-image-project"></i>
+        </div>
+        <div class="details">
+          <div class="value">
+            {{
+              this.sharedService.nFormatter(this.dOverviewObj.totalFrames, 1)
+            }}
+          </div>
+          <div class="description">Total Frames</div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="icon-wrapper">
+          <i class="icon icon-object"></i>
+        </div>
+        <div class="details">
+          <div class="value">
+            {{ this.sharedService.nFormatter(this.dOverviewObj.totalBoxes, 1) }}
+          </div>
+          <div class="description">Total Annotated Objects</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-row" *ngIf="!loading">
+    <div class="first-row">
+      <i class="icon icon-label"></i>
+      <div class="text">
+        Labels:
+        {{ this.dOverviewObj.totalBoxes | number: "1.0" }}
+      </div>
+    </div>
+
+
+    <div
+      class="table-area"
+      (scroll)="this.onScroll()"
+      id="scrollContent"
+      #scrollContent
+    >
+      <div [ngClass]="{ 'name-col': true, 'shadow-eff': this.isTableScroll }">
+        <table class="table" id="userList">
+          <tbody>
+            <tr
+              *ngFor="
+                let item of this.dOverviewObj.dataSetAttributeList;
+                let first = first
+              "
+              [ngClass]="{ firstRow: true }"
+              [hidden]="item.totalObjects == 0"
+            >
+              <td class="row-flex">
+                <div class="icon-wrapper">
+                  <i class="icon icon-label"></i>
+                </div>
+                <div>
+                  <div class="txt-tb">
+                    {{ item.totalObjects | number: "1.0" }}
+                  </div>
+                  <div class="label">
+                    {{ item.labelName }} ({{ roundNumber(item.percentage) }}%)
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="detail-col"
+        (scroll)="this.onScrollBottom()"
+        id="scrollBottom"
+        #scrollBottom
+        [(scrollLeft)]="this.scrollheight"
+      >
+        <div
+          class="detail-inner-scroll"
+          *ngIf="this.isTableScroll"
+          (scroll)="this.onScrollTop()"
+          id="scrollTop"
+          #scrollTop
+          [(scrollLeft)]="this.scrollheight"
+        >
+          <div
+            class="inner-con"
+            [style.width.px]="this.tableWidth"
+            id="innerCon"
+            #innerCon
+          ></div>
+        </div>
+
+        <table class="table" id="boostListElem" #boostListElem>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of this.dOverviewObj.dataSetAttributeList;
+                let first = first
+              "
+              [ngClass]="{ firstRow: true }"
+              [hidden]="item.subLabels.length == 0"
+            >
+              <td class="row-Txt" *ngFor="let attribute of item.subLabels">
+                <div class="txt-tb">
+                  {{ attribute.objectCount | number: "1.0" }}
+                </div>
+                <div class="label">
+                  {{ attribute.labelName }} ({{
+                    roundNumber(attribute.percentage)
+                  }}%)
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="empty-card-view" *ngIf="isShowDataSetEmptyView">
+  <div class="wrapper">
+    <img src="../../../assets/img/empty_view.png" />
+    <div class="txt">No datasets to show</div>
+  </div>
+</div>

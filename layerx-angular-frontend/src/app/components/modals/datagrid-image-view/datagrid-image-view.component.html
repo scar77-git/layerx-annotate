@@ -1,0 +1,77 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="left">
+      <div class="title">Frame # - {{ frameId }}</div>
+    </div>
+    <div class="close" (click)="close()">
+      <div class="icon icon-close"></div>
+    </div>
+  </div>
+  <div class="content" [hidden]="!loading">
+    <div class="loading-row video_p" *ngIf="loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" [hidden]="loading">
+    <div class="image">
+      
+      <img 
+        src="{{imgUrl}}"
+        [hidden]="isImagesLoaded"
+        (load)="loaded()"
+        (error)="imageLoading ? imgError($event) : false"
+      />
+      <img 
+        src="{{originalImgUrl}}"
+        [hidden]="!isImagesLoaded"
+        (load)="fullImageLoaded()"
+      />
+      <svg [attr.viewBox]="viewBox" class="svg-layer" *ngIf="showSvg">
+        <ng-container *ngFor="let box of boxes">
+          <rect 
+            [attr.x]="box.boundaries.x"
+            [attr.y]="box.boundaries.y"
+            [attr.width]="box.boundaries.w"
+            [attr.height]="box.boundaries.h"
+            [style.stroke]="box.boundaries.color"
+            [style.fill]="box.boundaries.color"
+            [attr.fill-opacity]="0.3"
+            [style.stroke-width]="2"
+          ></rect>
+        </ng-container>
+         
+      </svg>
+    </div>
+    <div class="info">
+      <div class="switch-wrap">
+        <span class="text">View Annotations</span>
+        <label class="switch">
+          <input type="checkbox" (change)="toggleSvg()">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="labels">
+        <div class="objects">
+          <span class="black">Objects</span>
+          <span class="count">{{ objectCount }}</span>
+        </div>
+        <div class="label" *ngFor="let label of labels">
+          <div
+            class="color-box"
+            [ngStyle]="{ 'background-color': label.color }"
+          ></div>
+          <div class="name">{{ label.labelName }}</div>
+          <div class="count">{{ label.objectCount }}</div>
+        </div>
+      </div>
+      <div class="frame-info">
+        <div class="details">Frame # - {{frameId}}</div>
+        <div class="details">Task ID - {{taskId}}</div>
+        <div class="details">Project - {{projectName}}</div>
+      </div>
+    </div>
+  </div>
+</div>

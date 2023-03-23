@@ -1,0 +1,250 @@
+<app-header></app-header>
+<app-side-bar></app-side-bar>
+
+<div class="content-col m-h">
+  <div class="border-top"></div>
+  <div class="new-project-panel stage-create">
+    <i class="icon icon-close ci"></i>
+    <i class="icon icon-back bi" (click)="navigateBack()"></i>
+    <h2 class="title">Create new Dataset</h2>
+    <div class="content">
+      <div class="split">
+        Split
+        <div class="inputs">
+          <label class="container">
+            <input
+              type="radio"
+              [checked]="this.activeSplitType == this.panelTypes.RANDOM"
+              (click)="this.activeSplitType = this.panelTypes.RANDOM"
+            />
+            <span class="checkmark"></span>
+            Random
+          </label>
+          <label class="container">
+            <input
+              type="radio"
+              [checked]="this.activeSplitType == this.panelTypes.MANUAL"
+              (click)="this.activeSplitType = this.panelTypes.MANUAL"
+            />
+            <span class="checkmark"></span>
+            Manual
+          </label>
+        </div>
+        <button
+          class="main-btn"
+          (click)="rebalance()"
+          *ngIf="this.activeSplitType == this.panelTypes.RANDOM"
+        >
+          Rebalance
+        </button>
+      </div>
+      <div class="video-selection">
+        <div class="left">
+          <div class="set video-files">
+            <div class="title">Select Video Files</div>
+            <div class="desc">Select your videos and drop in to baskets</div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search by video name..."
+                  aria-label="Search"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count">356</div>
+              </div>
+            </div>
+            <div
+              class="file-list"
+              id="fileList"
+              cdkDropList
+              #video="cdkDropList"
+              [cdkDropListData]="videoList"
+              [cdkDropListConnectedTo]="[train]"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                class="files"
+                *ngFor="let item of videoList; index as i"
+                cdkDrag
+              >
+                <div class="width-100 hide">Drop here</div>
+                <div class="width-100">
+                  <div class="left">
+                    <input class="select" type="checkbox" />
+                  </div>
+                  <div class="right">
+                    <div class="file-info">
+                      <div class="name">{{ item.name }}</div>
+                      <div class="task-count">80 tasks</div>
+                    </div>
+                    <i
+                      class="icon icon-dots"
+                      *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="set train-set">
+            <div class="header">
+              <div class="left">
+                <div class="title">Training Set</div>
+                <div class="desc">113,583 objects</div>
+              </div>
+              <div class="right">
+                <i class="icon icon-training-set"></i>
+                <div class="percentage">60%</div>
+              </div>
+            </div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search..."
+                  aria-label="Search"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count">245</div>
+              </div>
+            </div>
+            <div
+              class="file-list"
+              cdkDropList
+              #train="cdkDropList"
+              [cdkDropListData]="trainList"
+              [cdkDropListConnectedTo]="[video]"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="files" *ngFor="let item of trainList">
+                <div class="width-100">
+                  <div class="file-info">
+                    <div class="name">{{ item.name }}</div>
+                    <div class="task-count" (click)="openAddLabel(item.name)">
+                      <span
+                        class="icon-wrapper"
+                        *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                      >
+                        <i class="icon icon-document"></i>
+                      </span>
+                      60/80 tasks
+                    </div>
+                  </div>
+                  <i
+                    class="close icon-close"
+                    *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="set validation-set">
+            <div class="header">
+              <div class="left">
+                <div class="title">Validation Set</div>
+                <div class="desc">113,583 objects</div>
+              </div>
+              <div class="right">
+                <i class="icon icon-validation-set"></i>
+                <div class="percentage">24%</div>
+              </div>
+            </div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search..."
+                  aria-label="Search"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count">2</div>
+              </div>
+            </div>
+            <div class="file-list">
+              <div
+                class="files"
+                *ngFor="let item of counter(8)"
+                style="margin-right: 5px"
+              >
+                <div class="width-100">
+                  <div class="file-info">
+                    <div class="name">OR_Shoot_1</div>
+                    <div class="task-count">
+                      <span
+                        class="icon-wrapper"
+                        *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                      >
+                        <i class="icon icon-document"></i>
+                      </span>
+                      60/80 tasks
+                    </div>
+                  </div>
+                  <i
+                    class="close icon-close"
+                    *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="set test-set">
+            <div class="header">
+              <div class="left">
+                <div class="title">Testing Set</div>
+                <div class="desc">113,583 objects</div>
+              </div>
+              <div class="right">
+                <i class="icon icon-testing-set"></i>
+                <div class="percentage">16%</div>
+              </div>
+            </div>
+            <div class="search">
+              <div class="form-outline">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search..."
+                  aria-label="Search"
+                />
+                <i class="icon icon-search"></i>
+                <div class="count">3</div>
+              </div>
+            </div>
+            <div class="file-list">
+              <div class="files" *ngFor="let item of counter(5)">
+                <div class="width-100">
+                  <div class="file-info">
+                    <div class="name">OR_Shoot_1</div>
+                    <div class="task-count">
+                      <span
+                        class="icon-wrapper"
+                        *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                      >
+                        <i class="icon icon-document"></i>
+                      </span>
+                      60/80 tasks
+                    </div>
+                  </div>
+                  <i
+                    class="close icon-close"
+                    *ngIf="this.activeSplitType == this.panelTypes.MANUAL"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="create-btn">Create</button>
+      </div>
+    </div>
+  </div>
+</div>

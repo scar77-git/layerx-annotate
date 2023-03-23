@@ -1,0 +1,246 @@
+<div class="audit-content-col" *ngIf="!this.loading">
+  <div class="header-bar">
+    <div class="left-col">
+      <div class="logo-wrapper"><img src="../../../assets/img/annoation/logo.png" alt="logo"></div>
+      <div class="btn-col"  (clickOutside)="this.onClickedOutside()">
+        <div class="prev" (click)="previousTask()" [ngClass]="{disabled: !this.audit.previousTask}">
+          <div class="icon icon-arrow-left"></div>
+        </div>
+        <div class="next" (click)="nextTask()" (mouseenter)="nextTaskError()" (mouseleave)="nextTaskError(-1)" [ngClass]="{disabled: !this.audit.nextTask || this.audit.status < 2}">
+          <div class="icon icon-arrow-right"></div>
+        </div>
+      </div>
+      <div class="prompt-msg" *ngIf="changeTaskError">
+        {{ this.changeTaskErrorMsg }}
+      </div>
+      <div class="text-col">
+        <div class="txt-task">Task ID - {{ this.audit.selectedTaskId }}</div>
+        <div class="txt-dt" *ngIf="this.task.taskStatus[this.audit.status].statusName == 'Not Started'">
+          Created at {{ this.audit.createdAt | date: "MMMM d y, h:mm a" }}
+        </div>
+        <div class="txt-dt" *ngIf="this.task.taskStatus[this.audit.status].statusName != 'Not Started'">
+          Updated at {{ this.audit.updatedAt | date: "MMMM d y, h:mm a" }}
+        </div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="status-wrapper">
+        <div class="status-item">
+          <div class="txt">Status</div>
+          <div class="label-wrapper"
+            [ngStyle]="{'background-color':this.task.taskStatus[this.audit.status].colorHex}">
+            <div class="txt-label">
+              {{ this.task.taskStatus[this.audit.status].statusName }}
+            </div>
+          </div>
+        </div>
+        <div class="status-item m-l-10" *ngIf="this.audit.auditedDateStr != ''">
+          <div class="txt">Audited Date</div>
+          <div class="label-wrapper audit">
+            <div class="txt-label">{{ this.audit.auditedDateStr }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="aut-save-col">
+        <div class="text-col">
+          <div class="txt-save">Autosave</div>
+          <div class="txt-status" *ngIf="autoSaving" >Saving…</div>
+          <div class="txt-status" *ngIf="!autoSaving">Saved 1m ago</div>
+        </div>
+        <div class="icon-col">
+          <img src="../../../assets/img/annoation/auto_save.png" class="autosave-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="side-bar">
+    <div *ngFor="let tool of this.audit.toolSet; index as i; first as isFirst" class="tools">
+      <div (click)="this.selectToolItem(tool)" (mouseover)="this.hoverToolItem(tool.id)" 
+        (mouseleave)="this.hoverToolItem(0)"
+        [ngClass]="{
+          'tool-item': true,
+          'first':isFirst,
+          active: this.selectedToolItem === tool.id,
+          'selected': tool.isSelected
+        }">
+        <i [ngClass]="['icon', tool.iconName]"></i>
+      </div>
+      <div class="tool-tip" *ngIf="tool.id == displayToolTip">
+        <span>{{tool.label}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-media__main  noselect">
+    <div class="task-media__media">
+      <div class="loading-row" *ngIf="this.videoLoadingSpinner">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div #panel class="media-content">
+        <div class="video-content" [ngStyle]="{
+            'width.px': this.videoFrameWidth,
+            'height.px': this.videoFrameHeight,
+            'margin-top.px': this.videoMargin
+          }">
+          <div class="video-loading-overlay" [ngStyle]="{
+            'width.px': this.videoFrameWidth,
+            'height.px': this.videoFrameHeight
+          }" *ngIf="isVideoBuffering">
+            <div class="loading-row video_p">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+          <video [attr.width]="this.screenZoom * this.videoFrameWidth"
+            [attr.height]="this.screenZoom * this.videoFrameHeight" [src]="this.audit.videoUrl" id="videoPlayer"
+            (timeupdate)="setCurrentTime()" preload="auto" (loadeddata)="videoLoaded($event)"
+            (loadstart)="loadStarted($event)" (canplaythrough)="canPlayVideo($event)" (seeking)="videoSeeking($event)" 
+            (seeked)="videoSeeked($event)" (error)="videoError($event)" (keypress)="videoControlByKeys($event)" 
+            #videoPlayerEl></video>
+          <app-canvas [attr.width]="this.screenZoom * this.videoFrameWidth" *ngIf="!isVideoBuffering && isShowBoxes"
+            [shapesToDraw]="shapes" [currentShape]="currentShape" (pushPositions)="getPosition($event)"
+            [screenZoom]="screenZoom" (pushSelectedBox)="getSelectedBox($event)" (pushLabels)="getLabels($event)"
+            (pushLabel)="getLabel($event)" (onDrawEnd)="addDrewItem($event)" [shape]="shapeType"
+            (changeShapeType)="onChangeShapeType($event)" (saveCurrentFrameData)="save()"
+            [currentFrame]="this.audit.mediaPlayerFpsCount" [selectedTaskData]="this.audit"
+            [toggleLabels]="this.displayLabels" (frameUpdateStatus)="isFrameUpdated($event)"
+            (dragSvgCoordinates)="panCoordinates($event)" [showAnnotations]="this.showAnnottaions"
+            (zoomIn)="zoomIn($event)" (zoomOut)="zoomOut()" [isPlay]="audit.isPlay">
+          </app-canvas>
+        </div>
+
+        
+      </div>
+      <app-skip-frame *ngIf="showSkipFrameBox" (boxClose)="skipFrameBoxClose()" (boxSubmit)="skipFrameBoxSubmit()"></app-skip-frame>
+
+      <div class="annotations_right_nav">
+       <app-side-bar-right></app-side-bar-right>
+      <app-missing-frames *ngIf="showMissingFrameBox" (boxClose)="missingFrameBoxClose()" 
+        (boxSubmit)="missingFrameBoxSubmit()" [userType]="this.audit.selectedUserType">
+      </app-missing-frames>
+      </div>
+
+
+    </div>
+  </div>
+  <div class="media-toolbox">
+    <div class="task-media-tool">
+      <div class="media-buttons">
+        <button [ngClass]="{
+            'btn-media': true,
+            disabled: this.audit.mediaPlayerFpsCount == 1 || audit.isPlay
+          }" (click)="this.seekBackward()" [ngStyle]="{ 'pointer-events': this.backwardEvent }"
+          [disabled]="this.audit.mediaPlayerFpsCount == 1 || isVideoBuffering || audit.isPlay">
+          <i class="icon icon-previous-1"></i>
+        </button>
+        <button [ngClass]="{
+          'btn-media': true,
+          disabled: this.audit.mediaPlayerFpsCount == this.audit.totalFrames
+        }" (click)="this.playPause()"
+        [disabled]="this.audit.mediaPlayerFpsCount == this.audit.totalFrames || isVideoBuffering">
+          <i class="icon icon-play-1"
+            *ngIf="!this.audit.isPlay || this.audit.mediaPlayerFpsCount == this.audit.totalFrames"></i>
+          <i class="icon icon-pause-1"
+            *ngIf="this.audit.isPlay && this.audit.mediaPlayerFpsCount != this.audit.totalFrames"></i>
+        </button>
+
+        <button [ngClass]="{
+            'btn-media': true,
+            disabled:
+              this.audit.mediaPlayerFpsCount == this.audit.totalFrames || audit.isPlay
+          }" (click)="this.seekForward()" [disabled]="
+            this.audit.mediaPlayerFpsCount == this.audit.totalFrames || isVideoBuffering || audit.isPlay
+          ">
+          <i class="icon icon-next-1"></i>
+        </button>
+      </div>
+
+      <div class="scrub-bar">
+        <div class="frame-c-div" [ngStyle]="{
+            'left.%': this.leftPosition,
+            'opacity': this.frameDivOpacity
+          }" *ngIf="this.audit.currentFrame > 0 && this.audit.currentFrame <= this.audit.totalFrames">
+          {{ this.audit.currentFrame }}
+        </div>
+        <svg height="34px" width="100%" class="jsx-638591450" style="overflow: visible"
+          (mousedown)="this.onMouseMove($event)" (mousemove)="this.mouseMove($event)" (mouseenter)="this.onMouseEnter()"
+          (mouseleave)="this.leaveEvent()" (click)="isVideoBuffering ? false : selectFrameFromCursor(true)">
+
+          <rect attr.x="0%" y="9" width="100%" height="16" style="
+              fill: rgba(19, 16, 41, 1);
+              stroke-width: 1;
+              stroke: rgba(0, 0, 0, 0.1);
+              cursor: pointer;
+              " rx="0" id="playbackBarOuter"></rect>
+          
+          <rect *ngIf="this.frameDivOpacity" y="9" x="0%" height="16" attr.width="{{ this.audit.currentFrame / audit.totalFrames * 100 }}%" style="fill: #21325D;cursor: pointer;" rx="0"></rect>
+          
+          <ng-container *ngFor="let frame of emptyFrames; index as i">
+            <rect *ngIf="audit.selectedUserType == 0 && !this.audit.isPlay" attr.x="{{frame - seekWidth}}%" y="9" attr.width="{{seekWidth}}%" height="16" style="fill: rgb(50, 45, 108, 1); opacity: 1; pointer-events: none"></rect>
+          </ng-container>
+          <rect y="9" x="0%" height="16" attr.width="{{ this.scrubBarWidth }}%" style="fill: rgb(50, 45, 108, 1);cursor: pointer;" rx="0"></rect>
+          <<ng-container *ngIf="!this.audit.isPlay">
+            <ng-container *ngFor="let frame of auditedFrames; index as i">
+              <rect *ngIf="frame == 1 && audit.selectedUserType != 0" attr.x="{{i / audit.totalFrames * 100}}%" y="9" attr.width="{{seekWidth}}%" height="16" style="fill: rgb(113, 102, 249, 1);  pointer-events: none"></rect>
+            </ng-container>
+            <ng-container *ngFor="let frame of auditedFrames; index as i">
+              <rect *ngIf="frame == 2 && audit.selectedUserType != 0" attr.x="{{i/ audit.totalFrames * 100}}%" y="9" attr.width="{{seekWidth}}%" height="16" style="fill: rgb(50, 45, 108, 1); pointer-events: none"></rect>
+            </ng-container>
+            
+            
+            <ng-container *ngFor="let frame of completedFrames; index as i">
+              <rect *ngIf="audit.selectedUserType == 0" attr.x="{{frame - seekWidth}}%" y="9" attr.width="{{seekWidth}}%" height="16" style="fill: rgb(113, 102, 249, 1); opacity: 1; pointer-events: none"></rect>
+            </ng-container>
+            <ng-container *ngFor="let frame of commentedFrames; index as i">
+              <rect attr.x="{{frame - seekWidth}}%" y="9" attr.width="{{seekWidth}}%" height="16" style="fill: #FF1A9E; opacity: 1; pointer-events: none"></rect>
+            </ng-container>
+          </ng-container>
+          <rect attr.x="{{ this.scrubBarWidth - 0.5}}%" y="3" ry="3" width="0.5%" height="27" style="fill: #E17CFD; opacity: 1; pointer-events: none"></rect>
+
+        </svg>
+      </div>
+
+      <div class="time-frame">
+        <div class="time">
+          <div class="cuurent-play">
+            {{ this.audit.currentTime }}<span> / {{ this.audit.videoDuration }}</span>
+          </div>
+        </div>
+
+        <div class="frames">
+          <div class="txt-frame">
+            {{ this.audit.mediaPlayerFpsCount }}
+            <span>/ {{ this.audit.totalFrames }} frames</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-col">
+      <button class="btn-status btn-gradient" (click)="this.showOptionList()"
+        [disabled]="this.changeStatusButtonEnable == false"
+        [ngStyle]="this.changeStatusButtonEnable ? {'cursor':'pointer'} : {'cursor':'not-allowed','background-color':'#7166F9','background-image':'none','opacity': '0.5'}">
+        Change Status
+      </button>
+    </div>
+
+    <div class="options-list" *ngIf="this.isShowOptions">
+      <div class="buttons-list">
+        <button class="btn-item" [ngStyle]="hovered == i ? {'background-color':this.buttonTypes[button].hoverColor} : {'background-color':this.buttonTypes[button].colorHex}"
+          (click)="setTaskStatus(this.buttonTypes[button].statusCode)"
+          *ngFor="let button of this.taskButtonsStatus.buttonTypesForStatusAndUsers[this.audit.status][this.audit.selectedUserType]; index as i"
+          (mouseover)="hovered = i" (mouseout)="hovered = -1">
+          {{this.buttonTypes[button].text}}
+        </button>
+
+        <button class="btn-item cancel" (click)="closeStatusModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

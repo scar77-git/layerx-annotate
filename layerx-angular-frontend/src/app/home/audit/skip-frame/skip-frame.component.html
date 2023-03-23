@@ -1,0 +1,19 @@
+<div class="confirm-box">
+    <div class="white-text">
+        {{ this.const.skip_frame_messege }}
+    </div>
+    <div class="gray-text">
+        {{ this.const.skip_frame_question}}
+    </div>
+    <div class="checkbox-row">
+        <input type="checkbox" class="checkbox-round" [checked]="isNoObjects" (change)="isNoObjects = !isNoObjects">
+        <span class="checkmark"></span>
+        <span class="white-text">
+            {{ this.const.skip_frame_reason}}
+        </span>
+    </div>
+    <div class="btn-row">
+        <button class="btn btn-no" (click)="close()">No</button>
+        <button class="btn btn-yes" [ngClass]="{'active': isNoObjects}" (click)="submit()" [disabled]="!isNoObjects">Yes</button>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+@import "../../../../assets/scss/colors.scss";
+
+.i-close {
+  font-size: 25px;
+  color: $new_project_star;
+  float: right;
+}
+.edit-profile {
+  width: 500px;
+  align-content: center;
+  margin: auto;
+
+  .header {
+    width: 100%;
+    min-height: 100px;
+    border-bottom: 1px solid $left-border;
+    .title-row {
+      text-align: center;
+      .title-black-large {
+        color: $text_black;
+        font-size: 30px;
+        font-weight: 600;
+      }
+    }
+    .tabs-row {
+      width: fit-content;
+      margin: 30px auto 10px auto;
+      padding-bottom: 10px;
+      :first-child {
+        margin-right: 20px;
+      }
+      button {
+        padding: 5px 8px;
+        font-size: 14px;
+        font-weight: 500;
+        min-width: 70px;
+        border-radius: 13px;
+        background-color: $btn_gray;
+        color: $text_black;
+
+        &.btn-active {
+          background-color: $theme_purple;
+          color: $white;
+        }
+      }
+    }
+  }
+  .profile-row {
+    margin-top: 30px;
+    .profile-left {
+      float: left;
+      width: 150px;
+      // background-color: greenyellow;
+      .profile-img {
+        height: 135px;
+        width: 135px;
+        img {
+          border-radius: 50%;
+          width: 135px;
+          height: 135px;
+          object-fit: cover;
+        }
+        .loading-row{
+          position: relative;
+        }
+      }
+    }
+    .profile-right {
+      padding-top: 5px;
+      float: left;
+      min-width: 300px;
+      // background-color: green;
+      margin-left: 40px;
+      margin-bottom: 60px;
+      .name {
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .email {
+        font: 14px;
+        color: $new_project_star;
+      }
+      .file-input {
+        display: none;
+      }
+      .btn-wrapper {
+        :first-child {
+          margin-right: 10px;
+        }
+        margin-top: 28px;
+        .btn {
+          border: 1px solid #c2cadb;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+  .inputs {
+    width: 100%;
+    margin-bottom: 20px;
+    .label {
+      font-size: 14px;
+      color: $text_black;
+      font-weight: 600;
+    }
+    .input {
+      margin-top: 8px;
+      width: 100%;
+      border: 1px solid #edebff;
+      border-radius: 11px;
+      padding: 10px 20px;
+    }
+    .dropdown {
+      display: flex;
+      select {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+      }
+      i {
+        color: $txt_type_gray;
+        font-size: 28px;
+        position: absolute;
+        right: 10px;
+        top: 4px;
+        pointer-events: none;
+      }
+    }
+    .select-btn-row {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+      margin-bottom: 25px;
+      .select-col {
+        position: relative;
+        width: 100%;
+        // margin-right: 14px;
+        .form-select {
+          background-color: $white;
+          color: $time_gray;
+          border: 1px solid #edebff;
+          border-radius: 11px;
+          background-image: none;
+          padding: 10px 20px;
+          color: $text_black;
+        }
+        i {
+          color: $txt_type_gray;
+          font-size: 28px;
+          position: absolute;
+          right: 10px;
+          top: 8px;
+          pointer-events: none;
+        }
+      }
+      button {
+        padding: 10px 8px;
+        font-size: 14px;
+        width: 40%;
+        border-radius: 13px;
+      }
+    }
+  }
+  .submit {
+    text-align: center;
+    button {
+      padding: 12px 35px;
+      font-size: 17px;
+      font-weight: 500;
+    }
+  }
+}

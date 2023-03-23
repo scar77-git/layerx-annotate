@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+checkpoints/
+
+# weights files
+*.weights
+*.zip
+*.pb
+*.mp4
+*.pdf
+*.png
+*.jpg
+*.pyc
+*.txt

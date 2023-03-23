@@ -1,0 +1,18 @@
+<div class="marked-labels">
+    <div class="header-bar">
+        <div class="title">Marked Labels</div>
+        <div class="total-count" >{{this.labelObject.totalCount}}</div>
+    </div>
+    <div *ngFor="let labels of this.labelObject.labelList; index as i">
+        <div class="label-row">
+            <div class="left-col">
+                <div class="label-color" [ngStyle]="{'background-color': labels.color}"></div>
+                <div class="label-name">{{ labels.label }}</div>
+            </div>
+            <div class="right-col">
+                <div class="label-count">{{ labels.count }}</div>
+                <i class="icon icon-arrow-don"></i>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="modal-container">
+  <div class="top-row">
+    <i class="icon icon-close i-close" (click)="onCancelClick()"></i>
+    <div class="title-row title-border">
+      <div class="title-black">{{ header }}</div>
+    </div>
+  </div>
+  <div class="header" *ngIf="this.status">
+    <i class="icon icon-deactivate-user"></i>
+  </div>
+  <div class="header" *ngIf="!this.status">
+    <i class="icon icon-delete-fill"></i>
+  </div>
+  <div class="description">
+    {{ description }}
+  </div>
+  <div class="btn-col-sub">
+    <button class="ok-btn" (click)="this.onConfirmClick()">Yes</button>
+    <button class="ok-btn" (click)="this.onCancelClick()">No</button>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="left">
+      <div class="title">{{header}}</div>
+    </div>
+    <div class="close" (click)="close()">
+      <div class="icon icon-close"></div>
+    </div>
+  </div>
+  <div class="content">
+    {{description}}
+  </div>
+  <div class="btn-col-sub">
+    <button class="main-btn btn-gradient ok-btn" (click)="update()">
+      Update Existing
+    </button>
+    <button class="main-btn btn-gradient ok-btn" (click)="new()">
+      Create New
+    </button>
+  </div>
+</div>

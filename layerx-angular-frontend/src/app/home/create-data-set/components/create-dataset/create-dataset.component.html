@@ -1,0 +1,62 @@
+<app-header></app-header>
+<app-side-bar></app-side-bar>
+
+<div class="content-col m-h">
+  <div class="border-top"></div>
+  <div class="new-project-panel stage-create">
+    <i class="icon icon-close ci" (click)="close()"></i>
+    <h2 class="title">Create new Dataset</h2>
+    <form class="inner">
+      <div class="form-group">
+        <label for="dataset-name " class="inner-title p-b-10">Dataset Name<span> *</span></label>
+        <input type="text" class="form-control" placeholder="Dataset Name" value="" name="datasetName"
+          [(ngModel)]="datasetName" [ngClass]="{ emptyName: datasetNameError }" />
+      </div>
+      <div class="form-group">
+        <label for="project-type" class="inner-title">Select Projects<span> *</span></label>
+
+        <div class="dropdown">
+          <button class="btn btn-project-type b-h" type="button" id="dropDownVideoList" data-bs-toggle="dropdown"
+            aria-expanded="true">
+            <div>
+              <div class="btn-text">
+                Select<i class="dropdown icon icon-arrow-don"></i>
+              </div>
+            </div>
+          </button>
+          <div class="dropdown-wrapper dropdown-menu" aria-labelledby="dropDownVideoList" (click)="$event.stopPropagation()">
+            <ul>
+              <li *ngFor="let project of projects">
+                <div class="left">
+                  <input type="checkbox" class="checkbox-round" [checked]="project.checked"
+                    (change)="project.checked = !project.checked" />
+                  <span class="checkmark" (click)="project.checked = !project.checked"></span>
+                </div>
+                <div class="text">{{ project.name }}</div>
+              </li>
+              
+            </ul>
+            <div class="center">
+              <button [ngClass]="{ 'main-btn': true, 'btn-disabled': false }" (click)="addProjects()">
+                Add Projects
+              </button>
+            </div>
+          </div>
+          
+          <div class="project-label-list">
+            <div *ngFor="let project of selectedProjects; index as i" class="project-label" [hidden]="!project.checked">
+              {{ project.name }}
+              <i class="icon icon-close" (click)="removeProject(i)"></i>
+            </div>
+          </div>
+          <div class="center">
+            <button type="submit" class="main-btn m-t-10" [ngClass]="{ 'btn-disabled': checkedCount == 0 || datasetName == '' }"
+              [disabled]="checkedCount == 0" (click)="onSubmit()">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

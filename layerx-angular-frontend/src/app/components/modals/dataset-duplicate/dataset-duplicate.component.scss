@@ -1,0 +1,66 @@
+@import "../../../../assets/scss/colors.scss";
+
+.modal-container {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $filter_row_gray;
+    padding-bottom: 10px;
+    .left {
+      .title {
+        color: $text_black;
+        font-size: 18px;
+        font-weight: 500;
+      }
+      .description {
+        color: $txt_type_gray;
+        font-size: 12px;
+      }
+    }
+    .close {
+      cursor: pointer;
+      color: $new_project_star;
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 30px;
+    color: $text_black;
+    font-size: 12px;
+    font-weight: 500;
+    .star{
+        color: $new_project_star;
+    }
+    input{
+        border: 1px solid $new_project_upload_border;
+        border-radius: 7px;
+        height: 30px;
+        padding-left: 10px;
+        color: $text_black;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+  }
+  .btn-col-sub {
+    text-align: center;
+    margin-top: 40px;
+
+    .ok-btn {
+      // width: 80px;
+      background-color: $theme_purple;
+      color: $white;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      padding: 10px 45px;
+      border-radius: 12px;
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
+}

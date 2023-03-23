@@ -1,0 +1,34 @@
+#files
+checkpoints/
+frames/
+output/
+__pycache__/
+.idea/
+augmented/
+dataset_test/
+sampleTemp/
+
+#videos
+*.mp4
+*.avi
+*.mpeg
+
+#images
+*.jpg
+*.png
+
+# test scripts
+test_anno.py
+test.py
+anno_new.py
+seperate_frames.py
+opencv_infer_video.py
+
+# other
+*.json
+*.log
+delay_profile.txt
+
+# nohup
+nohup.out
+

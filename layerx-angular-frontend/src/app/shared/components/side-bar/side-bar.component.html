@@ -1,0 +1,93 @@
+<div class="sidebar">
+  <div class="sidebar-left">
+    <div class="logo">
+      <img src="../../../assets/img/sidebar/logo.png" alt="logo" />
+    </div>
+    <a [routerLink]="['/annotation']" routerLinkActive="active">
+      <div class="menus">
+        <i class="icon icon-annotate"></i>
+        <div class="title">Annotation</div>
+      </div>
+    </a>
+
+    <a [routerLink]="['/dataset']" routerLinkActive="active" *ngIf="
+        this.currentUserType == USER_TYPE_AUDITOR ||
+        this.currentUserType == USER_TYPE_ADMIN ||
+        this.currentUserType == USER_TYPE_TEAM_ADMIN
+      ">
+      <div class="menus">
+        <i class="icon icon-dataset"></i>
+        <div class="title">Dataset</div>
+      </div>
+    </a>
+
+    <a [routerLink]="['/deep-learning']" routerLinkActive="active">
+      <div class="menus">
+        <i class="icon icon-deep-learning"></i>
+        <div class="title">Deep learning</div>
+      </div>
+    </a>
+
+    <a [routerLink]="['/api']" routerLinkActive="active">
+      <div class="menus">
+        <i class="icon icon-api"></i>
+        <div class="title">API</div>
+      </div>
+    </a>
+  </div>
+  <div class="sidebar-right" *ngIf="showRightSubMenu">
+    <div class="header-row">
+      <div class="left-col">
+        <h2 class="caption">Projects</h2>
+      </div>
+      <div class="right-col" *ngIf="isShowCreateButton">
+        <div class="plus" (click)="navigateToCreateProject()">
+          <i class="icon icon-add-mark"></i>
+        </div>
+      </div>
+    </div>
+    <div class="search">
+      <div class="form-outline">
+        <input type="input" class="form-control" placeholder="Search projects" aria-label="Search"
+          [(ngModel)]="searchKey" (keyup)="searchProjects()" />
+        <i class="icon icon-search"></i>
+      </div>
+    </div>
+    <div class="projects" #scrollWrapperProjects>
+      <div *ngIf="this.loading" class="spinner">
+        <div class="spinner-border text-light m-1" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+      <ng-container *ngFor="let project of this.searchedList; index as i">
+        <div class="project" *ngIf="project.name"
+          [ngClass]="{ project: true, active: selectedId === project.id,  disable:isDisableProjectSelect}">
+          <div class="text-col" (click)="taskLoading ? false : setSelectedProject(project)">
+            <i class="icon icon-video-project" *ngIf="project.contentType == projectTypes.video"></i>
+            <i class="icon icon-image-project" *ngIf="project.contentType == projectTypes.image"></i>
+            <div class="project-title">{{ project.name }}</div>
+          </div>
+
+          <div class="option-wrapper" *ngIf="isShowCreateButton && !isDisableProjectSelect">
+            <i class="icon icon-option dots" [matMenuTriggerFor]="menu"></i>
+          </div>
+
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editProject(project.id)">
+              Edit
+            </button>
+            <button mat-menu-item (click)="addProjectFiles(project.id)">
+              Add Files
+            </button>
+            <button mat-menu-item (click)="onConfirm(project.id)">
+              Delete
+            </button>
+          </mat-menu>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="sidebar-right" *ngIf="showDataSetMenu">
+    <app-data-set-menu></app-data-set-menu>
+  </div>
+</div>

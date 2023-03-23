@@ -1,0 +1,61 @@
+<app-header></app-header>
+<app-side-bar (setProject)="getSelectedProject($event)"></app-side-bar>
+
+<div class="content-col">
+  <div class="panel-content">
+    <div class="title-row">
+      <div class="icon-row">
+        <img class="type-i" src="../../../../assets/img/icons/icon-vid.png" />
+      </div>
+      <div class="text-col">
+        <div class="txt-title">{{ this.selectedProjectName }}</div>
+        <div class="txt-type">Video playback annotation</div>
+      </div>
+    </div>
+
+    <div class="navigation-card">
+      <div class="nav-row">
+        <div (click)="this.navigateTo('overview')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('overview')
+          }">
+          <div class="page-name">Overview</div>
+        </div>
+
+        <div (click)="this.navigateTo('tasks')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('tasks')
+          }">
+          <div class="page-name">Tasks</div>
+        </div>
+
+        <div (click)="this.navigateTo('labels')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('labels')
+          }">
+          <div class="page-name">Labels</div>
+        </div>
+
+        <div (click)="this.navigateTo('quality')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('quality')
+          }">
+          <div class="page-name">Quality</div>
+        </div>
+
+        <div (click)="this.navigateTo('documentation')" [ngClass]="{
+            'nav-item': true,
+            selected: this._router.url.includes('documentation')
+          }">
+          <div class="page-name">Documentation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+
+</div>

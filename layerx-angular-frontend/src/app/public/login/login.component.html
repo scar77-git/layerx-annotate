@@ -1,0 +1,88 @@
+<div class="container-main">
+  <div class="card-row center-vertical">
+    <div class="card-login mw-70">
+      <div class="main-row">
+        <div class="left-col">
+          <div class="data-container">
+            <img src="../../../assets/img/login/dslogo.png" class="logo" />
+
+            <div class="title-txt">Welcome to Defect Scanner</div>
+
+            <div class="txt-desc">
+              The Data Platform for AI. High-quality training <br />and
+              validation data for AI applications.
+            </div>
+
+            <div class="animation-row">
+              <img
+                class="animation-img"
+                src="../../../assets/img/login/animation.svg"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="right-col" *ngIf="uiState == LOGIN_VIEW">
+          <div class="data-container center">
+            <div class="title-black">Log in to your account</div>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="input-wrapper">
+                <div class="input-custom">
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    class="custom-input"
+                    formControlName="username"
+                    name="username"
+                  />
+                  <div class="icon-col">
+                    <img
+                      class="input-i"
+                      src="../../../assets/img/login/icon-mail.png"
+                    />
+                  </div>
+                </div>
+
+                <div class="input-custom">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    class="custom-input"
+                    formControlName="password"
+                    name="password"
+                  />
+                  <div class="icon-col">
+                    <img
+                      class="input-i"
+                      src="../../../assets/img/login/pass-icon.png"
+                    />
+                  </div>
+
+                  <div class="tooltip-custom" *ngIf="errorMsg">
+                    <p>{{ errorMsg }}</p>
+                    <i></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="agree-wrapper">
+                <i></i>
+              </div>
+
+              <button class="main-btn" type="submit">
+                <span *ngIf="!this.loading">Log in</span>
+                <div
+                  class="spinner-border text-light m-1"
+                  role="status"
+                  *ngIf="this.loading"
+                >
+                  <span class="sr-only"></span>
+                </div>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,159 @@
+@import "../../../../assets/scss/colors.scss";
+
+.user-details {
+    height: 80px;
+    background-color: $btn_gray;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .search-col {
+        margin-left: 320px;
+        .input-wrapper {
+            position: relative;
+            .search-input {
+                background-color: $white;
+                border: 15px;
+                min-width: 480px;
+                border-radius: 15px;
+                padding: 10px 11px 8px 60px;
+            }
+            i {
+                position: absolute;
+                color: $theme_purple;
+                left: 12px;
+                font-size: 24px;
+                top: 7px;
+            }
+        }
+        .search-results {
+            min-width: 460px;
+            background-color: white;
+            padding: 10px 10px;
+            position: absolute;
+            margin-left: 11px;
+            z-index: 10;
+            .search-item {
+                cursor: pointer;
+                .txt-title {
+                    padding: 10px;
+                    color: $text_black;
+                    font-size: 14px;
+                }
+                &:hover {
+                    background-color: $btn_gray;
+                }
+            }
+        }
+    }
+    .current-user-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .left-col {
+            .user-name {
+                // background-color: $theme_purple;
+                box-shadow: 0px 3px 5px #00000029;
+                border-radius: 30px;
+                height: 27px;
+                width: 27px;
+                font-size: 11px;
+                font-weight: 600;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                right: -10px;
+                z-index: 9;
+                // padding-top: 2px;
+            }
+        }
+        .right-col {
+            display: flex;
+            align-items: center;
+            i {
+                color: $new_project_star;
+                font-size: 20px;
+                padding-left: 12px;
+                position: relative;
+                top: 4px;
+            }
+            .dropdown {
+                .btn {
+                    background-color: white;
+                    border-radius: 12px;
+                    padding: 8px 15px;
+                    padding-right: 10px;
+                    width: 145px;
+                    display: flex;
+                    justify-content: space-between;
+                    i {
+                        font-size: 23px;
+                        height: 20px;
+                        position: relative;
+                        top: -1px;
+                        color: $txt_type_gray;
+                        padding-left: 0
+                    }
+                }
+                .btn-text {
+                    color: $text_black;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-align: left;
+                    // max-width: 160px;
+                    width: 120px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                .dropdown-menu {
+                    inset: 8px 0px auto 46px !important;
+                    background: #ffffff 0% 0% no-repeat padding-box;
+                    box-shadow: 0px 13px 16px #00000029;
+                    border-radius: 15px;
+                    padding: 20px;
+                    border: none;
+                    cursor: pointer;
+                    width: 300px;
+                    .user-detail-row {
+                        display: flex;
+                        align-items: center;
+                        .img-col {
+                            img {
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 30px;
+                            }
+                        }
+                        .text-col {
+                            padding-left: 10px;
+                            .name {
+                                font-size: 15px;
+                                font-weight: 500;
+                                color: $text_black;
+                            }
+                            .email {
+                                font-size: 12px;
+                                color: $new_project_star;
+                                font-weight: 400;
+                            }
+                        }
+                    }
+                    .list-item {
+                        padding: 10px 20px;
+                        color: $text_black;
+                        font-size: 15px;
+                        font-weight: 500;
+                        margin-top: 5px;
+                        &:hover {
+                            background-color: $btn_gray;
+                            border-radius: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

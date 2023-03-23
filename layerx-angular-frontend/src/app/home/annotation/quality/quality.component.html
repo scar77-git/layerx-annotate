@@ -1,0 +1,260 @@
+<div class="content-col-inner">
+  <div class="top-area">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Quality</div>
+      </div>
+    </div>
+
+    <div class="loading-row" *ngIf="this.statLoading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="boxes-row" *ngIf="!this.statLoading">
+      <div class="box">
+        <div class="icon-wrapper">
+          <i class="icon icon-tick-mark"></i>
+        </div>
+        <div class="details">
+          <div class="value green">
+            {{ this.qualityObj.qualityStats.accepted }}
+          </div>
+          <div class="description">Accepted</div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="icon-wrapper">
+          <i class="icon icon-fixed-wheel"></i>
+        </div>
+        <div class="details">
+          <div class="value blue">{{ this.qualityObj.qualityStats.fixed }}</div>
+          <div class="description">Fixed</div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="icon-wrapper">
+          <i class="icon icon-fill-close"></i>
+        </div>
+        <div class="details">
+          <div class="value red">
+            {{ this.qualityObj.qualityStats.rejected }}
+          </div>
+          <div class="description">Rejected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="sub-title">Reports</div>
+
+    <div class="nav-row">
+      <div
+        (click)="this.loadTasks(this.buttonTypes.rejected)"
+        [ngClass]="{
+          'nav-item': true,
+          selected: this.taskObj.filter.status == this.buttonTypes.rejected
+        }"
+      >
+        <div class="page-name">Rejected Tasks</div>
+      </div>
+
+      <div
+        (click)="this.loadTasks(this.buttonTypes.fixed)"
+        [ngClass]="{
+          'nav-item': true,
+          selected: this.taskObj.filter.status == this.buttonTypes.fixed
+        }"
+      >
+        <div class="page-name">Fixed Tasks</div>
+      </div>
+
+      <div
+        (click)="this.loadTasks(this.buttonTypes.accepted)"
+        [ngClass]="{
+          'nav-item': true,
+          selected: this.taskObj.filter.status == this.buttonTypes.accepted
+        }"
+      >
+        <div class="page-name">Accepted Tasks</div>
+      </div>
+    </div>
+
+    <div class="loading-row" *ngIf="this.loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div
+      class="loading-row text-center"
+      *ngIf="!this.loading && this.taskObj.taskList.list.length == 0"
+    >
+      No Quality Data
+    </div>
+
+    <div class="table-col" *ngIf="!this.loading">
+      <table class="table">
+        <tbody (click)="$event.stopPropagation()">
+          <tr
+            *ngFor="let task of this.taskObj.taskList.list; index as i"
+            (click)="this.collapseView(task.id)"
+            [ngClass]="{ selected: this.selectedTaskId == task.id }"
+          >
+            <td class="">
+              <div class="row-icon">
+                <div class="icon-col">
+                  <div class="icon-wrapper">
+                    <i
+                      class="icon icon-video-project"
+                      *ngIf="task.contentType == CONTENT_TYPE_VIDEO"
+                    ></i>
+                    <i
+                      class="icon icon-image-project"
+                      *ngIf="task.contentType == CONTENT_TYPE_IMAGE"
+                    ></i>
+                  </div>
+                </div>
+                <div class="text-col">
+                  <div class="txt-black">{{ task.projectName }}</div>
+                  <div
+                    class="txt-gray"
+                    *ngIf="task.contentType == CONTENT_TYPE_VIDEO"
+                  >
+                    Video playback annotation
+                  </div>
+                  <div
+                    class="txt-gray"
+                    *ngIf="task.contentType == CONTENT_TYPE_IMAGE"
+                  >
+                    Image annotation
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="task-col">
+                <div class="name-txt">{{ task.id }}</div>
+                <div
+                  class="txt-gray"
+                  *ngIf="
+                    this.taskObj.taskStatus[task.status].statusName ==
+                    'Not Started'
+                  "
+                >
+                  Created at {{ task.createdAt | date: "MMM d, y, h:mm:ss a" }}
+                </div>
+                <div
+                  class="txt-gray"
+                  *ngIf="
+                    this.taskObj.taskStatus[task.status].statusName !==
+                      'Not Started' && task.updatedAt !== null
+                  "
+                >
+                  Last updated
+                  {{ task.updatedAt | date: "MMM d, y, h:mm:ss a" }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="status-col">
+                <div
+                  class="status dot"
+                  [ngStyle]="{
+                    'background-color':
+                      this.taskObj.taskStatus[task.status]?.colorHex
+                  }"
+                ></div>
+                <div class="status">
+                  {{ this.taskObj.taskStatus[task.status].statusName }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="progress-col">
+                <div class="txt-black">
+                  {{ task.completedFrames }} <span>Frames</span>
+                </div>
+                <div class="progress line">
+                  <div
+                    [ngClass]="['progress-bar']"
+                    role="progressbar"
+                    [ngStyle]="{
+                      'width.%': task.progress,
+                      'background-color':
+                        this.taskObj.taskStatus[task.status].colorHex
+                    }"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </td>
+            <td class="fit-content">
+              <div class="total-col">
+                <div class="left-col">
+                  <div class="name-txt">{{ task.frameCount }}</div>
+                  <div class="txt-gray">Total Frames</div>
+                </div>
+                <div class="right-col">
+                  <i
+                    class="icon icon-arrow-don"
+                    *ngIf="this.selectedTaskId !== task.id"
+                  ></i>
+                  <i
+                    class="icon icon-arrow-up down"
+                    *ngIf="this.selectedTaskId == task.id"
+                  ></i>
+                </div>
+              </div>
+            </td>
+
+            <div
+              class="collapse-col"
+              *ngIf="this.selectedTaskId == task.id"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="button-wrapper">
+                <div class="btn-row">
+                  <button class="tbl-btn">
+                    <i class="icon icon-download-json"></i>
+                    Download JSON
+                  </button>
+
+                  <button class="tbl-btn">
+                    <i class="icon icon-callback-body"></i>
+                    Callback Body
+                  </button>
+
+                  <button
+                    class="tbl-btn"
+                    (click)="this.openAuditResponse()"
+                    *ngIf="
+                      this.taskObj.selectedUserType !== USER_TYPE_ANNOTATOR
+                    "
+                  >
+                    <i class="icon icon-audit-response"></i>
+                    Audit Annotations
+                  </button>
+
+                  <button
+                    class="tbl-btn"
+                    (click)="this.openAuditResponse()"
+                    *ngIf="this.taskObj.selectedUserType == USER_TYPE_ANNOTATOR"
+                  >
+                    <i class="icon icon-audit-response"></i>
+                    Annotate
+                  </button>
+                </div>
+              </div>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

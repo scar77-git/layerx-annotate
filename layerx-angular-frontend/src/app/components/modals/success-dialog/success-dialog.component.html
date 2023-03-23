@@ -1,0 +1,21 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="error">
+      {{ header }}
+    </div>
+    <div class="close" (click)="this.onNoClick()">
+      <div class="icon icon-close"></div>
+    </div>
+  </div>
+  <div class="alert-icon">
+    <div class="icon icon-tick-mark"></div>
+  </div>
+  <div class="description">
+    {{ description }}
+  </div>
+  <div class="btn-col-sub">
+    <button class="main-btn btn-gradient ok-btn" (click)="this.onNoClick()">
+      Okay
+    </button>
+  </div>
+</div>

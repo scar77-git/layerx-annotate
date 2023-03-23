@@ -1,0 +1,119 @@
+@import "../../../../../../assets/scss/colors.scss";
+
+.frame-info{
+    font-size: 14px;
+    font-weight: 500;
+    padding: 15px 5px;
+    color: $txt_type_gray;
+    .frame-number{
+        float: left;
+        span{
+            color: $theme_blue;
+        }
+    }
+    .video-time{
+        float: right;
+    }
+}
+.checkbox-row{
+    padding-top: 3px;
+    .checkbox-round{
+        height: 16px;
+        width: 16px;
+        border: 1px solid $txt_type_gray;
+        background-color: $frame_black;
+        appearance: none;
+        -webkit-appearance: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 6px;
+        margin-right: 12px;
+        
+    }.checkmark {
+        position: relative;
+        top: 2px;
+        left: 1px;
+        &:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: -23px;
+            top: 0px;
+            width: 4px;
+            height: 8px;
+            border: solid $white;
+            border-width: 0 2.5px 2.5px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    }
+    .checkbox-round:checked{
+        background-color: $theme_purple;
+        border: none;
+        ~.checkmark {
+            &:after {
+                display: block;
+            }
+        }
+    }
+    .white-text{
+        position: relative;
+        top: -3px;
+        left: -6px;
+        font-size: 14px;
+        color: $white;
+    }
+}
+.labels{
+    padding: 20px 0;
+    height: calc(100vh - 260px);
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top:14px;
+
+    &::-webkit-scrollbar {
+      width: 7px;
+      background-color: $sidebar_bg;
+      border-radius: 16px;
+      height: 7px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $text_black;
+      border-radius: 16px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: $sidebar_bg;
+      border-radius: 16px;
+    }
+    .label{
+        // height: 46px;
+        // width: 100%;
+        background-color: $frame_black;
+        border-radius: 8px;
+        padding: 13px 16px;
+        margin-bottom: 14px;
+        &.selected{
+            background-color: $sidebar_bg;
+        }
+        
+    }
+    .sublabel{
+        // width: 100%;
+        background-color: $frame_black;
+        border-radius: 8px;
+        padding: 13px 16px;
+        margin-bottom: 14px;
+        margin-left: 10px;
+    }
+    .non-empty > .checkbox-row:first-child{
+        padding-bottom: 10px;
+        border-bottom: 1px solid $sidebar_black;
+    }
+    .value{
+        padding: 10px 0;
+        margin-left: 15px;
+    }
+}

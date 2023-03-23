@@ -1,0 +1,87 @@
+<div class="modal-container">
+    <div class="top-row title-border">
+      <i class="icon icon-close i-close" (click)="close()"></i>
+      <div class="title-row">
+        <div class="title-black">{{videoName}}</div>
+        <div class="task-count" *ngIf="labelList">
+          <span class="selected">{{selectedCount}}/</span>
+          <span class="total">{{labelList.length}}</span>
+        </div>
+      </div>
+      
+    </div>
+  
+    <div class="search-row">
+      <div class="form-outline">
+        <input
+          type="input"
+          class="form-control"
+          placeholder="Search tasks"
+          aria-label="Search"
+          [(ngModel)]="searchTxt"
+          (keyup)="onSearch()"
+        />
+        <i class="icon icon-search"></i>
+      </div>
+      <div class="icon-wrapper" (click)="selectAll()" [ngClass]="{'selected' : selected != 0}">
+        <i class="icon icon-tick-without-bg" *ngIf="selected == 2"></i>
+        <i class="icon icon-dash-without-bg" *ngIf="selected == 1"></i>
+      </div>
+    </div>
+  
+    <div class="table-row">
+      <table class="table">
+        <tbody (click)="$event.stopPropagation()">
+          <tr *ngFor="let label of this.searchedList index as i">
+            <td>
+              <div class="row-time">
+                <div class="txt-black middle">{{label.duration}}</div>
+              </div>
+            </td>
+            <td>
+              <div class="row-id">
+                <div class="txt-black middle">{{label._id}}</div>
+              </div>
+            </td>
+            <td class="table-delete">
+              <div class="row-icon delete">
+                <input
+                  type="checkbox"
+                  class="checkbox-round"
+                  [(ngModel)]="label.selected"
+                  (change)="checkSelected()"
+                />
+                <span class="checkmark" (click)="label.selected = !label.selected;checkSelected()"></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>  
+    </div>
+    <div class="radio-area">
+      <div class="desc">Add Selected task to</div>
+      <div class="radio-row">
+        <div class="inputs">
+          <label class="container">
+            <input type="radio" [(ngModel)]="toChangeDatasetType" name="set" value="trainingSet">
+            <span class="checkmark"></span>
+            Trainning Set
+          </label>
+          <label class="container">
+            <input type="radio" [(ngModel)]="toChangeDatasetType" name="set" value="validationSet">
+            <span class="checkmark"></span>
+            Validation Set
+          </label>
+          <label class="container">
+            <input type="radio" [(ngModel)]="toChangeDatasetType" name="set" value="testingSet">
+            <span class="checkmark"></span>
+            Testing Set
+          </label>
+      </div>
+      </div>
+    </div>
+    <div class="add-button">
+      <button class="btn-add" (click)="add()">Add</button>
+    </div>
+  </div>
+  

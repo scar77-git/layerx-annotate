@@ -1,0 +1,282 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "~@angular/material" as mat;
+// Plus imports for other components in your app.
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$annotation-tool-primary: mat.define-palette(mat.$indigo-palette);
+$annotation-tool-accent: mat.define-palette(
+  mat.$pink-palette,
+  A200,
+  A100,
+  A400
+);
+// The warn palette is optional (defaults to red).
+$annotation-tool-warn: mat.define-palette(mat.$red-palette);
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$annotation-tool-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $annotation-tool-primary,
+      accent: $annotation-tool-accent,
+      warn: $annotation-tool-warn,
+    ),
+  )
+);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($annotation-tool-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@import "./assets/scss/colors.scss";
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border: none;
+  outline: 0 none;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.btn {
+  outline: none;
+  box-shadow: none !important;
+}
+
+body {
+  margin: 0;
+  background-color: $main-background;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.upper-case {
+  text-transform: uppercase;
+}
+
+.flex {
+  display: flex;
+}
+
+.tab {
+  display: none !important;
+}
+
+@media (max-width: 992px) {
+  .web {
+    display: none !important;
+  }
+  .tab {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .mobile {
+    display: none !important;
+  }
+}
+
+button {
+  &.main-btn {
+    background: transparent
+      linear-gradient(
+        98deg,
+        $theme_pink 0%,
+        $theme_purple 51%,
+        $theme_blue 100%
+      )
+      0% 0% no-repeat padding-box;
+    box-shadow: 0px 13px 12px #7166f926;
+    border-radius: 15px;
+    border: none;
+    color: $white;
+    cursor: pointer;
+  }
+  &.btn-gradient {
+    &:hover {
+      background: transparent
+        linear-gradient(
+          98deg,
+          $theme_pink_hover 0%,
+          $theme_purple_hover 51%,
+          $theme_blue_hover 100%
+        )
+        0% 0% no-repeat padding-box !important;
+    }
+  }
+}
+
+button:focus {
+  outline-style: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.content-col-inner {
+  background: none;
+  left: 0px;
+  width: 100%;
+  background-color: $white;
+  border-radius: 20px;
+  padding: 25px 24px;
+  min-height: calc(100vh - 280px);
+  margin-top: -48px;
+}
+
+.content-col {
+  background-color: $btn_gray;
+  left: 330px;
+  position: relative;
+  width: calc(100% - 330px);
+  min-height: calc(100vh - 80px);
+  padding: 0px 20px;
+  padding-bottom: 40px;
+  &.no-right-sub {
+    left: 90px;
+    width: calc(100% - 90px);
+  }
+  &.m-h {
+    min-height: calc(100vh - 80px);
+  }
+}
+
+.ngx-bar {
+  border-radius: 15px !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.loading-row {
+  text-align: center;
+  margin-top: 40px;
+  .spinner-border {
+    color: $theme_purple;
+  }
+}
+
+.mat-dialog-container {
+  overflow: hidden !important;
+  border-radius: 15px !important;
+  i {
+    cursor: pointer;
+  }
+}
+
+.cdk-global-overlay-wrapper {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  overflow: auto;
+  pointer-events: auto;
+  padding-top: 60px;
+  padding-bottom: 20px;
+}
+
+.mat-date-range-input-separator {
+  color: $white !important;
+  position: relative;
+  right: -6px;
+}
+
+.coming-soon {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -61%);
+  transform: translate(-50%, -61%);
+  img {
+    width: 400px;
+  }
+}
+
+.no-txt {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.btn-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.empty-card-view {
+  padding: 30px 30px;
+  background-color: $white;
+  border-radius: 20px;
+  width: calc(100% - 40px);
+  min-height: 85vh;
+  padding-top: 30px;
+
+  position: absolute;
+  top: 20px;
+  .wrapper {
+    right: 50%;
+    bottom: 50%;
+    transform: translate(50%, 25%);
+    position: absolute;
+
+    img {
+      width: 400px;
+    }
+
+    .txt {
+      font-size: 20px;
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+}
+.checkmark{
+  cursor: pointer;
+}

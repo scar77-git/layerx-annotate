@@ -1,0 +1,93 @@
+<div class="content-col-inner">
+  <div class="top-area">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Augmentation</div>
+        <div>
+          <button class="btn-upload" (click)="openAddAugmentation()">
+            Add Augmentation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="this.loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div class="aug-area" *ngIf="!this.loading">
+    <div class="title center-txt"
+      *ngIf="augmentationData.BOUNDING_BOX_LEVEL.length == 0 && augmentationData.IMAGE_LEVEL.length == 0">No
+      augmentations are added</div>
+
+    <div class="left-col" *ngIf="augmentationData.IMAGE_LEVEL.length > 0">
+      <div class="title">Image level augmentation</div>
+      <div class="box-area">
+        <div class="box" *ngFor="let box of augmentationData?.IMAGE_LEVEL">
+          <div class="left">
+            <div class="aug-img">
+              <img src="../../../../assets/img/augmentation-thumb_images/{{
+                  box.id
+                }}.png" />
+            </div>
+            <div class="texts">
+              <div class="aug-name">
+                {{
+                  getBoxCommonProperties(
+                    augmentationLevelsConstant.IMAGE_LEVEL,
+                    box.id
+                  )?.label
+                }}
+              </div>
+              <div class="aug-types">{{ box.description }}</div>
+            </div>
+          </div>
+          <div class="right">
+            <i (click)="
+                openAddAugmentation(
+                  box.id,
+                  this.augmentationLevelPanels.imageLevel
+                )
+              " class="icon icon-edit-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col" *ngIf="augmentationData.BOUNDING_BOX_LEVEL.length > 0">
+      <div class="title">Bounding box level augmentation</div>
+      <div class="box-area">
+        <div class="box" *ngFor="let box of augmentationData?.BOUNDING_BOX_LEVEL">
+          <div class="left">
+            <div class="aug-img">
+              <img src="../../../../assets/img/augmentation-thumb_images/{{
+                  box.id
+                }}.png" />
+            </div>
+            <div class="texts">
+              <div class="aug-name">
+                {{
+                  getBoxCommonProperties(
+                    augmentationLevelsConstant.BOUNDING_BOX_LEVEL,
+                    box.id
+                  )?.label
+                }}
+              </div>
+              <div class="aug-types">{{ box.description }}</div>
+            </div>
+          </div>
+          <div class="right">
+            <i (click)="
+                openAddAugmentation(
+                  box.id,
+                  this.augmentationLevelPanels.boxLevel
+                )
+              " class="icon icon-edit-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

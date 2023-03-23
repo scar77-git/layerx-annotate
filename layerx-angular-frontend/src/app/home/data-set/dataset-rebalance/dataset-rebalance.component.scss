@@ -1,0 +1,449 @@
+@import "../../../../assets/scss/colors.scss";
+@import "../../../../assets/scss/extend.scss";
+
+.content-col {
+  padding: 0px 20px 0 20px;
+  .border-top {
+    height: 1px;
+    width: 100%;
+    border-top: 1px solid $filter_row_gray;
+  }
+  .stage-create {
+    padding-top: 70px;
+
+    .bi {
+      color: $theme_purple;
+    }
+  }
+  .stage-preparing {
+    height: 854px;
+    padding-top: 88px;
+  }
+  .stage-success {
+    height: 770px;
+    padding-top: 174px;
+  }
+  .new-project-panel {
+    background-color: $white;
+    border-radius: 20px;
+    border: 1px solid #eceef2;
+    margin-top: 18px;
+    padding-bottom: 54px;
+    .count {
+      color: $theme_purple;
+      text-align: center;
+      font-size: 54px;
+      margin-bottom: 30px;
+    }
+    .title {
+      text-align: center;
+      font-size: 27px;
+      margin-bottom: 34px;
+    }
+    .content {
+      padding: 0 25px;
+      .split {
+        width: 100%;
+        padding: 15px;
+        background-color: $btn_gray;
+        border-radius: 16px;
+        color: $text_black;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        .inputs {
+          margin-left: 30px;
+          display: flex;
+          /* The container */
+          .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            padding-right: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding-top: 5px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+
+          /* Hide the browser's default radio button */
+          .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+          }
+
+          /* Create a custom radio button */
+          .checkmark {
+            position: absolute;
+            top: 5px;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: $white;
+            border-radius: 50%;
+            border: 1px solid $task_count;
+          }
+
+          /* When the radio button is checked, add a blue background */
+          .container input:checked ~ .checkmark {
+            background-color: $white;
+            border: 1px solid $theme_purple;
+          }
+
+          /* Create the indicator (the dot/circle - hidden when not checked) */
+          .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+          }
+
+          /* Show the indicator (dot/circle) when checked */
+          .container input:checked ~ .checkmark:after {
+            display: block;
+          }
+
+          /* Style the indicator (dot/circle) */
+          .container .checkmark:after {
+            top: 3px;
+            left: 3px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: $theme_purple;
+          }
+          .text {
+            margin-right: 35px;
+            font-size: 13px;
+          }
+        }
+        .main-btn {
+          font-size: 15px;
+          font-weight: 500;
+          margin: -5px;
+          margin-left: auto;
+          padding: 7px 25px;
+          border-radius: 11px;
+        }
+      }
+      .video-selection {
+        padding: 15px 0;
+        display: flex;
+        height: calc(100vh - 360px);
+        .left {
+          width: 30%;
+          padding-right: 25px;
+          .files {
+            background-color: $btn_gray;
+          }
+          .set {
+            .title {
+              font-size: 14px;
+              margin-bottom: 2px;
+            }
+          }
+        }
+        .right {
+          display: flex;
+          width: 70%;
+          .set {
+            margin-left: 15px;
+            width: calc((100% - 40px) / 3);
+            .close {
+              font-size: 10px;
+              cursor: pointer;
+            }
+          }
+        }
+        .set {
+          height: 100%;
+          border: 1px solid $new_project_upload_border;
+          border-radius: 11px;
+          padding: 13px;
+          &.train-set {
+            .icon {
+              color: $theme_purple;
+            }
+            .close {
+              color: $toggle_text;
+            }
+            .icon-wrapper {
+              background-color: $theme_purple;
+            }
+            .files {
+              background-color: $new_project_upload_border;
+            }
+          }
+          &.validation-set {
+            .icon {
+              color: $theme_pink;
+            }
+            .close {
+              color: $theme_pink_light;
+            }
+            .icon-wrapper {
+              background-color: $theme_pink;
+            }
+            .files {
+              background-color: $theme_pink_bg;
+            }
+          }
+          &.test-set {
+            .icon {
+              color: $theme_blue;
+            }
+            .close {
+              color: $theme_blue_light;
+            }
+            .icon-wrapper {
+              background-color: $theme_blue;
+            }
+            .files {
+              background-color: $theme_blue_bg;
+            }
+          }
+          .title {
+            font-size: 16px;
+            font-weight: 500;
+            color: $text_black;
+            text-align: left;
+            margin: 0;
+          }
+          .desc {
+            font-size: 12px;
+            color: $txt_type_gray;
+          }
+          .header {
+            display: flex;
+            .left {
+              width: 65%;
+            }
+            .right {
+              height: 42px;
+              line-height: 42px;
+              width: 35%;
+              display: flex;
+              justify-content: flex-end;
+              .icon {
+                font-size: 23px;
+                padding-top: 3px;
+                margin-right: 5px;
+              }
+              .percentage {
+                font-size: 22px;
+                font-weight: bold;
+                color: $text_black;
+              }
+            }
+          }
+          .search {
+            margin-top: 20px;
+
+            .form-outline {
+              position: relative;
+
+              i {
+                position: absolute;
+                left: 10px;
+                color: $tooltip_text;
+                top: 7px;
+                font-size: 15px;
+              }
+              .count {
+                position: absolute;
+                right: 10px;
+                top: 9px;
+                font-size: 11px;
+                font-weight: 500;
+              }
+            }
+            input {
+              border-radius: 10px;
+              // border: none;
+              border-color: $new_project_upload_border;
+              height: 30px;
+              // background-color: $sidebar_search;
+              color: $sidebar_searchtxt;
+              font-size: 13px;
+              padding-left: 35px;
+              padding-right: 30px;
+            }
+
+            input::placeholder,
+            input:-ms-input-placeholder,
+            input::-ms-input-placeholder {
+              color: $sidebar_searchtxt;
+              font-size: 12px;
+            }
+          }
+          .file-list {
+            margin-top: 10px;
+            height: calc(100% - 100px);
+            overflow-y: auto;
+            .files {
+              // display: flex;
+              padding: 10px;
+              border-radius: 10px;
+              margin-bottom: 5px;
+              .width-100 {
+                display: flex;
+              }
+              .hide {
+                display: none;
+              }
+              .left {
+                width: 20px;
+                padding: 0;
+              }
+              .right {
+                width: calc(100% - 20px);
+
+                .icon {
+                  padding-top: 8px;
+                  color: $toggle_text;
+                }
+              }
+              .select {
+                margin-right: 10px;
+              }
+              .file-info {
+                width: calc(100% - 11px);
+                .name {
+                  font-size: 12px;
+                  color: $text_black;
+                }
+                .task-count {
+                  font-size: 10px;
+                  color: $task_count;
+                  .icon-wrapper {
+                    // background-color: $theme_purple;
+                    border-radius: 4px;
+                    padding: 2px 3px;
+                    margin-right: 2px;
+                    .icon {
+                      color: $white;
+                      position: relative;
+                      top: 1px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .btn-row {
+        padding-top: 15px;
+        text-align: center;
+        .create-btn {
+          font-size: 15px;
+          font-weight: 500;
+          margin: -5px;
+          margin-left: auto;
+          padding: 10px 80px;
+          border-radius: 11px;
+          background: transparent
+            linear-gradient(98deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+            no-repeat padding-box;
+          border: none;
+          color: #ffffff;
+          cursor: pointer;
+          box-shadow: 0px 13px 12px #7166f926;
+        }
+      }
+    }
+  }
+}
+
+.ci {
+  position: absolute;
+  right: 52px;
+  font-size: 22px;
+  top: 44px;
+  cursor: pointer;
+  color: $new_project_star;
+}
+.bi {
+  position: absolute;
+  left: 52px;
+  font-size: 22px;
+  top: 44px;
+  cursor: pointer;
+  color: $new_project_star;
+}
+
+/* Designing for scroll-bar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: $scroll_bar_gray_light;
+  border-radius: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $left-border;
+  border-radius: 5px;
+}
+
+.cdk-drag-preview {
+  border: 1px solid $theme_purple;
+  background-color: $btn_gray;
+  border-radius: 11px;
+  padding: 9px 10px;
+  width: 100%;
+  .width-100 {
+    display: flex;
+  }
+  .left {
+    width: 11px;
+  }
+  .right {
+    display: flex;
+    margin-left: 8px;
+    width: calc(100% - 11px);
+    .file-info {
+      .name {
+        font-size: 12px;
+        color: $text_black;
+      }
+      .task-count {
+        font-size: 10px;
+        color: $task_count;
+      }
+    }
+    .icon {
+      margin-left: auto;
+    }
+  }
+  .hide {
+    display: none;
+  }
+}
+.cdk-drag-placeholder {
+  border: 1px solid $tooltip_text;
+  .left {
+    display: none;
+  }
+  .file-info {
+    display: none;
+  }
+  .icon {
+    display: none;
+  }
+  .hide {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    // height: 10px;
+    color: $left-border;
+    font-size: 16px;
+  }
+}

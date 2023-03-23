@@ -1,0 +1,47 @@
+<div class="menu noselect">
+    <div class="header">
+      <div class="title">
+        Set Label
+      </div>
+      <div>
+        <i class="icon icon-close close" (click)="this.close()"></i>
+      </div>
+    </div>
+    <div class="labels main" *ngIf="subLabel.labelMenuStatus == LABEL_VIEW">
+      <div class="label" *ngFor="let labels of labelList; index as i"
+        (click)="this.addLabel(labels.label,labels.key,i)" [ngClass]="{ project: true, active: subLabel.selectedLabelId === i }">
+        <div class="project-title">{{ labels.label }}</div>
+      </div>
+    </div>
+    <div class="labels" *ngIf="subLabel.labelMenuStatus == SUB_LABEL_VIEW">
+      <div class="selected-lbls">
+        <div class="lblplus" *ngFor="let labelStr of subLabel.labelTexts; index as i; last as isLast">
+          <div [ngClass]="{'lbl-item':true, 'selected':labelStr !== '' }">{{labelStr}}</div>
+          <i class="icon icon-add-mark add" *ngIf="!isLast"></i>
+        </div>
+  
+      </div>
+    <!-- </div> -->
+    <div class="sublabels">
+      <div class="gray-card" *ngFor="let subLabel of subLabel.attributesList; index as i" [hidden]="i != showSubLabelIndex && !editView">
+        <div class="lbl-title">{{subLabel.label}}</div>
+        <div class="attributes-row">
+          <div *ngFor="let attribute of subLabel.values; index as attributeIndex"
+            (click)="selectAttribute(i, attributeIndex, attribute)"
+            [ngClass]="{'attrbute-item':true, 'selected':attribute.isSelected}">
+            {{attribute.valueName}}</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  
+    <div class="bottom-btn-row" *ngIf="subLabel.labelMenuStatus == SUB_LABEL_VIEW">
+      <button class="back-btn" (click)="backToLabels()">
+        <i class="icon icon-back back"></i>
+        <label>Back</label>
+      </button>
+  
+      <button *ngIf="!this.isUpdate" class="main-btn btn-gradient" (click)="saveLabelData()">Done</button>
+      <button *ngIf="this.isUpdate" class="main-btn btn-gradient" (click)="updateLabelData()">Done</button>
+    </div>
+  </div>

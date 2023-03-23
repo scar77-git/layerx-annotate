@@ -1,0 +1,53 @@
+<div class="frame-info">
+    <div class="frame-number">
+        Frame <span>{{ this.audit.mediaPlayerFpsCount }}</span>
+    </div>
+    <div class="video-time">
+        {{ this.audit.currentTime }}
+    </div>
+</div>
+<section class="labels">
+    <div class="label" [ngClass]="{selected: showAllLabels}">
+        <div class="checkbox-row">
+            <input type="checkbox" class="checkbox-round" [checked]="showAllLabels" (change)="showAllLabels = !showAllLabels;filterLabel()" (click)="isShowAllLabels(!showAllLabels)">
+            <span class="checkmark"></span>
+            <span class="white-text">
+                All Labels
+            </span>
+        </div>
+    </div>
+    <div *ngFor="let label of labels index as i">
+        <div class="label" [ngClass]="{selected: label.checked}">
+            <div class="checkbox-row">
+                <input type="checkbox"  class="checkbox-round" [checked]="label.checked" (change)="label.checked = !label.checked;filterLabel()" (click)="isShowAllLabels(false)">
+                <span class="checkmark" (click)="label.checked = !label.checked;filterLabel()"></span>
+                <span class="white-text">
+                    {{label.label}}
+                </span>
+            </div>
+        </div>
+        <div *ngFor="let sublabel of label.attributes index as j">
+            <div *ngIf="label.checked" class="sublabel" [ngClass]="{'non-empty': sublabel.values && sublabel.checked}">
+                <div class="checkbox-row">
+                    <input type="checkbox" class="checkbox-round" [checked]="sublabel.checked" (change)="selectSubLabel(i,j); filterLabel()">
+                    <span class="checkmark" (click)="selectSubLabel(i,j); filterLabel()"></span>
+                    <span class="white-text">
+                        {{sublabel.label}}
+                    </span>
+                </div>
+                <div *ngFor="let value of sublabel.values">
+                    <div *ngIf="sublabel.checked" class="value">
+                        <div class="checkbox-row">
+                            <input type="checkbox" class="checkbox-round" [checked]="value.checked" (change)="value.checked = !value.checked; filterLabel()">
+                            <span class="checkmark" (click)="value.checked = !value.checked; filterLabel()"></span>
+                            <span class="white-text">
+                                {{value.valueName}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>

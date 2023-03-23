@@ -1,0 +1,115 @@
+<div class="content-col-inner">
+  <div class="top-area">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Export</div>
+        <div>
+          <button
+            class="btn-upload disable"
+            (click)="openAddFormatModal()"
+            disabled
+          >
+            Add Format
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="this.loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div
+    class="loading-row text-center"
+    *ngIf="!this.loading && this.datasetExportObj.exportsList.length == 0"
+  >
+    No Datasets
+  </div>
+
+  <div class="table-row" *ngIf="!this.loading">
+    <table class="table">
+      <tbody (click)="$event.stopPropagation()">
+        <tr
+          *ngFor="let dataset of this.datasetExportObj.exportsList; index as i"
+        >
+          <td class="first">
+            <div class="row-icon">
+              <div class="icon-col">
+                <div class="icon-wrapper">
+                  <i class="icon icon-dataset"></i>
+                </div>
+              </div>
+              <div class="text-col">
+                <div class="txt-black">
+                  {{ dataset.name ? dataset.name : "N/A" }}
+                </div>
+                <div class="txt-gray">Modal</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <div class="name-txt">
+                {{ dataset.fileType ? dataset.fileType : "N/A" }}
+              </div>
+              <div class="txt-gray">File Type</div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <div class="name-txt">
+                {{ dataset.fileCount ? dataset.fileCount : "N/A" }}
+              </div>
+              <div class="txt-gray">Total files</div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <div class="name-txt">
+                {{ dataset.lastUpdatedAt | date: "MMM d, y h:mm a" }}
+              </div>
+              <div class="txt-gray">Last update</div>
+            </div>
+          </td>
+          <td *ngIf="dataset.progress == this.maxProgress">
+            <div class="row-icon download">
+              <button class="btn-export" (click)="downloadDataset(i)">
+                <i class="icon icon-download-json"></i>
+                Download
+              </button>
+              <button class="btn-export" (click)="getSample(dataset.sample)">
+                <i class="icon icon-download-json"></i>
+                Sample
+              </button>
+            </div>
+          </td>
+          <td *ngIf="dataset.progress != this.maxProgress">
+            <div class="progress-wrapper">
+              <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="progress-col">
+                <div class="task-text">Generating...</div>
+                <div class="progress">
+                  <div
+                    [ngClass]="['progress-bar']"
+                    role="progressbar"
+                    [ngStyle]="{ 'width.%': dataset.progress }"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

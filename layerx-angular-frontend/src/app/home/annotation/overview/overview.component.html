@@ -1,0 +1,193 @@
+<div>
+  <div class="content-col-inner">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Project Overview</div>
+      </div>
+    </div>
+
+    <div class="loading-row" *ngIf="loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="block" *ngIf="!loading">
+      <div class="blocks">
+        <p class="count">
+          {{
+            this.sharedService.nFormatter(
+              this.overviewObj.statsSummary.totalTaskCount,
+              1
+            )
+          }}
+        </p>
+        <p class="lable">Total Tasks</p>
+      </div>
+      <div class="blocks">
+        <p class="count">
+          {{
+            this.sharedService.nFormatter(
+              this.overviewObj.statsSummary.completedTaskCount,
+              1
+            )
+          }}
+        </p>
+        <p class="lable">Completed Tasks</p>
+      </div>
+      <div class="blocks">
+        <p class="count">
+          {{
+            this.sharedService.nFormatter(
+              this.overviewObj.statsSummary.inprogressTaskCount,
+              1
+            )
+          }}
+        </p>
+        <p class="lable">In progress Tasks</p>
+      </div>
+      <div class="blocks">
+        <p class="count annotated">
+          {{
+            this.sharedService.nFormatter(
+              this.overviewObj.statsSummary.totalAnnotatedCount,
+              1
+            )
+          }}
+        </p>
+        <p class="lable">Annotated Objects</p>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="heading-area">
+        <div class="left-col">Annotation Over Time</div>
+        <div class="right-col">
+          <button class="date-item" (click)="selectRange(1)" [ngClass]="{ selected: this.chartDateRange == 1 }">
+            30 days
+          </button>
+          <button class="date-item" (click)="selectRange(2)" [ngClass]="{ selected: this.chartDateRange == 2 }">
+            90 days
+          </button>
+          <button class="date-item" (click)="selectRange(3)" [ngClass]="{ selected: this.chartDateRange == 3 }">
+            Year
+          </button>
+          <button class="date-item" (click)="selectRange(4)" [ngClass]="{ selected: this.chartDateRange == 4 }">
+            All
+          </button>
+        </div>
+      </div>
+
+      <div class="loading-row" *ngIf="this.chartLoading">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <div class="loading-row text-center" *ngIf="
+          !this.chartLoading &&
+          (this.overviewObj.chartData == null ||
+            this.overviewObj.chartData.length == 0)
+        ">
+        No Chart Data
+      </div>
+
+      <div *ngIf="!this.chartLoading && this.overviewObj.chartData.length != null">
+        <div class="chart-area">
+          <canvas id="chartLine" baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [colors]="lineChartColors" [legend]="false"
+            [chartType]="lineChartType" [plugins]="lineChartPlugins" #chartLine>
+          </canvas>
+        </div>
+
+        <div class="chart-footer">
+          {{ this.overviewObj.startDate }} -
+          {{ this.overviewObj.endDate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="table-heading">
+      <div class="title-row sub-title">
+        <div class="text-col">
+          <div class="txt-title">Annotated Objects</div>
+        </div>
+      </div>
+    </div>
+    <div class="first-row">
+      <i class="icon icon-label"></i>
+      <div class="text">
+        Total Annotated Objects:
+        {{ this.overviewObj.statsSummary.totalAnnotatedCount | number: "1.0" }}
+      </div>
+    </div>
+    <div class="loading-row" *ngIf="loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="loading-row text-center" *ngIf="
+        !this.loading &&
+        (this.overviewObj.projectStats == null ||
+          this.overviewObj.projectStats.length == 0)
+      ">
+      No Table Data
+    </div>
+
+    <div class="table-area" (scroll)="this.onScroll()" id="scrollContent" #scrollContent *ngIf="!loading">
+      <div [ngClass]="{ 'name-col': true, 'shadow-eff': this.isTableScroll }">
+        <table class="table" id="userList">
+          <tbody>
+            <tr *ngFor="
+                let item of this.overviewObj.projectStats;
+                let first = first
+              " [ngClass]="{ firstRow: first }">
+              <td class="row-flex">
+                <div class="icon-wrapper">
+                  <i class="icon icon-label"></i>
+                </div>
+                <div class="first-item">
+                  <div class="txt-tb">{{ item.labelName }}</div>
+                  <div class="label">Label</div>
+                </div>
+
+                <div class="second-item">
+                  <div class="txt-tb">
+                    {{ item.totalObjects | number: "1.0" }}
+                  </div>
+                  <div class="label">Objects</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="detail-col" (scroll)="this.onScrollBottom()" id="scrollBottom" #scrollBottom
+        [(scrollLeft)]="this.scrollheight">
+        <div class="detail-inner-scroll" *ngIf="this.isTableScroll" (scroll)="this.onScrollTop()" id="scrollTop"
+          #scrollTop [(scrollLeft)]="this.scrollheight">
+          <div class="inner-con" [style.width.px]="this.tableWidth" id="innerCon" #innerCon></div>
+        </div>
+
+        <table class="table" id="boostListElem" #boostListElem>
+          <tbody>
+            <tr *ngFor="
+                let item of this.overviewObj.projectStats;
+                let first = first
+              " [ngClass]="{ firstRow: first }">
+              <td class="row-Txt" *ngFor="let subLabel of item.subLabels">
+                <div class="txt-tb">
+                  {{ subLabel.objectCount | number: "1.0" }}
+                </div>
+                <div class="label">{{ subLabel.labelName }}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

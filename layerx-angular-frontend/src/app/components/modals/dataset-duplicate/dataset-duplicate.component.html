@@ -1,0 +1,20 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="left">
+      <div class="title">Create duplicate dataset</div>
+      <div class="description">Duplicate dataset create from - {{dataset}}</div>
+    </div>
+    <div class="close" (click)="this.onNoClick()">
+      <div class="icon icon-close"></div>
+    </div>
+  </div>
+  <div class="content">
+    <label for="dataset-name">Dataset Name <span class="star">*</span></label>
+    <input type="text" value="GOAI Dataset - 02">
+  </div>
+  <div class="btn-col-sub">
+    <button class="main-btn btn-gradient ok-btn" (click)="create()">
+      Create
+    </button>
+  </div>
+</div>

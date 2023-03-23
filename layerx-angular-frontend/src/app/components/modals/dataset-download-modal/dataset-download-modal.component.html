@@ -1,0 +1,59 @@
+<div class="modal-container">
+  <div class="top-row">
+    <i class="icon icon-close i-close" (click)="close()"></i>
+    <div class="title-row title-border">
+      <div class="title-black">Export Dataset</div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="top-row">
+      Please follow below steps to download the dataset to your local computer.
+    </div>
+    <div class="step">
+      <div class="row-one">
+        <div class="step-number">
+          <div class="number">1</div>
+        </div>
+        <div class="instruction">
+          Click the Download button below to download the LayerX Sync Tool
+        </div>
+      </div>
+      <div class="button-row">
+        <button class="btn-export" (click)="downloadDatasetExport()">
+          <i class="icon icon-download-json"></i>
+          Download
+        </button>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="row-one">
+        <div class="step-number">
+          <div class="number">2</div>
+        </div>
+        <div class="instruction sec-step">
+          Please run below command in terminal of your computer to download the dataset
+        </div>
+      </div>
+      <div class="row-two">
+        <div class="command-line">
+          <input type="text" class="command-textBox" [value]="data.command"/>
+
+          <button class="btn-export copy-btn" (click)="copyCommand()">
+            <i class="icon icon-copy"></i>
+            Copy
+          </button>
+        </div>
+        <div class="command-line">
+          <div class="command-row">
+            <div class="bullet"></div>
+            <div class="instruction">
+              Please note that currently this is supported only in Linux or Mac
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

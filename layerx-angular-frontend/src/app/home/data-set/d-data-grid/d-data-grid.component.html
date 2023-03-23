@@ -1,0 +1,227 @@
+<div class="content-col-inner">
+  <div class="top-area noselect">
+    <div class="top-row">
+      <div class="search-container">
+        <i class="icon icon-search"></i>
+        <input
+          class="search"
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="searchKey"
+          #search
+        />
+      </div>
+
+      <div class="drop-down" (click)="setSplit(); preventCloseOnClick()">
+        <div class="label">Split</div>
+        <i class="icon icon-arrow-don"></i>
+      </div>
+      <div class="drop-down" (click)="setClasses(); preventCloseOnClick()">
+        <div class="label">Class</div>
+        <i class="icon icon-arrow-don"></i>
+      </div>
+      <div
+        class="drop-down"
+        *ngIf="isClassesSelected"
+        (click)="setAttributes(); preventCloseOnClick()"
+      >
+        <div class="label">Attribute</div>
+        <i class="icon icon-arrow-don"></i>
+      </div>
+
+      <div
+        class="class-filter"
+        *ngIf="selectClasses"
+        (click)="preventCloseOnClick()"
+      >
+        <div class="wrapper">
+          <div class="filter" *ngFor="let class of tempClasses; index as i">
+            <div class="left">
+              <input
+                type="checkbox"
+                class="checkbox-round"
+                [checked]="classes[i].selected"
+                (change)="selectClass($event, i)"
+              />
+              <span class="checkmark"></span>
+            </div>
+            <div class="text">{{ class.label }}</div>
+          </div>
+          
+        </div>
+        <button
+            class="filter-btn btn-gradient main-btn"
+            (click)="addClassFilter()"
+          >
+            Add Filter
+          </button>
+      </div>
+
+      <div
+        class="attribute-filter"
+        *ngIf="selectAttributes"
+        (click)="preventCloseOnClick()"
+      >
+        <div class="wrapper">
+          <div
+            class="filters"
+            *ngFor="let class of tempClasses; index as j"
+            [hidden]="!class.selected"
+          >
+            <div *ngIf="class.selected">
+              <div *ngFor="let attribute of class.attributes; index as k">
+                <div class="filter">
+                  <div class="left">
+                    <input
+                      type="checkbox"
+                      class="checkbox-round"
+                      [checked]="attribute.selected"
+                      (change)="selectAttribute($event, j, k)"
+                    />
+                    <span class="checkmark"></span>
+                  </div>
+                  <div class="text">{{ attribute.label }}</div>
+                </div>
+                <div class="sub-filters">
+                  <div
+                    class="sub-filter"
+                    *ngFor="let value of attribute.values; index as l"
+                  >
+                    <input
+                      type="checkbox"
+                      class="checkbox-round"
+                      [checked]="value.selected"
+                      (change)="selectValue($event, j, k, l)"
+                    />
+                    <span class="checkmark"></span>
+                    <div class="text">{{ value.valueName }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+            class="filter-btn btn-gradient main-btn"
+            (click)="addAttributesFilter()"
+          >
+            Add Filter
+          </button>
+      </div>
+
+      <div
+        class="split-filter"
+        *ngIf="selectSplit"
+        (click)="preventCloseOnClick()"
+      >
+        <div class="filter">
+          <div class="left">
+            <input
+              type="checkbox"
+              class="checkbox-round"
+              [checked]="splitFilters[0]"
+              (change)="setSplitFilters(0)"
+            />
+            <span class="checkmark"></span>
+          </div>
+          <div class="text">Training Set</div>
+        </div>
+        <div class="filter">
+          <div class="left">
+            <input
+              type="checkbox"
+              class="checkbox-round"
+              [checked]="splitFilters[1]"
+              (change)="setSplitFilters(1)"
+            />
+            <span class="checkmark"></span>
+          </div>
+          <div class="text">Validation Set</div>
+        </div>
+        <div class="filter">
+          <div class="left">
+            <input
+              type="checkbox"
+              class="checkbox-round"
+              [checked]="splitFilters[2]"
+              (change)="setSplitFilters(2)"
+            />
+            <span class="checkmark"></span>
+          </div>
+          <div class="text">Testing Set</div>
+        </div>
+        <button
+          class="filter-btn btn-gradient main-btn"
+          (click)="addSplitFilter()"
+        >
+          Add Filter
+        </button>
+      </div>
+      <div class="count">{{ imageCount }} Items</div>
+    </div>
+    <div class="filter-row" *ngIf="isClassesSelected">
+      <div class="left">
+        <div class="indicator">
+          <i class="icon icon-label"></i>
+        </div>
+        <div *ngFor="let class of classes">
+          <div class="label" *ngIf="class.selected">
+            <div class="text">{{ class.label }}</div>
+            <i
+              class="icon icon-close"
+              (click)="deleteClassFilter(class.key)"
+            ></i>
+          </div>
+        </div>
+        <div class="indicator" *ngIf="isAttributesSelected">
+          <i class="icon icon-sub-label"></i>
+        </div>
+        <div *ngFor="let class of classes">
+          <div *ngFor="let attribute of class.attributes">
+            <div class="label" *ngIf="attribute.selected">
+              <div class="text">{{ attribute.label }}</div>
+              <i
+                class="icon icon-close"
+                (click)="deleteAttributeFilter(class.key, attribute.key)"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div
+          class="label clear-all"
+          *ngIf="isClassesSelected"
+          (click)="clearAll()"
+        >
+          <div class="text">Clear All</div>
+          <i class="icon icon-close"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="images" *ngIf="imageLoading" >
+    <div class="loading-row">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="images"
+    infinite-scroll
+    [scrollWindow]="false"
+    (scrolled)="onScrollDown($event)"
+    (scrolledUp)="onScrollUp($event)"
+    [hidden]="imageLoading"
+  >
+    <div *ngFor="let image of images; index as i" class="image">
+      <img
+        style="width: 100%"
+        src="{{ image.awsUrl }}"
+        (click)="openImageModal(image._id, i)"
+        (load)="loaded(i)"
+      />
+    </div>
+  </div>
+</div>

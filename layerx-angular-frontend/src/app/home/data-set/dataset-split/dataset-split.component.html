@@ -1,0 +1,106 @@
+<div class="content-col-inner">
+    <div class="top-area">
+        <div class="title-row">
+            <div class="text-col">
+                <div class="txt-title">Split</div>
+                <div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-row" *ngIf="this.loading">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-row" *ngIf="!this.loading">
+        <div class="boxes-row">
+            <div class="box">
+                <div class="top-box">
+                    <div class="top-area">
+                        <div class="icon-wrapper">
+                           <img src="../../../../assets/img/dataset/train.png"/>
+                        </div>
+                        <div class="details">
+                            <div class="value">
+                                {{ this.datasetSplitObj.splitData ? this.datasetSplitObj.splitData[0].percentage + "%" : "N/A" }}
+                            </div>
+                            <div class="description">
+                                {{ this.datasetSplitObj.splitData ? this.datasetSplitObj.splitData[0].type : "N/A" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="middle-area">
+                        <div class="description bottom">Objects</div>
+                        <div class="description purple">
+                            {{ this.datasetSplitObj.splitData ? (this.datasetSplitObj.splitData[0].objectCount | number: "1.0") : "N/A" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <div class="description footer">
+                        {{ this.datasetSplitObj.splitData ? (this.datasetSplitObj.splitData[0].imageCount | number: "1.0") + " Frames" : "N/A" }}
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="top-box">
+                    <div class="top-area">
+                        <div class="icon-wrapper">
+                            <img src="../../../../assets/img/dataset/validation.png"/>
+                        </div>
+                        <div class="details">
+                            <div class="value">
+                                {{ this.datasetSplitObj.splitData ? this.datasetSplitObj.splitData[1].percentage + "%" : "N/A" }}
+                            </div>
+                            <div class="description">
+                                {{ this.datasetSplitObj.splitData ? this.datasetSplitObj.splitData[1].type : "N/A" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="middle-area">
+                        <div class="description bottom">Objects</div>
+                        <div class="description purple">
+                            {{ this.datasetSplitObj.splitData ? (this.datasetSplitObj.splitData[1].objectCount | number: "1.0") : "N/A" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <div class="description footer">
+                        {{ this.datasetSplitObj.splitData ? (this.datasetSplitObj.splitData[1].imageCount | number: "1.0") + " Frames" : "N/A" }}
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="top-box">
+                    <div class="top-area">
+                        <div class="icon-wrapper">
+                            <img src="../../../../assets/img/dataset/testing.png"/>
+                        </div>
+                        <div class="details">
+                            <div class="value">
+                                {{ this.datasetSplitObj.splitData ? this.datasetSplitObj.splitData[2].percentage + "%" : "N/A" }}
+                            </div>
+                            <div class="description">
+                                {{ this.datasetSplitObj.splitData ? this.datasetSplitObj.splitData[2].type : "N/A" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="middle-area">
+                        <div class="description bottom">Objects</div>
+                        <div class="description purple">
+                            {{ this.datasetSplitObj.splitData ? (this.datasetSplitObj.splitData[2].objectCount | number: "1.0") : "N/A" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-area">
+                    <div class="description footer">
+                        {{ this.datasetSplitObj.splitData ? (this.datasetSplitObj.splitData[2].imageCount | number: "1.0") + " Frames" : "N/A" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

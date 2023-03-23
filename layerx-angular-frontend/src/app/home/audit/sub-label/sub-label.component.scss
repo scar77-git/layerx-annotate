@@ -1,0 +1,208 @@
+@import "../../../../assets/scss/colors.scss";
+.menu {
+    background-color: #0b0b0b;
+    border-radius: 15px;
+    width: 400px;
+    max-height: 355px;
+    // position: absolute;
+    //  top: 100px;
+    // left: 300px;
+    padding: 15px 20px;
+    padding-right: 15px;
+  
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 5px;
+      border-bottom: 1px solid $frame_black;
+  
+      .title {
+        font-size: 15px;
+        color: #ffffff;
+      }
+  
+      .close {
+        margin-left: 100px;
+        font-size: 14px;
+        color: #6c698d;
+        cursor: pointer;
+        &:hover{
+          color: $theme_purple;
+        }
+      }
+    }
+  
+    .labels{
+      padding-top: 14px;
+      overflow: auto;
+      &.main{
+        max-height: 220px;
+      }
+      .label {
+        cursor: pointer;
+        float: left;
+        margin-right: 16px;
+        margin-bottom: 16px;
+        border-radius: 10px;
+        width: fit-content;
+        padding: 8px 14px;
+        background-color: #211e39;
+        color: #d0d0d0;
+        font-size: 15px;
+        &:hover{
+          background-color: $theme_purple;
+        }
+      }
+      .active {
+        background-color: #7166f9;
+        color: #ffffff;
+      }
+  
+      .selected-lbls {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+  
+        .lblplus{
+          display: flex;
+          align-items: center;
+          text-align: center;
+        }
+        .lbl-item {
+          background-color: $label_box_black;
+          border-radius: 10px;
+          padding: 8px 8px;
+          border: 1px dashed $text_black;
+          min-width: 30px;
+          min-height: 37px;
+          font-weight: 500;
+  
+          &.selected {
+            background-color: $theme_purple;
+            color: white;
+            font-size: 14px;
+            border: none;
+          }
+        }
+  
+        .add {
+          margin-right: 5px;
+          margin-left: 5px;
+          color: $theme_purple;
+          font-size: 14px;
+          position: relative;
+          top: 3px;
+        }
+      }
+    }
+
+    .sublabels {
+      overflow: auto;
+      max-height: 180px;
+      padding-right: 5px;
+      // padding-top: 14px;
+      
+  
+      .gray-card{
+        background-color: $lbl_card_gray;
+        border-radius: 10px;
+        padding: 15px 10px;
+        margin-top: 10px;
+        &:first-child{
+          margin-top: 0;
+        }
+  
+        .lbl-title{
+          color: $txt_type_gray;
+          font-size: 12px;
+          margin-bottom: 7px;
+        }
+  
+        .attributes-row{
+          display: flex;
+          flex-wrap: wrap;
+          .attrbute-item{
+            color: $time_gray;
+            border-radius: 8px;
+            padding: 6px 18px;
+            background-color: $sub_lbl_purple;
+            margin-right: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-align: center;
+            cursor: pointer;
+            &:hover{
+              background-color: $theme_purple;
+            }
+            &.selected {
+              background-color: $theme_purple;
+              color: white;
+              font-size: 14px;
+              border: none;
+              text-align: center;
+            }
+          }
+        }
+      }
+  
+      
+    }
+  
+    .bottom-btn-row{
+      margin-top: 5px;
+      border-top: 1px solid $frame_black;
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+      button *{
+        cursor: pointer;
+      }
+      .back-btn{
+        border: 1px solid $theme_purple;
+        background: transparent;
+        border-radius: 12px;
+        padding: 4px 18px;
+        // cursor: pointer;
+        &:hover{
+          background-color: $theme_purple_hover;
+          label,i{
+            color: $white;
+          }
+        }
+
+        label{
+          font-size: 14px;
+          color: $theme_purple;
+        }
+        .back{
+          font-size: 15px;
+          color: $theme_purple;
+          position: relative;
+          top: 3px;
+          right: 6px;
+        }
+      }
+  
+      .main-btn{
+        font-size: 14px;
+        border-radius: 12px;
+        padding: 4px 18px;
+        min-width: 80px;
+      }
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $sidebar_bg;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $theme_purple;
+    border-radius: 10px;
+  }

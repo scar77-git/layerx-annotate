@@ -1,0 +1,149 @@
+<app-header></app-header>
+<app-side-bar></app-side-bar>
+<div class="content-col m-h">
+  <div class="border-top"></div>
+  <div class="new-project-panel stage-create" *ngIf="stage !== this.uiType.success">
+    <i class="icon icon-close ci" (click)="cancelCreateProject()" *ngIf="stage === this.uiType.create"></i>
+    <i class="icon icon-close ci" (click)="navigateBack()" *ngIf="stage !== this.uiType.create"></i>
+    <h2 class="title" *ngIf="stage === this.uiType.create">Create new annotation project</h2>
+    <h2 class="title" *ngIf="stage === this.uiType.edit">Edit project</h2>
+    <h2 class="title" *ngIf="stage === this.uiType.addFiles">Add files</h2>
+    <form class="inner" *ngIf="stage === this.uiType.create || stage === this.uiType.edit">
+      <div class="form-group">
+        <label for="project-name " class="inner-title p-b-10">Project Name<span> *</span></label>
+        <input type="text" class="form-control" placeholder="Project Name" value=""
+          [(ngModel)]="this.projectObj.projectName" (keyup)=this.onChange() name="projectName"
+          [ngClass]="{'emptyName':this.projectNameError == true}">
+      </div>
+      <div class="form-group">
+
+        <label for="project-type" class="inner-title">Project Type<span> *</span></label>
+
+        <div class="dropdown">
+          <button class="btn btn-project-type b-h" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+            aria-expanded="true" [disabled]="stage == this.uiType.edit">
+            <div *ngIf="projectObj.projectType === projectType.image">
+              <div class="btn-text"><i class="icon icon-image-project"></i><span>Image</span><i
+                  class="dropdown icon icon-arrow-don"></i></div>
+            </div>
+            <div *ngIf="projectObj.projectType === projectType.video">
+              <div class="btn-text"><i class="icon icon-video-project"></i><span>Video</span><i
+                  class="dropdown icon icon-arrow-don"></i></div>
+            </div>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <!-- <li (click)="setType(projectType.image)">
+              <div class="btn-text btn-text-project btn-border-bottom"
+                [ngClass]="{'active':projectObj.projectType === projectType.image}">
+                <i class="icon icon-image-project"></i><span>Image</span><i class="tick icon icon-tick-mark"></i>
+              </div>
+            </li> -->
+            <li (click)="setType(projectType.video)">
+              <div class="btn-text btn-text-project"
+                [ngClass]="{'active':projectObj.projectType === projectType.video}">
+                <i class="icon icon-video-project"></i><span>Video</span><i class="tick icon icon-tick-mark"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="form-group" *ngIf="projectObj.projectType === projectType.video">
+          <label for="project-name " class="inner-title p-b-10">Required Frame
+            rate<span> *</span></label>
+          <input type="number" class="form-control" placeholder="" value="" [(ngModel)]="projectObj.projectFps"
+            name="fps" [disabled]="stage == this.uiType.edit">
+        </div>
+      </div>
+    </form>
+
+    <div class="ui-wrapper">
+      <div class="upload-option-row" *ngIf="stage === this.uiType.create || stage === this.uiType.addFiles">
+        <label for="upload-from" class="inner-title">Upload Data From<span> *</span></label>
+        <div class="uploads-row">
+          <label class="upload-from">
+            <div class="img" [ngStyle]="{'cursor' : currentChunk !=  undefined ? 'not-allowed' : 'pointer'}">
+              <i class="icon icon-upload-file"></i>
+            </div>
+            <div class="text">My Computer</div>
+            <input type="file" class="file-input" (change)="uploadDocument($event)" multiple accept="video/mp4"
+              #fileUpload hidden [disabled]="currentChunk !=  undefined" />
+          </label>
+          <div class="upload-from" (click)="openGoogleDrivePicker()">
+            <div class="img">
+              <i class="icon icon-g-drive"></i>
+            </div>
+            <div class="text">Google Drive</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="files-list-wrapper" *ngIf="stage !== this.uiType.edit && fileNames.length > 0">
+        <label class="title-b">Selected files</label>
+
+        <div class="file-list">
+          <div class="file-item" *ngFor="let file of fileNames; last as last">
+            <div class="file-name">{{file}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="files-list-wrapper" *ngIf="stage === this.uiType.addFiles && this.projectObj.recentFiles.length > 0">
+        <label class="title-b">Recent uploaded files</label>
+
+        <div class="file-list">
+          <div class="file-item" *ngFor="let file of this.projectObj.recentFiles; last as last">
+            <div class="file-name">{{file.name}}</div>
+            <div class="txt-gray">{{file.size}}</div>
+            <div class="txt-gray r-align">{{file.uploadedAt | date: "d MMM, y"}}</div>
+            <div class="loader-col" *ngIf="file.status == projectFileStatus.pending">
+              <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="tooltip-loader" *ngIf="file.message !== ''">{{file.message}}</div>
+            </div>
+
+            <div class="loader-col"
+              *ngIf="file.status == projectFileStatus.processingError || file.status == projectFileStatus.fileError">
+              <div class="lds-ring"><i class="icon icon-expla-fill error"></i></div>
+              <div class="tooltip-loader">{{file.message}}</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="loading-row" *ngIf="this.loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="center">
+      <button (click)="this.saveProjectData()" [disabled]="loading"
+        [ngClass]="{'main-btn':true, 'btn-disabled':loading}" *ngIf="stage == this.uiType.create">Create</button>
+
+      <button (click)="this.saveProjectData()" [disabled]="loading"
+        [ngClass]="{'main-btn':true, 'btn-disabled':(loading || fileNames.length == 0)}"
+        *ngIf="stage == this.uiType.addFiles">Save Changes</button>
+
+
+      <button (click)="this.saveProjectData()" [disabled]="loading"
+        [ngClass]="{'main-btn':true, 'btn-disabled':loading}" *ngIf="stage == this.uiType.edit">Save Changes</button>
+
+    </div>
+  </div>
+
+  <div class="new-project-panel stage-success" *ngIf="stage === this.uiType.success">
+    <h1 class="count">{{this.projectObj.projectName}}</h1>
+    <h2 class="title">Project successfully created</h2>
+    <div class="center">
+      <button type="submit" class="main-btn m-t-10" (click)="navigateToTaskList()">Next</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<i class="icon icon-close i-close" (click)="close()"></i>
+
+<div class="edit-profile">
+  <div class="header title-border">
+    <div class="title-row">
+      <div class="title-black-large">Manage My Profile</div>
+    </div>
+    <div class="tabs-row">
+      <button class="btn btn-active">Profile</button>
+      <!-- <button class="btn" disabled>Security</button> -->
+    </div>
+  </div>
+  <div class="profile-row">
+    <div class="profile-left">
+      <div class="profile-img">
+        <img class="user" *ngIf="!isImageAvailable" [src]="this.profileUrl" (load)="loaded()" [hidden]="loading"/>
+        <img class="user" *ngIf="isImageAvailable" src="../../../../assets/img/icons/User.png" />
+        <div class="loading-row video_p" *ngIf="loading">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="profile-right">
+      <div class="name">{{ userName }}</div>
+      <div class="email">{{ email }}</div>
+      <input
+        type="file"
+        class="file-input"
+        (change)="uploadProfileImage($event)"
+        #fileUpload
+      />
+      <div class="btn-wrapper">
+        <button class="btn" *ngIf="isImageAvailable" (click)="fileUpload.click()">Add Photo</button>
+        <button class="btn" *ngIf="!isImageAvailable" (click)="loading ? false : fileUpload.click()">Update Photo</button>
+        <!-- <button class="btn" disabled>Remove Photo</button> -->
+      </div>
+    </div>
+  </div>
+  <div class="inputs">
+    <div class="label">Preferred Name</div>
+    <input class="input" type="text" [(ngModel)]="currentUserDetails.name"/>
+  </div>
+  <div class="inputs">
+    <div class="label">Email</div>
+    <input class="input" type="text" [(ngModel)]="currentUserDetails.email"/>
+  </div>
+  <div class="inputs">
+    <div class="submit">
+      <button class="btn main-btn" 
+      [disabled]="currentUserDetails.name == '' ||
+        currentUserDetails.email == '' ||
+        currentUserDetails.teamName == ''"
+      (click)="update()">Update</button>
+    </div>
+  </div>
+</div>

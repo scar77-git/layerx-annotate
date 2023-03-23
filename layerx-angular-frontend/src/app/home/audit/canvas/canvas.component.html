@@ -1,0 +1,314 @@
+<svg
+  [attr.viewBox]="viewBox"
+  class="shapeCanvas"
+  (mousedown)="startDrawing($event)"
+  (mouseup)="stopDrawing($event)"
+  (mousemove)="keepDrawing($event)"
+  (mouseleave)="mouseLeave($event)"
+  (mouseenter)="mouseEnter($event)"
+  [attr.width]="this.canvasWidth * this.screenZoom"
+  [attr.height]="this.canvasHeight * this.screenZoom"
+  style="overflow-x: auto; overflow-y: auto"
+>
+  <rect
+    x="0"
+    y="0"
+    [attr.width]="this.videoWidth"
+    [attr.height]="this.videoHeight"
+    stroke-width="0"
+    fill="transparent"
+    style="cursor: crosshair"
+    class="shape"
+    [ngStyle]="
+      this.shapeType == 'rectangle'
+        ? { cursor: 'crosshair' }
+        : this.shapeType == 'zoomIn'
+        ? { cursor: 'zoom-in' }
+        : this.shapeType == 'zoomOut'
+        ? { cursor: 'zoom-out' }
+        : this.shapeType == 'comment'
+        ? {
+            cursor: 'url(../../../assets/img/annoation/pin_com.png) 20 20, auto'
+          }
+        : this.shapeType == 'pointer'
+        ? {
+            cursor: 'url(../../../assets/img/annoation/pointer.png) 20 20, auto'
+          }
+        : this.shapeType == 'pan'
+        ? this.dragSvg
+          ? { cursor: 'grabbing' }
+          : { cursor: 'grab' }
+        : { cursor: 'Default' }
+    "
+  ></rect>
+
+  <ng-container *ngFor="let shape of shapesToDraw; index as i">
+    <g
+      (mouseenter)="showLabel(i)"
+      (mouseleave)="showLabel(-1)"
+      *ngIf="showAnnotations && !shape.isHide"
+    >
+      <rect
+        class="shape"
+        [style.stroke-width]="2 / this.strokeMultiplier"
+        [style.stroke]="shape.color"
+        [style.fill]="shape.color"
+        [attr.x]="shape.x"
+        [attr.y]="shape.y"
+        [attr.width]="shape.w"
+        [attr.height]="shape.h"
+        *ngIf="shape.type == 'rectangle'"
+        (click)="selectBox(i, shape)"
+        (contextmenu)="openMenu(i, shape)"
+        [ngStyle]="
+          this.shapeType == 'rectangle' || this.shapeType == 'pointer'
+            ? lastEditedBox == i
+              ? { cursor: 'move' }
+              : this.createdShape.w > 0
+              ? { cursor: 'crosshair' }
+              : this.shapeType == 'rectangle'
+              ? { cursor: 'crosshair' }
+              : { cursor: 'pointer' }
+            : this.shapeType == 'pan'
+            ? this.dragSvg
+              ? { cursor: 'grabbing' }
+              : { cursor: 'grab' }
+            : {}
+        "
+      ></rect>
+    </g>
+  </ng-container>
+
+  <ng-container *ngFor="let commentBox of commentBoxes; index as i">
+    <g
+      (click)="setSelectedCommentBox(i)"
+      class="comment-number"
+      *ngIf="showCommentDots"
+      [ngClass]="{'hidden' : isPlay}"
+    >
+      <circle
+        [attr.cx]="commentBox.commentBoxTop"
+        [attr.cy]="commentBox.commentBoxLeft"
+        [attr.r]="13 / this.strokeMultiplier"
+        [attr.fill]="commentBox.isResolved ? '#6BC371' : '#FF1A9E'"
+        [attr.fill-opacity]="selectedCommentBoxIndex == i ? 1 : 0.6"
+      />
+      <circle
+        [attr.cx]="commentBox.commentBoxTop"
+        [attr.cy]="commentBox.commentBoxLeft"
+        [attr.r]="20 / this.strokeMultiplier"
+        [attr.fill]="commentBox.isResolved ? '#6BC371' : '#FF1A9E'"
+        [attr.fill-opacity]="selectedCommentBoxIndex == i ? 0.3 : 0"
+      />
+      <foreignObject
+        *ngIf="
+          commentBox.commentBoxTop - 20 > 0 && commentBox.commentBoxLeft - 8 > 0
+        "
+        [attr.x]="commentBox.commentBoxTop - 20 / this.strokeMultiplier"
+        [attr.y]="commentBox.commentBoxLeft - 8 / this.strokeMultiplier"
+        [attr.width]="40 / this.strokeMultiplier"
+        [attr.height]="18 / this.strokeMultiplier"
+      >
+        <div [style.font-size.px]="12 / this.strokeMultiplier">{{ i + 1 }}</div>
+      </foreignObject>
+    </g>
+  </ng-container>
+
+  <ng-container>
+    <g
+      *ngIf="popUpCommentBox && this.shapeType == constantShapeTypes.comment"
+      class="comment-number"
+    >
+      <circle
+        [attr.cx]="tempCommentBox.commentBoxTop"
+        [attr.cy]="tempCommentBox.commentBoxLeft"
+        [attr.r]="13 / this.strokeMultiplier"
+        fill="#FF1A9E"
+      />
+      <foreignObject
+        [attr.x]="tempCommentBox.commentBoxTop - 20 / this.strokeMultiplier"
+        [attr.y]="tempCommentBox.commentBoxLeft - 8 / this.strokeMultiplier"
+        [attr.width]="40 / this.strokeMultiplier"
+        [attr.height]="18 / this.strokeMultiplier"
+      >
+        <xhtml:div [style.font-size.px]="12 / this.strokeMultiplier">{{
+          commentBoxes.length + 1
+        }}</xhtml:div>
+      </foreignObject>
+    </g>
+  </ng-container>
+
+  <ng-container *ngFor="let shape of shapesToDraw; index as i">
+    <g *ngIf="showAnnotations && !shape.isHide">
+      <circle
+        (mousedown)="clickCircle(1)"
+        *ngIf="shape.status == 'drawed'"
+        [style.stroke]="shape.color"
+        [attr.cx]="shape.x"
+        [attr.cy]="shape.y"
+        [attr.r]="6 / this.strokeMultiplier"
+        fill="black"
+        [style.stroke-width]="3 / this.strokeMultiplier"
+        fill-opacity="1"
+        style="cursor: nwse-resize"
+      ></circle>
+      <circle
+        (mousedown)="clickCircle(2)"
+        *ngIf="shape.status == 'drawed'"
+        [style.stroke]="shape.color"
+        [attr.cx]="shape.x + shape.w"
+        [attr.cy]="shape.y"
+        [attr.r]="6 / this.strokeMultiplier"
+        fill="black"
+        [style.stroke-width]="3 / this.strokeMultiplier"
+        fill-opacity="1"
+        style="cursor: nesw-resize"
+      ></circle>
+      <circle
+        (mousedown)="clickCircle(3)"
+        *ngIf="shape.status == 'drawed'"
+        [style.stroke]="shape.color"
+        [attr.cx]="shape.x"
+        [attr.cy]="shape.y + shape.h"
+        [attr.r]="6 / this.strokeMultiplier"
+        fill="black"
+        [style.stroke-width]="3 / this.strokeMultiplier"
+        fill-opacity="1"
+        style="cursor: nesw-resize"
+      ></circle>
+      <circle
+        (mousedown)="clickCircle(4)"
+        *ngIf="shape.status == 'drawed'"
+        [style.stroke]="shape.color"
+        [attr.cx]="shape.x + shape.w"
+        [attr.cy]="shape.y + shape.h"
+        [attr.r]="6 / this.strokeMultiplier"
+        fill="black"
+        [style.stroke-width]="3 / this.strokeMultiplier"
+        fill-opacity="1"
+        style="cursor: nwse-resize"
+      ></circle>
+    </g>
+  </ng-container>
+  <!-- <ng-container *ngFor="let shape of shapesToDraw; index as i">
+    <foreignObject
+        [attr.x]="this.shape.x + shape.w + 20 > this.videoWidth - 150/this.strokeMultiplier ? this.shape.x - 140/this.strokeMultiplier: this.shape.x + shape.w + 2"
+        [attr.y]="this.shape.y - 1" [style.width]="140 / this.strokeMultiplier" [style.height]="(24 + 22 * (this.attributes[i].length + 1)) / this.strokeMultiplier"
+        *ngIf="this.status == 'completed'" [ngStyle]="this.toggleLabels ? (this.shape.x + shape.w + 20 > this.videoWidth - 150/this.strokeMultiplier) ? 
+        {'display' : 'block','text-align':'right','border-top-left-radius.px':15 / this.strokeMultiplier, 'border-bottom-left-radius.px':15 / this.strokeMultiplier} : 
+        {'display':'block','text-align':'left','border-top-right-radius.px':15 / this.strokeMultiplier, 'border-bottom-right-radius.px':15 / this.strokeMultiplier} : {}">
+        <xhtml:div class="popup-label">
+          <xhtml:div class="right-side" [style.padding-top.px]="12 / this.strokeMultiplier" [style.padding-left.px]="16 / this.strokeMultiplier">
+            <xhtml:div class="sub-label" [style.font-size.px]="16 / this.strokeMultiplier">{{ this.shape.label }}
+            </xhtml:div>
+            <xhtml:div *ngFor="let attribute of this.attributes[i]">
+              <xhtml:div class="attribute" [style.font-size.px]="13 / this.strokeMultiplier">{{ this.attribute }}
+              </xhtml:div>
+            </xhtml:div>
+          </xhtml:div>
+        </xhtml:div>
+      </foreignObject>
+  </ng-container> -->
+  <ng-container *ngFor="let shape of shapesToDraw; index as i">
+    <foreignObject
+      [attr.x]="
+        this.shape.x + shape.w + 20 >
+        this.videoWidth - 150 / this.strokeMultiplier
+          ? this.shape.x - 140 / this.strokeMultiplier
+          : this.shape.x + shape.w + 2
+      "
+      [attr.y]="
+        this.shape.y +
+          (24 + 22 * (this.attributes[i].length + 1)) / this.strokeMultiplier >
+        this.videoHeight
+          ? this.shape.y +
+            shape.h -
+            (24 + 22 * (this.attributes[i].length + 1)) / this.strokeMultiplier
+          : this.shape.y - 1
+      "
+      [style.width.px]="140 / this.strokeMultiplier"
+      [style.height.px]="
+        (24 + 22 * (this.attributesCount[i] + 1)) / this.strokeMultiplier
+      "
+      *ngIf="this.status == 'completed'"
+      [ngStyle]="
+        this.showLabelId == i
+          ? this.shape.x + shape.w + 20 >
+            this.videoWidth - 150 / this.strokeMultiplier
+            ? {
+                display: 'block',
+                'text-align': 'right',
+                'border-top-left-radius.px': 15 / this.strokeMultiplier,
+                'border-bottom-left-radius.px': 15 / this.strokeMultiplier
+              }
+            : {
+                display: 'block',
+                'text-align': 'left',
+                'border-top-right-radius.px': 15 / this.strokeMultiplier,
+                'border-bottom-right-radius.px': 15 / this.strokeMultiplier
+              }
+          : {}
+      "
+    >
+      <xhtml:div class="popup-label">
+        <xhtml:div
+          class="right-side"
+          [style.padding-top.px]="12 / this.strokeMultiplier"
+          [style.padding-left.px]="16 / this.strokeMultiplier"
+          [style.padding-right.px]="16 / this.strokeMultiplier"
+        >
+          <xhtml:div
+            class="sub-label"
+            [style.font-size.px]="16 / this.strokeMultiplier"
+            >{{ this.shape.label }}
+          </xhtml:div>
+          <xhtml:div *ngFor="let attribute of this.attributes[i]">
+            <xhtml:div
+              class="attribute"
+              [style.font-size.px]="13 / this.strokeMultiplier"
+              >{{ this.attribute }}
+            </xhtml:div>
+          </xhtml:div>
+        </xhtml:div>
+      </xhtml:div>
+    </foreignObject>
+  </ng-container>
+
+  <!-- <rect stroke="blue" fill="red" x=100 y=100 height=50 width=50 fill-opacity="0.3"></rect> -->
+  <!-- <app-comment></app-comment> -->
+</svg>
+
+<app-comment
+  *ngIf="this.shapeType == constantShapeTypes.comment && popUpCommentBox"
+  [hidden]="!popUpCommentBox"
+  [ngStyle]="{ top: this.labelY, left: this.labelX }"
+  class="comment-component"
+  [commentBox]="this.tempCommentBox"
+  (emitSendComment)="sendComment($event)"
+  (emitSaveComment)="saveCurrentFrame()"
+  (emitCancelComment)="cancelComment()"
+></app-comment>
+<app-comment
+  *ngIf="
+    this.selectedCommentBoxIndex > -1 &&
+    popUpCommentBox &&
+    this.shapeType != constantShapeTypes.comment
+  "
+  [hidden]="!popUpCommentBox"
+  [ngStyle]="{ top: this.labelY, left: this.labelX }"
+  class="comment-component"
+  [commentBox]="this.commentBoxes[this.selectedCommentBoxIndex]"
+  (emitSendComment)="sendComment($event)"
+  (emitSaveComment)="saveCurrentFrame()"
+></app-comment>
+
+<app-sub-label
+  *ngIf="canvas.showLabelMenu"
+  [ngStyle]="{ top: this.labelY, left: this.labelX }"
+  [labelData]="this.selectedTaskData.labelsList"
+  [selectedBoxData]="this.boxData"
+  (emitSendLabelData)="sendLabel($event)"
+  (emitCloseEvent)="getCloseEvent($event)"
+  (emitUpdateLabelData)="getUpdateEvent($event)"
+  class="menu"
+></app-sub-label>

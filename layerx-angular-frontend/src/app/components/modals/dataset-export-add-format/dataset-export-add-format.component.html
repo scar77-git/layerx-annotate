@@ -1,0 +1,30 @@
+<div class="modal-container">
+  <div class="top-row">
+    <i class="icon icon-close i-close" (click)="close()"></i>
+    <div class="title-row title-border">
+      <div class="title-black">Select Data Format for Export</div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="type-block" *ngFor="let category of this.selectionList">
+      <div class="title">{{ category.categoryName }}</div>
+      <div class="format" *ngFor="let format of category.formats">
+        <div class="checkbox-row">
+          <input
+            type="checkbox"
+            class="checkbox-round"
+            [(ngModel)]="format.isSelected"
+            [disabled]="format.isSelected"
+          />
+          <span class="checkmark"></span>
+        </div>
+        <div class="type">{{ format.name }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-area">
+    <button class="btn-save" (click)="this.generateDataset()">Generate</button>
+  </div>
+</div>

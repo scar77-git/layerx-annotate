@@ -1,0 +1,237 @@
+<div class="content-col-inner" *ngIf="!isShowProjectEmptyView">
+  <div class="filter-row">
+    <div class="filter-area">
+      <div class="search-col">
+        <div class="input-wrapper">
+          <input class="search-input" placeholder="Search by task ID.." type="search" (input)="isSearchCleared()"
+            (keydown.enter)="getTaskList(true)" [(ngModel)]="this.searchKeyword" />
+          <i class="icon icon-search"></i>
+        </div>
+      </div>
+      <div class="filter-col">
+        <div class="drop-down videos" (click)="openVideoFilter(); preventCloseOnClick()">
+          <div class="label">Video clips</div>
+          <i class="icon icon-arrow-don" [ngClass]="{ opened: this.isVideoFilter || this.videos.length > 0 }"></i>
+        </div>
+        <div class="drop-down" (click)="openStatusFilter(); preventCloseOnClick()">
+          <div class="label">Status</div>
+          <i class="icon icon-arrow-don" [ngClass]="{
+              opened: this.isStatusFilter || this.statuses.length > 0
+            }"></i>
+        </div>
+
+        <div class="class-filter" *ngIf="this.isStatusFilter" (click)="preventCloseOnClick()">
+          <div class="wrapper">
+            <div class="filter" *ngFor="let state of statusFiltersList">
+              <div class="left">
+                <input type="checkbox" class="checkbox-round" [checked]="state.isSelected"
+                  [(ngModel)]="state.isSelected" />
+                <span class="checkmark" (click)="state.isSelected = !state.isSelected"></span>
+              </div>
+              <div class="text">
+                {{ this.taskObj.taskStatus[state.status].statusName }}
+              </div>
+            </div>
+          </div>
+          <button class="filter-btn btn-gradient main-btn" (click)="addStatusFilter()">
+            Add Filter
+          </button>
+        </div>
+
+        <div class="class-filter video-filter" (click)="preventCloseOnClick()" *ngIf="this.isVideoFilter">
+          <div class="wrapper" *ngIf="this.taskObj.videoList.length > 0">
+            <div class="filter" *ngFor="let video of this.taskObj.videoList">
+              <div class="left">
+                <input type="checkbox" class="checkbox-round" [checked]="video.isSelected"
+                  [(ngModel)]="video.isSelected" />
+                <span class="checkmark" (click)="video.isSelected = !video.isSelected"></span>
+              </div>
+              <div class="text">
+                {{ video.videoName }}
+              </div>
+            </div>
+          </div>
+
+          <div class="wrapper noVideos" *ngIf="this.taskObj.videoList.length == 0">
+            <div class="text">No Videos</div>
+          </div>
+
+          <button class="filter-btn btn-gradient main-btn" (click)="addVideoFilter()"
+            *ngIf="this.taskObj.videoList.length > 0">
+            Add Filter
+          </button>
+        </div>
+
+        <div class="label-clear" *ngIf="
+            this.searchKeyword ||
+            this.statuses.length > 0 ||
+            this.videos.length > 0
+          " (click)="clearAllFilters()">
+          <div class="text">Clear Filters</div>
+          <i class="icon icon-close"></i>
+        </div>
+      </div>
+    </div>
+    <div class="btn-col">
+      <div class="count">{{ this.taskObj.totalTasks }} Tasks</div>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="this.loading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div class="progress-wrapper" *ngIf="isProjectPending || isProjectUploading">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="progress-col">
+      <div class="task-text">Tasks are creating. Please wait…</div>
+      <div class="progress">
+        <div [ngClass]="['progress-bar']" role="progressbar" [ngStyle]="{ 'width.%': projectProgress }"
+          aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-row" infinite-scroll [infiniteScrollDistance]="SCROLL_DISTANCE"
+    [infiniteScrollThrottle]="SCROLL_THROTTLE" (scrolled)="onScrollDown()" [scrollWindow]="false">
+    <div class="table-col" *ngIf="!this.loading">
+      <div *ngIf="
+          this.taskObj.taskList.list.length == 0 &&
+          isTasksLoaded &&
+          !isProjectPending &&
+          !isProjectUploading
+        " class="no-txt">
+        No Tasks
+      </div>
+      <div *ngIf="
+          this.taskObj.taskList.list.length == 0 &&
+          !isProjectPending &&
+          isProjectUploading
+        " class="no-txt">
+        Project files are uploading ...
+      </div>
+      <div *ngIf="this.taskObj.taskList.list.length == 0 && isProjectPending" class="no-txt">
+        Tasks are creating...
+      </div>
+      <table class="table">
+        <tbody (click)="$event.stopPropagation()">
+          <tr *ngFor="let task of this.taskObj.taskList.list; index as i" (click)="this.collapseView(task.id)"
+            [ngClass]="{ selected: this.selectedTaskId == task.id }">
+            <td class="pl-0">
+              <div class="row-icon">
+                <div class="icon-col">
+                  <div class="icon-wrapper">
+                    <i class="icon icon-video-project" *ngIf="task.contentType == CONTENT_TYPE_VIDEO"></i>
+                    <i class="icon icon-image-project" *ngIf="task.contentType == CONTENT_TYPE_IMAGE"></i>
+                  </div>
+                </div>
+                <div class="text-col">
+                  <div class="txt-black">{{ task.projectName }}</div>
+                  <div class="txt-gray" *ngIf="task.contentType == CONTENT_TYPE_VIDEO">
+                    Video playback annotation
+                  </div>
+                  <div class="txt-gray" *ngIf="task.contentType == CONTENT_TYPE_IMAGE">
+                    Image annotation
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="task-col">
+                <div class="name-txt">{{ task.id }}</div>
+                <div class="txt-gray" *ngIf="
+                    this.taskObj.taskStatus[task.status]?.statusName ==
+                    'Not Started'
+                  ">
+                  Created at {{ task.createdAt | date: "MMM d, y, h:mm:ss a" }}
+                </div>
+                <div class="txt-gray" *ngIf="
+                    this.taskObj.taskStatus[task.status]?.statusName !==
+                      'Not Started' && task.updatedAt !== null
+                  ">
+                  Last updated
+                  {{ task.updatedAt | date: "MMM d, y, h:mm:ss a" }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="status-col">
+                <div class="status dot" [ngStyle]="{
+                    'background-color':
+                      this.taskObj.taskStatus[task.status]?.colorHex
+                  }"></div>
+                <div class="status">
+                  {{ this.taskObj.taskStatus[task.status]?.statusName }}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="progress-col">
+                <div class="txt-black">
+                  {{ task.completedFrames }}<span>Frames</span>
+                </div>
+                <div class="progress line">
+                  <div [ngClass]="['progress-bar']" role="progressbar" [ngStyle]="{
+                      'width.%': task.progress,
+                      'background-color':
+                        this.taskObj.taskStatus[task.status]?.colorHex
+                    }" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </td>
+            <td class="fit-content">
+              <div class="total-col">
+                <div class="left-col">
+                  <div class="name-txt">{{ task.frameCount }}</div>
+                  <div class="txt-gray">Total Frames</div>
+                </div>
+                <div class="right-col">
+                  <i class="icon icon-arrow-don" *ngIf="this.selectedTaskId !== task.id"></i>
+                  <i class="icon icon-arrow-up down" *ngIf="this.selectedTaskId == task.id"></i>
+                </div>
+              </div>
+            </td>
+
+            <div class="collapse-col" *ngIf="this.selectedTaskId == task.id" (click)="$event.stopPropagation()">
+              <div class="button-wrapper">
+                <div class="btn-row">
+                  <button class="tbl-btn" (click)="downloadJson(task.id)" *ngIf="task.isDownloadEnable"
+                    [disabled]="!enableDownloadJsonBtn">
+                    <i class="icon icon-download-json"></i>
+                    Download JSON
+                  </button>
+                  <button class="tbl-btn" (click)="this.openAuditResponse()" *ngIf="
+                      this.taskObj.selectedUserType !== USER_TYPE_ANNOTATOR
+                    ">
+                    <i class="icon icon-audit-response"></i>
+                    Audit Annotations
+                  </button>
+
+                  <button class="tbl-btn" (click)="this.openAuditResponse()"
+                    *ngIf="this.taskObj.selectedUserType == USER_TYPE_ANNOTATOR">
+                    <i class="icon icon-audit-response"></i>
+                    Annotate
+                  </button>
+                </div>
+              </div>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="empty-card-view" *ngIf="isShowProjectEmptyView">
+  <div class="wrapper">
+    <img src="../../../assets/img/empty_view.png" />
+    <div class="txt">No projects to show</div>
+  </div>
+</div>

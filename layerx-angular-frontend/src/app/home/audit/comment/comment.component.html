@@ -1,0 +1,70 @@
+<div class="comment-box" *ngIf="this.commentBox" [ngStyle]="this.commentBox.isResolved ? {'padding-bottom': '12px'} : {}">
+    <div class="comment-inner">
+
+        <div class="resolve-col">
+            <div class="custom-checkbox">
+                <label class="checkbox-container">
+                    <div class="lbl-txt">Resolve</div>
+                    <input type="checkbox" (change)="this.emitSaveComment.emit()"
+                        [(ngModel)]="this.commentBox.isResolved" />
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+
+        </div>
+        <div class="comment-row" *ngFor="let comment of this.commentBox.commentList;index as i">
+            <div class="comment-left">
+                <div class="comment-user-image">
+                    <img [src]="comment.imgUrl">
+                </div>
+
+            </div>
+
+            <div class="comment-right">
+                <div class="comment-header">
+                    <span class="comment-username">
+                        {{comment.userName}}
+                    </span>
+                </div>
+                <span *ngIf="!comment.isEditable">
+                    <div class="comments">
+                        {{comment.commentText}}
+                    </div>
+                    <div class="comment-footer">
+                        <span class="cursor comment-date">{{comment.commentedDate | date: 'MMM d'}}</span>
+                        <span class="cursor comment-delete" *ngIf="activeEditDeleteButtons(comment.userId)" (click)="removeComment(i)">Delete</span>
+                        <span class="cursor comment-edit"  *ngIf="activeEditDeleteButtons(comment.userId)" (click)="editComment(i)">Edit</span>
+                    </div>
+                </span>
+                <span *ngIf="comment.isEditable">
+                    <div class="comments">
+                        <textarea class="comment-text" autofocus [(ngModel)]="this.comment.commentEdit"
+                            [ngClass]="{'mt-3':i==0}" placeholder="Add your comment here."></textarea>
+                    </div>
+                    <div class="comment-footer">
+                        <span class="cursor comment-date">{{comment.commentedDate | date: 'MMM d'}}</span>
+                        <span class="cursor comment-cancel" (click)="cancelSaveComment(i)">Cancel</span>
+                        <span class="cursor comment-save" (click)="saveComment(i)">Save</span>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="comment-row" *ngIf="!this.commentBox.isResolved">
+            <div class="comment-left">
+                <div class="comment-user-image">
+                    <img [src]="userImg">
+                </div>
+            </div>
+            <div class="comment-right">
+                <textarea class="comment-text" autofocus [(ngModel)]="this.newComment.commentText"
+                    placeholder="Add your comment here."></textarea>
+                
+            </div>
+        </div>
+    </div>
+    <button class="btn send-btn" *ngIf="!this.commentBox.isResolved" [ngClass]="{'colored' : this.newComment.commentText}"
+        (click)="sendComment()" [disabled]="!this.newComment.commentText">Send</button>
+    <button class="btn cancel-btn" *ngIf="this.commentBox.commentList.length == 0" (click)="cancelComment()">Cancel</button>
+
+</div>

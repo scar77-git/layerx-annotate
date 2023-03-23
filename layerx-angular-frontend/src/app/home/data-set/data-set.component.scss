@@ -1,0 +1,114 @@
+@import "../../../assets/scss/colors.scss";
+@import "../../../assets/scss/extend.scss";
+
+.panel-content {
+  border-top: 1px solid $border_top_purple;
+
+  .title-row {
+    display: flex;
+    margin-top: 28px;
+    padding-left: 10px;
+
+    .icon-row {
+      margin-top: 5px;
+      img {
+        width: 30px;
+      }
+    }
+    .text-col {
+      padding-left: 20px;
+      .txt-title {
+        color: $text_black;
+        font-weight: 500;
+        font-size: 1.7rem;
+        line-height: 24px;
+      }
+      .txt-type {
+        color: $txt_type_gray;
+        font-weight: 500;
+        font-size: 12.5px;
+        margin-top: 4px;
+      }
+    }
+  }
+
+  .navigation-card {
+    background-color: $card_gray;
+    border-radius: 20px;
+    padding: 20px 24px;
+    width: 100%;
+    margin-top: 14px;
+    min-height: 116px;
+    .nav-row {
+      display: flex;
+      align-items: center;
+      .nav-item {
+        // min-width: 140px;
+        padding: 5px 14px;
+        cursor: pointer;
+        margin-right: 14px;
+        min-width: 80px;
+        text-align: center;
+        .page-name {
+          font-size: 14px;
+          color: $text_black;
+          font-weight: 500;
+        }
+        &:hover {
+          background-color: $left-border;
+          border-radius: 12px;
+        }
+
+        &.selected {
+          background-color: $theme_purple;
+          border-radius: 12px;
+
+          .page-name {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .content-card-white {
+    background-color: $white;
+    border-radius: 20px;
+    padding: 30px 30px;
+    min-height: 90px;
+    margin-top: -50px;
+  }
+}
+.progress-wrapper {
+  position: absolute;
+  top: 40px;
+  width: 260px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  .lds-ring {
+    @extend %lds-ring;
+  }
+  .progress-col {
+    width: calc(100% - 32px);
+    .task-text {
+      font-size: 11px;
+      color: $txt_type_gray;
+
+      &.error{
+        color: $reject_red;
+      }
+    }
+  }
+  .progress {
+    width: 100%;
+    height: 5px;
+    background-color: $left-border;
+    border-radius: 20px;
+    .progress-bar {
+      background-color: $theme_green;
+      border-radius: 20px;
+    }
+  }
+}
+

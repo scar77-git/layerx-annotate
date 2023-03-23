@@ -1,0 +1,44 @@
+@import "../../../../assets/scss/colors.scss";
+.tab-pane {
+  display: flex;
+  padding-right: 20px;
+  .tab-btn {
+    width: 33%;
+    color: $sidebar_right_text;
+    font-size: 12px;
+    text-align: center;
+    border-bottom: 2px solid $frame_black;
+    height: 60px;
+    font-weight: 500;
+    cursor: pointer;
+    .icon {
+      font-size: 16px;
+    }
+    &.active {
+      color: $white;
+      opacity: 1;
+      border-bottom: 4px solid $theme_purple;
+      .icon {
+        color: $theme_purple;
+      }
+    }
+    .comment-count {
+      height: 14px;
+      width: 14px;
+      line-height: 14px;
+      border-radius: 50%;
+      background-color: $unread_comments;
+      position: relative;
+      top: -45px;
+      left: 40px;
+      color: $white;
+      font-size: 7px;
+      padding-right: 1px;
+      text-align: center;
+    }
+  }
+}
+.tab-container {
+  color: $white;
+  padding-right: 5px;
+}

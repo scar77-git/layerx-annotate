@@ -1,0 +1,294 @@
+@import "../../../../assets/scss/colors.scss";
+
+.modal-container {
+  .title-row {
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    .title-black {
+      color: $text_black;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .task-count{
+      margin-right: 10px;
+      font-size: 16px;
+      padding-top: 3px;
+      .selected{
+        color: $txt_type_gray;
+      }
+      .total{
+        color: $new_project_star;
+      }
+    }
+  }
+  .i-close {
+    font-size: 25px;
+    color: $new_project_star;
+    float: right;
+  }
+  .title-border {
+    border-bottom: 1px solid $filter_row_gray;
+  }
+
+  .search-row {
+    margin-top: 20px;
+    display: flex;
+
+    .form-outline {
+      position: relative;
+      width: calc(100% - 50px);
+
+      i {
+        position: absolute;
+        left: 10px;
+        color: $theme_purple;
+        top: 5px;
+        font-size: 24px;
+      }
+    }
+    .icon-wrapper{
+      cursor: pointer;
+      border-radius: 9px;
+      color: $white;
+      font-size: 17px;
+      width: 28px;
+      height: 28px;
+      margin-top: 5px;
+      margin-left: auto;
+      margin-right: 7px;
+      border: 1px solid $tooltip_text;
+      &.selected{
+        background-color: $theme_purple;
+      }
+      .icon{
+        position: relative;
+        top: 4px;
+        left: 5px;
+      }
+    }
+    input {
+      border-radius: 13px;
+      border: 1px solid $new_project_upload_border;
+      height: 40px;
+      // background-color: $btn_gray;
+      color: $search_placeholder;
+      font-size: 18px;
+      padding-left: 40px;
+    }
+
+    input::placeholder,
+    input:-ms-input-placeholder,
+    input::-ms-input-placeholder {
+      color: $search_placeholder;
+      font-size: 18px;
+    }
+  }
+
+  .table-row {
+    max-height: 45vh;
+    overflow: auto;
+    margin-top: 10px;
+    padding: -10px 0;
+    
+    table {
+      position: relative;
+      margin-bottom: 0;
+      tbody {
+        
+        tr {
+          border-bottom: 1px solid $filter_row_gray;
+
+          td {
+            padding: 20px 10px;
+            // max-width: fit-content !important;
+            // width: 200px;
+            .txt-black {
+              color: $text_black;
+              font-size: 16px;
+              font-weight: 500;
+
+              &.middle {
+                margin-top: 10px;
+              }
+            }
+
+            .row-icon {
+              display: flex;
+              align-items: center;
+              max-width: fit-content;
+
+              &.delete {
+                justify-content: flex-end;
+                max-width: 100%;
+                // margin-right: 30px;
+
+                .checkbox-round {
+                  height: 25px;
+                  width: 25px;
+                  border: 1px solid $tooltip_text;
+                  background-color: $white;
+                  appearance: none;
+                  -webkit-appearance: none;
+                  outline: none;
+                  cursor: pointer;
+                  border-radius: 6px;
+                  margin-top: 7px;
+                }
+                .checkmark {
+                  position: relative;
+                  top: 0;
+                  left: 0;
+                  &:after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                    left: -16px;
+                    top: -4px;
+                    width: 7px;
+                    height: 13px;
+                    border: solid $white;
+                    border-width: 0 3px 3px 0;
+                    -webkit-transform: rotate(45deg);
+                    -ms-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                  }
+                }
+                .checkbox-round:checked {
+                  background-color: $theme_purple;
+                  border: none;
+                  ~ .checkmark {
+                    &:after {
+                      display: block;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .radio-area{
+    margin-top: 1rem;
+    .desc{
+      margin-bottom: 10px;
+    }
+    .radio-row {
+      // .radio{
+      //   width: 33%;
+      // }
+      .inputs {
+        // margin-left: 30px;
+        display: flex;
+        justify-content: space-around;
+  
+        /* The container */
+        .container {
+          display: block;
+          position: relative;
+          padding-left: 35px;
+          padding-right: 40px;
+          width: 33%;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          padding-top: 5px;
+          padding: 5px 40px 20px 35px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+  
+        /* Hide the browser's default radio button */
+        .container input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+        }
+  
+        /* Create a custom radio button */
+        .checkmark {
+          position: absolute;
+          top: 5px;
+          left: 0;
+          height: 18px;
+          width: 18px;
+          background-color: $white;
+          border-radius: 50%;
+          border: 1px solid $task_count;
+        }
+  
+        /* On mouse-over, add a grey background color */
+        // .container:hover input ~ .checkmark {
+        //   background-color: $theme_purple;
+        // }
+  
+        /* When the radio button is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+          background-color: $white;
+          border: 1px solid $theme_purple;
+        }
+  
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+        }
+  
+        /* Show the indicator (dot/circle) when checked */
+        .container input:checked ~ .checkmark:after {
+          display: block;
+        }
+  
+        /* Style the indicator (dot/circle) */
+        .container .checkmark:after {
+          top: 3px;
+          left: 3px;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: $theme_purple;
+        }
+        .text {
+          margin-right: 35px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  .add-button {
+    display: flex;
+    justify-content: center;
+    .btn-add {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 10px 50px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Designing for scroll-bar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: $scroll_bar_gray_light;
+  border-radius: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $left-border;
+  border-radius: 5px;
+}

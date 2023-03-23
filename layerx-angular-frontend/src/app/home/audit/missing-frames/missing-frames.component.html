@@ -1,0 +1,15 @@
+<div class="confirm-box">
+    <div class="alert">
+        <div class="icon icon-expla-empty"></div>
+    </div>
+    <div class="white-text" *ngIf="userType == USER_TYPE_ANNOTATOR">
+        {{ this.const.missing_frames_annotator }}
+    </div>
+    <div class="white-text" *ngIf="userType != USER_TYPE_ANNOTATOR">
+        {{ this.const.missing_frames_auditor }}
+    </div>
+    <div class="btn-row">
+        <button class="btn btn-no" (click)="close()">No</button>
+        <button class="btn btn-yes" (click)="submit()">Yes</button>
+    </div>
+</div>

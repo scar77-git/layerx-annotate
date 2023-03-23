@@ -1,0 +1,4 @@
+#files
+
+*.weights
+*.pb

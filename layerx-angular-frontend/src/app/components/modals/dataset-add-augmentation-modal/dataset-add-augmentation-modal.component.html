@@ -1,0 +1,326 @@
+<div class="modal-container">
+  <div class="top-row">
+    <i class="icon icon-close i-close" (click)="close()"></i>
+    <div class="title-row title-border">
+      <div class="title-black">Select Augmentations</div>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <div
+      [ngClass]="{
+        'nav-item': true,
+        selected:
+          this.augmentationLevelPanel == augmentationLevelsConstant.IMAGE_LEVEL
+      }"
+      (click)="
+        this.changeAugmentationLevel(augmentationLevelsConstant.IMAGE_LEVEL)
+      "
+    >
+      <div class="page-name">Image Level Augmentation</div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div
+      class="left-col"
+      *ngIf="
+        this.augmentationLevelPanel == augmentationLevelsConstant.IMAGE_LEVEL
+      "
+      id="scrollContent"
+      #scrollContent
+    >
+      <div
+        *ngFor="let augObj of this.augmentatioData.IMAGE_LEVEL"
+        class="box"
+        [ngClass]="{ selected: augObj.isSelected }"
+        (click)="selectBox(augObj)"
+      >
+        <div class="left">
+          <div class="aug-img">
+            <img
+              src=".../../../../assets/img/augmentation-thumb_images/{{
+                augObj.id
+              }}.png"
+            />
+          </div>
+          <div class="texts">
+            <div class="aug-name">
+              {{
+                dataAugmentationObj?.augmentationItems[augmentationLevelPanel][
+                  augObj.id
+                ]?.label
+              }}
+            </div>
+            <div class="aug-types">{{ augObj.description }}</div>
+          </div>
+        </div>
+        <div class="right">
+          <input
+            type="checkbox"
+            class="checkbox-round"
+            [(ngModel)]="augObj.isSelected"
+          />
+          <span
+            class="checkmark"
+            (click)="augObj.isSelected = !augObj.isSelected"
+          ></span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="left-col"
+      *ngIf="
+        this.augmentationLevelPanel ==
+        augmentationLevelsConstant.BOUNDING_BOX_LEVEL
+      "
+      id="scrollContent"
+      #scrollContent
+    >
+      <div
+        *ngFor="let augObj of this.augmentatioData.BOUNDING_BOX_LEVEL"
+        class="box"
+        [ngClass]="{ selected: augObj.isSelected }"
+        (click)="selectBox(augObj)"
+      >
+        <div class="left">
+          <div class="aug-img">
+            <img
+              src=".../../../../assets/img/augmentation-thumb_images/{{
+                augObj.id
+              }}.png"
+            />
+          </div>
+          <div class="texts">
+            <div class="aug-name">
+              {{
+                dataAugmentationObj?.augmentationItems[augmentationLevelPanel][
+                  augObj.id
+                ]?.label
+              }}
+            </div>
+            <div class="aug-types">{{ augObj.description }}</div>
+          </div>
+        </div>
+        <div class="right">
+          <input
+            type="checkbox"
+            class="checkbox-round"
+            [(ngModel)]="augObj.isSelected"
+          />
+          <span
+            class="checkmark"
+            (click)="augObj.isSelected = !augObj.isSelected"
+          ></span>
+        </div>
+      </div>
+    </div>
+    <div class="right-col">
+      <span *ngIf="selectedBox.id != ''">
+        <div class="top-box">
+          <div class="topic">
+            {{
+              dataAugmentationObj?.augmentationItems[augmentationLevelPanel][
+                selectedBox.id
+              ]?.label
+            }}
+          </div>
+          <div class="description">
+            {{
+              dataAugmentationObj?.augmentationItems[augmentationLevelPanel][
+                selectedBox.id
+              ]?.description
+            }}
+          </div>
+        </div>
+        <div
+          class="bottom-boxes mosaic"
+          *ngIf="selectedBox.id == this.augmentationsIdList.MOSAIC"
+        >
+          <div class="mosaic-col">
+            <img
+              class="mosaic-img"
+              src="../../../../assets/img/augmentation/mosaic.png"
+            />
+            <div class="mosaic-txt">No live preview for this action</div>
+          </div>
+        </div>
+
+        <div
+          class="bottom-boxes"
+          *ngIf="selectedBox.id != this.augmentationsIdList.MOSAIC"
+        >
+          <div class="left-box">
+            <div
+              class="main-img"
+              *ngIf="
+                dataAugmentationObj?.augmentationItems[augmentationLevelPanel][
+                  selectedBox.id
+                ]?.viewPreprocessedImage == true
+              "
+            >
+              <img src="../../../../assets/img/augmentation/preprocessed.png" />
+              <div class="tag">Original</div>
+            </div>
+            <div class="property-adjuster">
+              <div
+                class=""
+                *ngFor="
+                  let property of dataAugmentationObj?.augmentationItems[
+                    augmentationLevelPanel
+                  ][selectedBox.id]?.properties
+                "
+              >
+                <div
+                  class="form-check form-row row-item"
+                  *ngIf="
+                    property.type == dataInputTypesConstant.CHECK_BOX &&
+                    !property.isHide
+                  "
+                >
+
+                  <input
+                    type="checkbox"
+                    [checked]="getPropertyValue(property.id)"
+                    (change)="changePropertyValue(property, $event)"
+                    class="checkbox-round"
+                    id="flexCheckChecked"
+                  />
+                  <span
+                    class="checkmark top-4"
+                    (click)="changePropertyValue(property, $event)"
+                  ></span>
+
+                  <label class="form-check-label txt-lbl">
+                    {{ property.name }}
+                  </label>
+                </div>
+                <div
+                  class="form-row"
+                  *ngIf="
+                    property.type == dataInputTypesConstant.RANGE &&
+                    !property.isMultiValue &&
+                    !property.isHide
+                  "
+                >
+                  <div class="info-row">
+                    <div class="level">{{ property.name }}</div>
+                    <div
+                      class="info"
+                      *ngIf="getPropertyValue(property.id) != null"
+                    >
+                      {{ getPropertyValue(property.id)
+                      }}{{ property.valueType.label }}
+                    </div>
+                  </div>
+                  <mat-slider
+                    value="{{ getPropertyValue(property.id) }}"
+                    min="{{ property.min }}"
+                    max="{{ property.max }}"
+                    aria-label="unit(s)"
+                    (change)="changePropertyValue(property, $event)"
+                  >
+                  </mat-slider>
+                </div>
+                <div
+                  class="form-row"
+                  *ngIf="
+                    property.type == dataInputTypesConstant.RANGE &&
+                    property.isMultiValue &&
+                    !property.isHide
+                  "
+                >
+                  <div class="info-row">
+                    <div class="level">{{ property.name }}</div>
+                    <div class="info">
+                      {{ getPropertyValue(property.id).minValue }}-{{
+                        getPropertyValue(property.id).highValue
+                      }}{{ property.valueType.label }}
+                    </div>
+                  </div>
+
+                  <div class="custom-slider">
+                    <ngx-slider
+                      [(value)]="getPropertyValue(property.id).minValue"
+                      [(highValue)]="getPropertyValue(property.id).highValue"
+                      [options]="
+                        getMultiRangeOptions(property.min, property.max)
+                      "
+                      (userChange)="changePropertyValue(property, $event)"
+                    ></ngx-slider>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-box">
+            <div class="aug-img-con" id="augImgCon" #augImgCon>
+              <div
+                class="aug-img"
+                *ngFor="let property of getShownProperties(selectedBox)"
+                [ngClass]="{
+                  'w-50': getShownProperties(selectedBox).length > 2
+                }"
+              >
+                <canvas
+                  id="{{ property.id }}"
+                  width="100"
+                  height="100"
+                  class="mixed"
+                ></canvas>
+                <div
+                  *ngIf="
+                    property.name &&
+                    this.getPropertyModel(property.id, selectedBox)?.type ==
+                      dataInputTypesConstant.CHECK_BOX
+                  "
+                  class="processed-label"
+                >
+                  {{ property.name }}
+                </div>
+                <div
+                  class="processed-label"
+                  *ngIf="
+                    (getPropertyValue(property.id) ||
+                      getPropertyValue(property.id) == 0) &&
+                    this.getPropertyModel(property.id, selectedBox)?.type ==
+                      dataInputTypesConstant.RANGE &&
+                    !this.getPropertyModel(property.id, selectedBox)
+                      ?.isMultiValue
+                  "
+                >
+                  {{ getPropertyValue(property.id)
+                  }}{{
+                    this.getPropertyModel(property.id, selectedBox)?.valueType
+                      ?.label
+                  }}
+                </div>
+                <div
+                  class="processed-label"
+                  *ngIf="
+                    (getPropertyValue(property.id) ||
+                      getPropertyValue(property.id) == 0) &&
+                    this.getPropertyModel(property.id, selectedBox)?.type ==
+                      dataInputTypesConstant.RANGE &&
+                    this.getPropertyModel(property.id, selectedBox)
+                      ?.isMultiValue
+                  "
+                >
+                  {{ getPropertyValue(property.id)?.minValue
+                  }}{{
+                    this.getPropertyModel(property.id, selectedBox)?.valueType
+                      ?.label
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <button class="btn-save" (click)="saveAugmentations()">Save</button>
+  </div>
+</div>

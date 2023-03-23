@@ -1,0 +1,51 @@
+<div class="modal-container">
+  <div class="top-row">
+    <i class="icon icon-close i-close" (click)="close()"></i>
+    <div class="title-row title-border">
+      <div class="title-black">Select labels for the training data set</div>
+    </div>
+  </div>
+
+  <div class="search-row">
+    <div class="form-outline">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search labels"
+        aria-label="Search"
+        [(ngModel)]="searchTxt"
+        (input)="onSearch()"
+      />
+      <i class="icon icon-search"></i>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <table class="table">
+      <tbody (click)="$event.stopPropagation()">
+        <tr *ngFor="let label of this.searchedList">
+          <td>
+            <div class="row-icon">
+              <div class="txt-black middle">{{ formatText(label.label) }}</div>
+            </div>
+          </td>
+
+          <td>
+            <div class="row-icon delete">
+              <input
+                type="checkbox"
+                class="checkbox-round"
+                [(ngModel)]="label.isEnabled"
+              />
+              <span class="checkmark" (click)="label.isEnabled = !label.isEnabled"></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="add-button">
+    <button class="btn-add" (click)="add()">Add</button>
+  </div>
+</div>

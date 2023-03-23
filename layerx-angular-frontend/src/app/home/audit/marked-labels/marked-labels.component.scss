@@ -1,0 +1,89 @@
+@import "../../../../assets/scss/colors.scss";
+
+.marked-labels {
+  margin-bottom: 20px;
+
+  .header-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 30px;
+    border-bottom: 2px solid $frame_black;
+    padding-bottom: 12px;
+
+    .title {
+      float: left;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .total-count {
+      float: right;
+      color: #D0D0D0;
+      margin-right: 7px;
+      font-size: 14px;
+    }
+  }
+
+  .label-row {
+    width: 100%;
+    padding: 18px 0px;
+    border-bottom: 1px solid $frame_black;
+    padding: 10px 0px;
+    border-bottom: 1px solid #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left-col {
+      display: flex;
+      align-items: center;
+
+      .label-color {
+        height: 14px;
+        width: 14px;
+        border-radius: 3px;
+        margin-left: 3px;
+      }
+
+      .label-name {
+        color: #D0D0D0;
+        font-size: 14px;
+        margin-left: 15px;
+
+        width: 112px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+      }
+    }
+
+    .right-col {
+      display: flex;
+      align-items: center;
+
+      .label-count {
+        color: #4CD7F6;
+        font-size: 15px;
+      }
+
+      i {
+        font-size: 25px;
+        margin-top: 4px;
+      }
+    }
+
+
+
+  }
+
+  .label-sparator {
+    height: 1px;
+    border-bottom: 1px solid $frame_black;
+    width: calc(100% - 6px);
+    // margin-top: 11px;
+    // margin-bottom: 16px;
+  }
+}

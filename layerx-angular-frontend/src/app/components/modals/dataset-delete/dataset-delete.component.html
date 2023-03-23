@@ -1,0 +1,25 @@
+<div class="modal-container">
+  <div class="header">
+    <div class="left">
+      <div class="title">Delete Dataset Version</div>
+    </div>
+    <div class="close" (click)="this.onNoClick()">
+      <div class="icon icon-close"></div>
+    </div>
+  </div>
+  <div class="content">
+    <label for="dataset-name"
+      >To confirm the deletion of dataset version, please type the version number "{{data.version}}" below</label
+    >
+    <input type="text" [(ngModel)]="version" (input)="clearErrorMsg()"/>
+    <div class="tooltip-custom" *ngIf="errorMsg">
+      <p>{{ errorMsg }}</p>
+      <i></i>
+    </div>
+  </div>
+  <div class="btn-col-sub">
+    <button class="main-btn btn-gradient ok-btn" (click)="delete()">
+      Delete Version
+    </button>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="frame-info">
+  <div class="frame-number">
+    Frame <span>{{ this.audit.mediaPlayerFpsCount }}</span>
+  </div>
+  <div class="video-time">
+    {{ this.audit.currentTime }}
+  </div>
+</div>
+
+<section class="comments">
+  <div [ngClass]="{'comment':true, 'resolved':comment.isResolved}" *ngFor="let comment of commentList; index as i"
+    (click)="selectComment(comment)">
+    <div class="header">
+      <div class="left">
+        <div class="user-image">
+          <img [src]="comment.profileImg">
+        </div>
+      </div>
+      <div class="right">
+        <div class="user-name">{{comment.name}}</div>
+        <div class="comment-date">{{comment.date | date: 'MMM d'}}</div>
+      </div>
+    </div>
+    <div class="comment-number">{{comment.commentBoxNo}}</div>
+    <div class="content">
+      {{comment.commentText}}
+    </div>
+  </div>
+</section>

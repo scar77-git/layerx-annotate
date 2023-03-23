@@ -1,0 +1,89 @@
+@import "../../../../assets/scss/colors.scss";
+
+.shape {
+  fill-opacity: 0.3;
+  stroke: black;
+  // stroke-width: 1;
+}
+
+.menu {
+  position: absolute;
+  left: 300px;
+}
+
+.Chair {
+  stroke: #fff400;
+}
+.Man {
+  stroke: #00d1ff;
+}
+.Table {
+  stroke: #25e731;
+}
+.Trolly {
+  stroke: #f734ff;
+}
+
+svg {
+  foreignObject {
+    display: none;
+    .popup-label {
+      background-color: #000000;
+      width: 100%;
+      height: 100%;
+      .left-side {
+        height: 100%;
+        float: left;
+        .color-box {
+          border-radius: 4px;
+        }
+      }
+      .right-side {
+        height: 100%;
+        .sub-label {
+          color: #fff;
+          font-weight: 500;
+        }
+        .attribute{
+          color: #C2CADB;
+          font-weight: 500;
+        }
+        .item-no {
+          color: #6c698d;
+        }
+      }
+    }
+  }
+}
+svg {
+  g {
+    &.comment-number {
+      circle {
+        cursor: pointer;
+      }
+      foreignObject {
+        display: block;
+        cursor: pointer;
+        div {
+          color: #ffffff;
+          text-align: center;
+        }
+      }
+    }
+    &.hidden{
+      display: none;
+    }
+  }
+  g:hover {
+    foreignObject {
+      display: block;
+      z-index: 9999;
+      position: absolute;
+    }
+  }
+}
+
+.comment-component {
+  width: 413px;
+  position: absolute;
+}

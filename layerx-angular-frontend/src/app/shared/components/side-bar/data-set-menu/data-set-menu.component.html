@@ -1,0 +1,91 @@
+<div class="header-row">
+  <div class="left-col">
+    <h2 class="caption">Dataset</h2>
+  </div>
+  <div class="right-col" *ngIf="isShowCreateButton">
+    <div class="plus" (click)="navigateToCreateDataset()">
+      <i class="icon icon-add-mark"></i>
+    </div>
+  </div> 
+</div>
+<div class="search">
+  <div class="form-outline">
+    <input
+      type="input"
+      class="form-control"
+      placeholder="Search dataset"
+      aria-label="Search"
+      [(ngModel)]="searchKey"
+      (keyup)="searchDataset()"
+    />
+    <i class="icon icon-search"></i>
+  </div>
+</div>
+<div class="datasets" #scroll>
+  <div *ngIf="this.loading" class="spinner">
+    <div class="spinner-border text-light m-1" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  <div *ngIf="!this.loading">
+    <ng-container *ngFor="let dataset of this.searchedList; index as i">
+      <div
+        class="dataset"
+        *ngIf="dataset.name"
+        [ngClass]="{ project: true, active: selectedId == i }"
+        (click)="setSelectedId(i)"
+      >
+        <div class="text-col">
+          <i class="icon icon-dataset"></i>
+          <div class="project-title">{{ dataset.name }}</div>
+        </div>
+
+        <div class="option-wrapper" *ngIf="isShowCreateButton">
+        </div>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="edit()">Edit</button>
+          <button mat-menu-item (click)="duplicate()">Duplicate</button>
+          <button mat-menu-item (click)="delete()">Delete</button>
+        </mat-menu>
+      </div>
+      <div
+        class="version-wrapper"
+        *ngIf="dataset.versionList && selectedId == i"
+      >
+        <div
+          class="versions"
+          *ngFor="let version of dataset.versionList; index as j"
+          [hidden]="selectedId != i"
+          (click)="setSelectedVersion(j)"
+        >
+          <div
+            class="version"
+            *ngIf="dataset.name"
+            [ngClass]="{
+              project: true,
+              active: selectedVersion == j,
+              first: j == 0
+            }"
+            (click)="selectedId = i"
+          >
+            <div class="text-col">
+              <i class="icon icon-dataset"></i>
+              <div class="project-title">Version {{ version.versionNo }}</div>
+            </div>
+
+            <div class="option-wrapper" *ngIf="isShowCreateButton">
+              <i class="icon icon-option dots" [matMenuTriggerFor]="menu"></i>
+            </div>
+
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onEdit()">Edit</button>
+              <!-- <button mat-menu-item>Duplicate</button> -->
+              <button mat-menu-item (click)="delete()">Delete</button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

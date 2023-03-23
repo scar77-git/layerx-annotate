@@ -1,0 +1,130 @@
+@import "../../../../assets/scss/colors.scss";
+
+.title-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid $filter_row_gray;
+  padding-bottom: 15px;
+
+  .text-col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .txt-title {
+      color: $text_black;
+      font-weight: 500;
+      font-size: 1.7rem;
+      line-height: 38px;
+    }
+
+    .btn-upload {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 6px 25px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+
+.content-row {
+  height: 400px;
+
+  .boxes-row {
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-between;
+    width: 100%;
+
+    .box {
+      display: block;
+      align-items: center;
+      //   width: 350px;
+      width: calc((100% - 52px) / 3);
+      border-radius: 15px;
+      border: 1px solid $dashboard-background-box;
+      overflow: hidden;
+
+      .value {
+        color: $text_black;
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 31px;
+      }
+
+      .description {
+        font-size: 1.1rem;
+        font-weight: 400;
+        color: $txt_type_gray;
+
+        &.bottom {
+          font-size: 17px;
+        }
+
+        &.purple {
+          color: $theme_purple;
+          font-weight: 600;
+        }
+
+        &.footer {
+          font-size: 14px;
+        }
+      }
+
+      .top-box {
+        padding: 25px 25px 10px 25px;
+        background-color: $dashboard-background-box;
+        border-radius: 10px;
+
+        .top-area {
+          width: 100%;
+          display: flex;
+          border-bottom: 1px solid $filter_row_gray;
+          padding-bottom: 15px;
+
+          .icon-wrapper {
+            width: 65px;
+            height: 65px;
+            border-radius: 10px;
+            background-color: #EDEBFF;
+            text-align: center;
+
+            &.pink {
+              background-color: $theme_pink;
+            }
+
+            &.blue {
+              background-color: $theme_blue;
+            }
+
+            img {
+              width: 45px;
+              margin-top: 10px;
+            }
+          }
+
+          .details {
+            margin-left: 20px;
+            margin-top: 10px;
+          }
+        }
+
+        .middle-area {
+          padding-top: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+
+      .bottom-area {
+        background: $white;
+        padding: 10px 25px;
+      }
+    }
+  }
+}

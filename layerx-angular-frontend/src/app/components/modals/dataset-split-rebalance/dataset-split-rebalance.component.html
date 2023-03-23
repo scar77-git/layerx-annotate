@@ -1,0 +1,58 @@
+<div class="modal-container">
+  <div class="top-row">
+    <i class="icon icon-close i-close" (click)="close()"></i>
+    <div class="title-row title-border">
+      <div class="title-black">Rebalance Dataset</div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="description">
+      You can update your dataset's Train/Test Split here.
+    </div>
+
+    <div class="slider-area">
+      <div class="custom-slider">
+        <ngx-slider
+          [(value)]="minValue"
+          [(highValue)]="maxValue"
+          [options]="options"
+          id="ngxSlider"
+          #ngxSlide
+        ></ngx-slider>
+      </div>
+    </div>
+    <div class="number-area">
+      <div class="set">
+        <div class="box train">
+          <i class="icon-training-set"></i>
+        </div>
+        <div class="right">
+          <div class="percentage">{{ minValue }}%</div>
+          <div class="text">Trainning Set</div>
+        </div>
+      </div>
+      <div class="set">
+        <div class="box validate">
+          <i class="icon-validation-set"></i>
+        </div>
+        <div class="right">
+          <div class="percentage">{{ maxValue - minValue }}%</div>
+          <div class="text">Validation Set</div>
+        </div>
+      </div>
+      <div class="set">
+        <div class="box test">
+          <i class="icon-testing-set"></i>
+        </div>
+        <div class="right">
+          <div class="percentage">{{ 100 - maxValue }}%</div>
+          <div class="text">Testing Set</div>
+        </div>
+      </div>
+    </div>
+    <div class="save-btn">
+      <button class="main-btn" (click)="rebalanceDataset()">Save</button>
+    </div>
+  </div>
+</div>

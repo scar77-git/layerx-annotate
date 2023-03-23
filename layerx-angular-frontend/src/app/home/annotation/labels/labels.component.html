@@ -1,0 +1,159 @@
+<div>
+  <div class="content-col-inner">
+    <div class="title-row">
+      <div class="text-col">
+        <div class="txt-title">Labels</div>
+      </div>
+      <button class="btn main-btn btn-gradient new-label" (click)="newLabel()">
+        Add New Label
+      </button>
+    </div>
+    <div id="alertBox" class="alert">
+      <i class="icon icon-tick-mark"></i>
+      <div class="text">New label added</div>
+    </div>
+    <div *ngFor="let labels of this.labels; index as i">
+      <div class="label-header">
+        <div class="labels" [ngClass]="{
+            'margin-top-minus':
+              this.selectedClass < i && this.selectedClass != -1,
+            'margin-bottom-170':
+              selectedClass == i && labels.type == SCREEN_CLASS_ONLY
+          }">
+          <div class="content">
+            <div class="main-content-area">
+              <div class="label-icon">
+                <div class="icon icon-label"></div>
+              </div>
+              <div class="title-area">
+                <div class="label-area">
+                  <div class="label">{{ labels.label }}</div>
+                  <div class="class">Class</div>
+                </div>
+
+                <div class="toggle" *ngIf="this.selectedClass != i" (click)="expandClass(i)">
+                  <div class="icon icon-arrow-don"></div>
+                </div>
+                <div class="toggle selected" *ngIf="this.selectedClass == i" (click)="collapseClass()">
+                  <div class="icon icon-arrow-up"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-area">
+              <div class="icon icon-delete-fill" (click)="labels.isAbleDelete ? onConfirm(i) : false"
+                [ngClass]="{ disabled: !labels.isAbleDelete, right: !labels.isEditable }" *ngIf="labels.isAbleDelete"></div>
+              <span class="delete" (click)="labels.isAbleDelete ? onConfirm(i) : false"
+                [ngClass]="{ disabled: !labels.isAbleDelete , right: !labels.isEditable}" *ngIf="labels.isAbleDelete">Delete</span>
+
+              <div class="icon icon-edit-fill" (click)="editLabel(i)" *ngIf="labels.isEditable"></div>
+              <span class="edit" (click)="editLabel(i)" *ngIf="labels.isEditable">Edit</span>
+            </div>
+          </div>
+          <div class="single-view" *ngIf="this.selectedClass == i && labels.type == SCREEN_CLASS_ONLY">
+            <div class="left">
+              <img class="image" [src]="labels.imgURL" />
+              <div *ngIf="labels.imgURL" class="img-title">Example Image</div>
+            </div>
+            <div class="description">
+              {{ labels.description }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tree-view" *ngIf="
+          this.selectedClass == i && labels.type == SCREEN_CLASS_ATTRIBUTES
+        ">
+        <ul>
+          <li class="container">
+            <div class="divv no-data">
+              <br />
+            </div>
+            <ul>
+              <li [ngClass]="{ 'no-border': isFirst }" class="container" *ngFor="
+                  let attribute of labels.attributes;
+                  index as j;
+                  first as isFirst;
+                  last as isLast
+                ">
+                <div class="ptag">
+                  <div class="attribute">
+                    <div class="dot"></div>
+                    <div class="content">
+                      <div class="label-icon">
+                        <div class="icon icon-sub-label"></div>
+                      </div>
+                      <div class="title-area">
+                        <div class="label">{{ attribute.label }}</div>
+                        <div class="class">Attribute {{ j + 1 }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="attribute-val-ul-list b-left" [ngClass]="{ lastRow: isLast }">
+                  <li [ngClass]="{
+                      'no-border': isStateFirst,
+                      'no-left-border': isLastValue
+                    }" class="no-bottom-border top-68" *ngFor="
+                      let value of attribute.values;
+                      index as k;
+                      first as isStateFirst;
+                      last as isLastValue
+                    ">
+                    <div class="b-right-vertical" *ngIf="isLastValue && !isStateFirst"></div>
+                    <div class="ptag" style="width: 100%">
+                      <div class="b-left-horizontal"></div>
+                      <div class="value">
+                        <div class="dot"></div>
+                        <div class="content" [ngClass]="{
+                            selected:
+                              this.selectedAttribute == j &&
+                              this.selectedValue == k
+                          }">
+                          <div class="label-icon">
+                            <div class="icon icon-label-value"></div>
+                          </div>
+                          <div class="title-area">
+                            <div class="label">{{ value.valueName }}</div>
+                            <div class="class">Value {{ k + 1 }}</div>
+                          </div>
+                          <div class="toggle selected" *ngIf="
+                              this.selectedAttribute == j &&
+                              this.selectedValue == k
+                            " (click)="collapseValue()">
+                            <div class="icon icon-arrow-up"></div>
+                          </div>
+                          <div class="toggle" *ngIf="
+                              this.selectedAttribute != j ||
+                              this.selectedValue != k
+                            " (click)="expandValue(j, k)">
+                            <div class="icon icon-arrow-don"></div>
+                          </div>
+                        </div>
+                        <div class="details" [hidden]="
+                            this.selectedAttribute != j ||
+                            this.selectedValue != k
+                          " #content>
+                          <div class="b-left-manual" [ngStyle]="{ 'height.px': borderHeight }"
+                            *ngIf="isStateFirst && !isLastValue"></div>
+                          <img [src]="value.imgURL" />
+                          <div *ngIf="value.imgURL" class="img-title">
+                            Example Image
+                          </div>
+                          <div class="description">
+                            {{ value.description }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

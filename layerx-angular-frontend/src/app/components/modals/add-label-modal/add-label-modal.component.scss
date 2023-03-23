@@ -1,0 +1,164 @@
+@import "../../../../assets/scss/colors.scss";
+
+.modal-container {
+  .title-row {
+    padding-bottom: 8px;
+    .title-black {
+      color: $text_black;
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+  .i-close {
+    font-size: 25px;
+    color: $new_project_star;
+    float: right;
+  }
+  .title-border {
+    border-bottom: 1px solid $filter_row_gray;
+  }
+
+  .search-row {
+    margin-top: 20px;
+
+    .form-outline {
+      position: relative;
+
+      i {
+        position: absolute;
+        left: 10px;
+        color: $theme_purple;
+        top: 5px;
+        font-size: 24px;
+      }
+    }
+    input {
+      border-radius: 13px;
+      border: none;
+      height: 40px;
+      background-color: $btn_gray;
+      color: $sidebar_searchtxt;
+      font-size: 18px;
+      padding-left: 40px;
+    }
+
+    input::placeholder,
+    input:-ms-input-placeholder,
+    input::-ms-input-placeholder {
+      color: $search_placeholder;
+      font-size: 18px;
+    }
+  }
+
+  .table-row {
+    height: calc(100vh - 365px);
+    overflow: auto;
+    padding-right: 5px;
+    &::-webkit-scrollbar {
+      width: 3px;
+      border-radius: 16px;
+      height: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $left-border;
+      border-radius: 16px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $scroll_bar_gray_light;
+      border-radius: 16px;
+    }
+    table {
+      position: relative;
+      tbody {
+        tr {
+          border-bottom: 1px solid $filter_row_gray;
+
+          td {
+            padding: 20px 10px;
+            width: 200px;
+
+            .txt-black {
+              color: $text_black;
+              font-size: 16px;
+              font-weight: 500;
+
+              &.middle {
+                margin-top: 10px;
+              }
+            }
+
+            .row-icon {
+              display: flex;
+              align-items: center;
+              max-width: fit-content;
+
+              &.delete {
+                justify-content: flex-end;
+                max-width: 100%;
+                margin-right: 30px;
+
+                .checkbox-round {
+                  height: 25px;
+                  width: 25px;
+                  border: 1px solid $tooltip_text;
+                  background-color: $white;
+                  appearance: none;
+                  -webkit-appearance: none;
+                  outline: none;
+                  cursor: pointer;
+                  border-radius: 6px;
+                  margin-top: 7px;
+                }
+                .checkmark {
+                  position: relative;
+                  top: 0;
+                  left: 0;
+                  &:after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                    left: -16px;
+                    top: -4px;
+                    width: 7px;
+                    height: 13px;
+                    border: solid $white;
+                    border-width: 0 3px 3px 0;
+                    -webkit-transform: rotate(45deg);
+                    -ms-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                  }
+                }
+                .checkbox-round:checked {
+                  background-color: $theme_purple;
+                  border: none;
+                  ~ .checkmark {
+                    &:after {
+                      display: block;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .add-button {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+    .btn-add {
+      background: transparent
+        linear-gradient(110deg, #e17cfd 0%, #7166f9 51%, #4cd7f6 100%) 0% 0%
+        no-repeat padding-box;
+      color: $white;
+      border-radius: 12px;
+      border: none;
+      padding: 10px 50px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}

@@ -1,0 +1,112 @@
+<div class="annotations_right_nav">
+  <div class="frame-info">
+    <div class="frame-number">
+      Frame <span>{{ this.audit.mediaPlayerFpsCount }}</span>
+    </div>
+    <div class="video-time">
+      {{ this.audit.currentTime }}
+    </div>
+  </div>
+  <div class="detail-scroll-view">
+    <div class="card-gray" *ngIf="this.shapes[this.selectedBoxIndex]">
+      <div class="detail-row mt-10">
+        <div class="left">
+          <div class="color-box" [ngStyle]="{'background-color': this.shapes[this.selectedBoxIndex].color}"></div>
+          <div class="sub-label">{{ selectedLabel }}</div>
+          <div class="item-no" *ngIf="this.shapes[this.selectedBoxIndex]">
+            Item #{{ this.selectedBoxId }}
+          </div>
+        </div>
+        <div class="right">
+          <div class="icons">
+
+            <i class="icon icon-delete save-icons" (click)="deleteSelectedShape()"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="drop-downs">
+        <div class="drop-down-item" [hidden]="this.saved">
+          <div class="label-gray">Label</div>
+          <div class="select-col">
+            <select class="form-select" aria-label="Default select example" (change)="this.setSelectedBoxLabel($event)"
+              (keydown)="$event.stopPropagation()" [(ngModel)]="this.shapes[this.selectedBoxIndex].label"
+              (click)="onClicklabel()">
+              <option [selected]="selectedLabel == ''" value="1">
+                Select
+              </option>
+              <option [selected]="selectedLabel == label.label" *ngFor="let label of this.audit.labelsList; index as i"
+                [value]="label.label">
+                {{ label.label }}
+              </option>
+            </select>
+            <i class="icon icon-arrow-don"></i>
+          </div>
+        </div>
+
+
+        <div [hidden]="this.saved" class="drop-down-item" *ngFor="let sublabel of this.audit.subLabels; index as i">
+          <div class="label-gray sub">Attribute {{ i + 1 }}</div>
+          <div class="select-col">
+            <select class="form-select" [(ngModel)]="this.shapes[this.selectedBoxIndex].attributeValues[sublabel.key]"
+              aria-label="Default select example" (change)="onChangeLabel($event, sublabel.key)"
+              (keydown)="$event.stopPropagation()">
+              <option value="">Select</option>
+              <option *ngFor="let labelName of sublabel.values; index as i" [value]="labelName.valueName">
+                {{ labelName.valueName }}
+              </option>
+            </select>
+            <i class="icon icon-arrow-don"></i>
+
+          </div>
+        </div>
+        <div *ngFor="let sublabel of this.audit.subLabels; index as i" [hidden]="
+              !this.shapes[this.selectedBoxIndex].attributeValues[
+                sublabel.key
+              ]
+            ">
+          <div [hidden]="!this.saved" class="drop-down-item" [ngClass]="{ saved: this.audit.selectedUserType != 0 }">
+            <div class="label-gray sub">Attribute {{ i + 1 }}</div>
+          </div>
+          <div [hidden]="!this.saved" class="drop-down-item" [ngClass]="{ saved: this.audit.selectedUserType != 0 }">
+            <div class="label sub">
+              {{
+                            this.shapes[this.selectedBoxIndex].attributeValues[
+                            sublabel.key
+                            ]
+                            }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="attributes-col">
+        <div class="label-gray sub">Coordinates</div>
+        <div class="rect-row">
+          <div class="attr-rect">
+            <div class="txt-attr">X {{ items[0] }}</div>
+          </div>
+
+          <div class="attr-rect">
+            <div class="txt-attr">W {{ items[3] }}</div>
+          </div>
+        </div>
+
+        <div class="rect-row">
+          <div class="attr-rect">
+            <div class="txt-attr">Y {{ items[1] }}</div>
+          </div>
+
+          <div class="attr-rect">
+            <div class="txt-attr">H {{ items[2] }}</div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <app-marked-labels [labelObject]="labelObject"></app-marked-labels>
+
+  </div>
+</div>
